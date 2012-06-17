@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 #include "shader.h"
-#include "model.h"
+#include "voxelmodel.h"
 #include "glutils.h"
 
 #include <PolyVoxCore/MaterialDensityPair.h>
@@ -74,16 +74,10 @@ int main()
 
 	float tunnelDist = 0.0001f;
 
-	Model model = fullScreenQuadModel();
-
 	using PolyVox::Vector3DInt32;
 	PolyVox::SimpleVolume<PolyVox::MaterialDensityPair44> volData(PolyVox::Region(Vector3DInt32(0,0,0), Vector3DInt32(63, 63, 63)));
 	createSphereInVolume(volData, 30);
-	PolyVox::SurfaceMesh<PolyVox::PositionMaterialNormal> mesh;
-	PolyVox::CubicSurfaceExtractorWithNormals<PolyVox::SimpleVolume, PolyVox::MaterialDensityPair44 > surfaceExtractor(&volData, volData.getEnclosingRegion(), &mesh);
-	surfaceExtractor.execute();
-
-	Model polyModel = Model(mesh.getNoOfVertices(), mesh.getNoOfIndices(), (glm::vec3*)&(mesh.getVertices()[0]), (glm::uvec3*)&(mesh.getIndices()[0]));
+	VoxelModel<PolyVox::MaterialDensityPair44> polyModel(volData);
 
 	glUseProgram(plain.id);
 //	glUniform1f(tunnel.uniformLocs[tunnelDistanceI], tunnelDist);
@@ -93,9 +87,8 @@ int main()
 	while(running)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		glBindVertexArray(polyModel.VAO_id);
-		glBindBuffer(GL_ARRAY_BUFFER, polyModel.VBO_vertices_id);
-		glDrawElements(polyModel.drawMode, polyModel.numPolygons*3, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(polyModel.VAO);
+		glDrawElements(GL_TRIANGLES, polyModel.mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		checkGLErrors("loop");
 		glfwSwapBuffers();
