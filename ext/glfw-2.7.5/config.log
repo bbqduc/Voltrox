@@ -1,0 +1,118 @@
+This file contains any messages produced by compilers while
+running F:\trol2\trol2\glfw-2.7.5\compile.sh, to aid debugging if F:\trol2\trol2\glfw-2.7.5\compile.sh makes a mistake.
+
+F:\trol2\trol2\glfw-2.7.5\compile.sh: checking whether we are using GNU C
+F:trol2trol2glfw-2.7.5compile.sh: cc -E conftest.c
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 160: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for X11 RandR support
+F:trol2trol2glfw-2.7.5compile.sh: cc -c  conftest.c 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 184: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <X11/Xlib.h>
+#include <X11/extensions/Xrandr.h>
+
+int main() {; return 0;}
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for X11 VidMode support
+F:trol2trol2glfw-2.7.5compile.sh: cc -c  conftest.c 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 221: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <X11/Xlib.h>
+#include <X11/extensions/xf86vmode.h>
+
+#if defined(__APPLE_CC__)
+#error Not supported under Mac OS X
+#endif
+
+int main() {; return 0;}
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for pthread support
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  -pthread conftest.c  -lGL -pthread 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 266: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <pthread.h>
+int main() {pthread_t posixID; posixID=pthread_self(); return 0;}
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  -D_REENTRANT conftest.c  -lGL -lpthread 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 281: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <pthread.h>
+int main() {pthread_t posixID; posixID=pthread_self(); return 0;}
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest   conftest.c  -lGL -lsocket 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 296: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <pthread.h>
+int main() {pthread_t posixID; posixID=pthread_self(); return 0;}
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for clock_gettime
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 390: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <time.h>
+#include <unistd.h>
+int main() {
+#if defined( CLOCK_MONOTONIC )
+clock_gettime(0, 0);
+#else
+#error "clock_gettime support not detected"
+#endif
+return 0;}
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c -lrt 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 401: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <time.h>
+#include <unistd.h>
+int main() {
+#if defined( CLOCK_MONOTONIC )
+clock_gettime(0, 0);
+#else
+#error "clock_gettime support not detected"
+#endif
+return 0;}
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for glXGetProcAddress variants
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  -lGL 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 437: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <X11/Xlib.h>
+#include <GL/glx.h>
+#include <GL/gl.h>
+int main() {void *ptr=(void*)glXGetProcAddress("glFun"); return 0;}
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  -lGL 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 462: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <X11/Xlib.h>
+#include <GL/glx.h>
+#include <GL/gl.h>
+int main() {void *ptr=(void*)glXGetProcAddressARB("glFun"); return 0;}
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  -lGL 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 486: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <X11/Xlib.h>
+#include <GL/glx.h>
+#include <GL/gl.h>
+int main() {void *ptr=(void*)glXGetProcAddressEXT("glFun"); return 0;}
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for dlopen
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  -lGL 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 521: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <dlfcn.h>
+int main() {void *l=dlopen("libGL.so",RTLD_LAZY|RTLD_GLOBAL); return 0;}
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  -lGL -ldl 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 533: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <dlfcn.h>
+int main() {void *l=dlopen("libGL.so",RTLD_LAZY|RTLD_GLOBAL); return 0;}
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for sysconf
+F:trol2trol2glfw-2.7.5compile.sh: cc -o conftest  conftest.c  -lGL 1>&5
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 573: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: failed program was:
+#include <unistd.h>
+#ifndef _SC_NPROCESSORS_ONLN
+#ifndef _SC_NPROC_ONLN
+#error Neither _SC_NPROCESSORS_ONLN nor _SC_NPROC_ONLN available
+#endif
+#endif
+int main() {long x=sysconf(_SC_ARG_MAX); return 0; }
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Checking for sysctl support
+F:trol2trol2glfw-2.7.5compile.sh: cc -E conftest.c
+F:\trol2\trol2\glfw-2.7.5\compile.sh: line 606: cc: command not found
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Creating ./lib/x11/Makefile.x11
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Creating ./examples/Makefile.x11
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Creating ./tests/Makefile.x11
+F:\trol2\trol2\glfw-2.7.5\compile.sh: Creating ./lib/x11/libglfw.pc.in
