@@ -45,4 +45,45 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders_330\demo.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\disco.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\distanceblur.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\moonriver.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\music.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\plain.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\plain.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\plainMVP.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\pointToSquare.geom">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\post.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\post.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\timemover.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\tunnel.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

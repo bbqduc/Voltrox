@@ -91,6 +91,21 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="voxelmodel.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders_330\demo.frag" />
+    <None Include="shaders_330\disco.frag" />
+    <None Include="shaders_330\distanceblur.frag" />
+    <None Include="shaders_330\moonriver.frag" />
+    <None Include="shaders_330\music.frag" />
+    <None Include="shaders_330\plain.frag" />
+    <None Include="shaders_330\plain.vert" />
+    <None Include="shaders_330\plainMVP.vert" />
+    <None Include="shaders_330\pointToSquare.geom" />
+    <None Include="shaders_330\post.frag" />
+    <None Include="shaders_330\post.vert" />
+    <None Include="shaders_330\timemover.vert" />
+    <None Include="shaders_330\tunnel.frag" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
