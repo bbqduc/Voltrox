@@ -64,8 +64,9 @@ bool Shader::loadFromFile(const char* vPath, const char* fPath, const char* gPat
 
 	GLuint v,f,g;
 
-	if(vSize) v = glCreateShader(GL_VERTEX_SHADER);
-	if(fSize) f = glCreateShader(GL_FRAGMENT_SHADER);
+	if(!vSize || !fSize) return false;
+	v = glCreateShader(GL_VERTEX_SHADER);
+	f = glCreateShader(GL_FRAGMENT_SHADER);
 	if(gSize) g = glCreateShader(GL_GEOMETRY_SHADER);
 
 	const GLchar* vcode = vertexSource, // need consts for opengl

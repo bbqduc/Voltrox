@@ -60,6 +60,7 @@ void VoxelModel<VolumeType, VoxelType>::setMesh(VolumeType<VoxelType>& volume)
 	glEnableVertexAttribArray(1);
 	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, mesh.getNoOfVertices()*sizeof(GLfloat)*6, 0, GL_STATIC_DRAW);
 
 	using PolyVox::Vector3DFloat;
 	GLfloat* ptr = (GLfloat*) glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
@@ -73,8 +74,6 @@ void VoxelModel<VolumeType, VoxelType>::setMesh(VolumeType<VoxelType>& volume)
 		*ptr++ = i->getNormal().getX();
 		*ptr++ = i->getNormal().getY();
 		*ptr++ = i->getNormal().getZ();
-
-
 	}
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 

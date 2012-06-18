@@ -2,9 +2,9 @@
 # Automatically generated Makefile for GLFW
 ##########################################################################
 CC           = cc
-CFLAGS       = -c -I. -I..   -O
-SOFLAGS      = -shared -soname libglfw.so
-LFLAGS       =  -lX11  -lGL -lm
+CFLAGS       = -c -I. -I..  -D_GLFW_USE_LINUX_JOYSTICKS -D_GLFW_HAS_XRANDR -D_GLFW_HAS_PTHREAD -D_GLFW_HAS_SCHED_YIELD -D_GLFW_HAS_GLXGETPROCADDRESS -D_GLFW_HAS_SYSCONF  -pthread -O2 -Wall
+SOFLAGS      = -shared -Wl,-soname,libglfw.so
+LFLAGS       =  -lXrandr  -lrt -lX11  -lGL -pthread -lm
 
 
 ##########################################################################

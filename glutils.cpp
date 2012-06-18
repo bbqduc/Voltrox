@@ -9,6 +9,8 @@
 #include <GL/gl.h>
 
 #include <iostream>
+#include <cstdio>
+#include <cstdlib>
 
 
 void checkGLErrors(const char* functionName)
@@ -19,21 +21,6 @@ void checkGLErrors(const char* functionName)
 		fprintf(stderr, "%s -- ERROR: %s\n", functionName, gluErrorString(err));
 		exit(-1);
 	}
-}
-
-Model fullScreenQuadModel()
-{
-	glm::vec3 vertices2[4];
-	vertices2[0] = glm::vec3(-1.0f, -1.0f, 0.0f);
-	vertices2[1] = glm::vec3(-1.0f, 1.0f, 0.0f);
-	vertices2[2] = glm::vec3(1.0f, 1.0f, 0.0f);
-	vertices2[3] = glm::vec3(1.0f, -1.0f, 0.0f);
-
-	glm::uvec3 polygons2[2];
-	polygons2[0] = glm::uvec3(0,1,2);
-	polygons2[1] = glm::uvec3(2,3,0);
-
-	return Model(4,2, &vertices2[0], &polygons2[0], GL_TRIANGLES);
 }
 
 int init()

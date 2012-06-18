@@ -1,2 +1,0 @@
-all:
-	g++ -DTROL_USE_OLD_OPENGL glutils.cpp model.cpp shader.cpp main.cpp -o main -Wl,-rpath,glfw/lib/x11,-rpath,.,-rpath,glfw/lib -I glfw/include/ -L glfw/lib/x11/ -L glfw/lib/ -lGLEW -lglfw -std=c++0x -lPolyVoxCore -ggdb

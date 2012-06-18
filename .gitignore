@@ -58,3 +58,9 @@ packages/
 
 # visual studio database projects
 *.dbmdl
+
+#Linux stuff
+*.d
+*.o
+.*.swp
+main
