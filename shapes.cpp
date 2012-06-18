@@ -1,5 +1,27 @@
 #include "shapes.h"
 
+void createShapes(PolyVox::LargeVolume<PolyVox::MaterialDensityPair44>& volData)
+{
+	int32_t sidelength = 128;
+	int32_t minPos = 0;
+	int32_t midPos = sidelength / 2;
+	int32_t maxPos = sidelength - 1;
+	using PolyVox::Vector3DInt32;
+	createSphereInVolume(volData, 60, 5);
+	createSphereInVolume(volData, 50, 4);
+	createSphereInVolume(volData, 40, 3);
+	createSphereInVolume(volData, 30, 2);
+	createSphereInVolume(volData, 20, 1);
+
+	createCubeInVolume(volData, Vector3DInt32(minPos, minPos, minPos), Vector3DInt32(midPos-1, midPos-1, midPos-1), 0);
+	createCubeInVolume(volData, Vector3DInt32(midPos+1, midPos+1, minPos), Vector3DInt32(maxPos, maxPos, midPos-1), 0);
+	createCubeInVolume(volData, Vector3DInt32(midPos+1, minPos, midPos+1), Vector3DInt32(maxPos, midPos-1, maxPos), 0);
+	createCubeInVolume(volData, Vector3DInt32(minPos, midPos+1, midPos+1), Vector3DInt32(midPos-1, maxPos, maxPos), 0);
+
+	createCubeInVolume(volData, Vector3DInt32(1, midPos-10, midPos-10), Vector3DInt32(maxPos-1, midPos+10, midPos+10), PolyVox::MaterialDensityPair44::getMaxDensity());
+	createCubeInVolume(volData, Vector3DInt32(midPos-10, 1, midPos-10), Vector3DInt32(midPos+10, maxPos-1, midPos+10), PolyVox::MaterialDensityPair44::getMaxDensity());
+	createCubeInVolume(volData, Vector3DInt32(midPos-10, midPos-10 ,1), Vector3DInt32(midPos+10, midPos+10, maxPos-1), PolyVox::MaterialDensityPair44::getMaxDensity());
+}
 
 void createSphereInVolume(PolyVox::LargeVolume<PolyVox::MaterialDensityPair44>& volData, float fRadius, uint8_t uValue)
 {

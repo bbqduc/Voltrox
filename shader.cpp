@@ -1,4 +1,5 @@
 #include "shader.h"
+#include "glutils.h"
 
 #include <cstdlib>
 #include <cstdio>
@@ -25,6 +26,7 @@ void printShaderInfoLog(GLint shader)
 		printf("InfoLog:\n%s\n", infoLog);
 		free(infoLog);
 	}
+	checkGLErrors("printShaderInfoLog");
 }
 
 GLint readShaderSource(const char* path, GLchar** target)
@@ -123,8 +125,19 @@ bool Shader::loadFromFile(const char* vPath, const char* fPath, const char* gPat
 	if(fSize) glAttachShader(id, f);
 	if(gSize) glAttachShader(id, g);
 
+	glBindAttribLocation(id, 0, "in_Position");
+	glBindAttribLocation(id, 1, "in_Normal");
+	glBindAttribLocation(id, 2, "in_Color");
+
 	glLinkProgram(id);
 	glUseProgram(id);
+
+	glGetProgramiv(id, GL_LINK_STATUS, &compiled);
+	if (!compiled)
+	{
+		printf("Shader not linked!\n");
+		return false;
+	} 
 
 	if(vSize) printShaderInfoLog(v);
 	if(fSize) printShaderInfoLog(f);
@@ -132,6 +145,8 @@ bool Shader::loadFromFile(const char* vPath, const char* fPath, const char* gPat
 
 	free(vertexSource); free(fragmentSource); free(geometrySource);
 
+
+	checkGLErrors("Shader::loadFromFile");
 	return true;
 }
 
