@@ -24,13 +24,22 @@ bl_info = {
 
 import os
 import bpy
+from struct import *
 
 def write_obj(filepath, context):
-  out = open(filepath, 'w')
+  out = open(filepath, 'wb')
+
+  out.write(pack('I', 1337)) # TROLLO MAGIC NUMBER
+  TEXTURED_CODE = 1
+  out.write(pack('I', TEXTURED_CODE))
+
   objs = [Object for Object in context.scene.objects
           if Object.type in ('MESH') and Object.parent is None]
   mesh = objs[0].to_mesh(bpy.context.scene, True, "PREVIEW")
   uvcoords = mesh.uv_layers.active.data
+
+  out.write(pack('I', len(mesh.vertices)))
+  out.write(pack('I', len(mesh.polygons)))
 
   Vertices = []
   for Polygon in mesh.polygons:
@@ -38,18 +47,21 @@ def write_obj(filepath, context):
         Vertices.append(tuple(Vertex.uv))
 
   for i in range(0, len(mesh.vertices)):
-    out.write( '%f %f %f\n' % (mesh.vertices[i].co.x, mesh.vertices[i].co.y, mesh.vertices[i].co.z) )
-    out.write( '%f %f %f\n' % (mesh.vertices[i].normal.x, mesh.vertices[i].normal.y, mesh.vertices[i].normal.z) )
-    out.write( '%f %f\n' % (Vertices[i][0], Vertices[i][1]))
+    out.write(pack('f',mesh.vertices[i].co.x))
+    out.write(pack('f',mesh.vertices[i].co.y))
+    out.write(pack('f',mesh.vertices[i].co.z))
+
+    out.write(pack('f',mesh.vertices[i].normal.x))
+    out.write(pack('f',mesh.vertices[i].normal.y))
+    out.write(pack('f',mesh.vertices[i].normal.z))
+
+    out.write(pack('f',Vertices[i][0]))
+    out.write(pack('f',Vertices[i][1]))
   for polygon in mesh.polygons:
-      out.write( '%d %d %d\n' %(polygon.vertices[0], polygon.vertices[1], polygon.vertices[2]))
+      out.write(pack('I',polygon.vertices[0]))
+      out.write(pack('I',polygon.vertices[1]))
+      out.write(pack('I',polygon.vertices[2]))
   
-#  for face in mesh.faces:
- #   out.write('f')
-#
- #   for vert in face.v:
-  #    out.write( ' %i' % (vert.index +1) )
-   # out.write('\n')
   out.close()
 
 
