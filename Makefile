@@ -4,7 +4,7 @@ INCLUDE=-I ext/include
 LIBS=-L ext/lib -Wl,-rpath,ext/lib -lGLEW -lglfw -lPolyVoxCore
 
 SRC=shader.cpp glutils.cpp shapes.cpp
-HEADERS=shader.h voxelmodel.h glutils.h shapes.h
+HEADERS=shader.h voxelmodel.h glutils.h shapes.h model.h
 MAIN=main.cpp
 EXENAME=main
 

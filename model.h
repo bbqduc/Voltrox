@@ -12,6 +12,8 @@
 #include <glm/glm.hpp>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
+#include <iostream>
 
 struct VertexNormal
 {
@@ -33,13 +35,14 @@ struct VertexNormalTexcrd : public VertexNormal
 template <typename T>
 class Model
 {
-	public:	int numVertices, numIndices;
+	public:	int numVertices, numFaces;
 	T* vertexData;
 	glm::uvec3* indices;
 
 	GLuint VAO, vertexBuffer, indexBuffer, texture;
 
-	void loadVertexData(const T *vertexData, int numVertices, int numIndices);
+	bool loadFromFile(const char* path);
+	void loadVertexData(const T *vertexData, const glm::uvec3* indices, int numVertices, int numFaces);
 	void destroyBuffers();
 //	void initTexture(const std::string& texturepath); NYI
 
@@ -52,17 +55,17 @@ class Model
 };
 
 template <typename T>
-void Model<T>::loadVertexData(const T *vertexData, const glm::uvec3* indices, int numVertices, int numIndices)
+void Model<T>::loadVertexData(const T *vertexData, const glm::uvec3* indices, int numVertices, int numFaces)
 {
 	if(this->vertexData)
 		destroyBuffers();
 	this->numVertices = numVertices;
-	this->numIndices = numIndices;
+	this->numFaces = numFaces;
 	this->vertexData = new T[numVertices];
-	this->indices = new glm::uvec3[numIndices];
+	this->indices = new glm::uvec3[numFaces];
 
 	memcpy(this->vertexData, vertexData, numVertices*sizeof(T));
-	memcpy(this->indices, indices, numIndices*sizeof(glm::uvec3));
+	memcpy(this->indices, indices, numFaces*sizeof(glm::uvec3));
 
 	initBuffers();
 }
@@ -82,12 +85,12 @@ void Model<T>::initBuffers()
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(T), 0);	// VERTICES
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(T), sizeof(glm::vec3)); // NORMALS
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(T), (GLvoid*)sizeof(glm::vec3)); // NORMALS
 	int numThirdChannel = (sizeof(T) - 2*sizeof(glm::vec3)) / sizeof(GLfloat); // COMPILE-TIME CONSTANT
 	if(numThirdChannel)
 	{
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, numThirdChannel, GL_FLOAT, GL_FALSE, sizeof(T), 2*sizeof(glm::vec3)); // COLOR / TEXCOORDS
+		glVertexAttribPointer(2, numThirdChannel, GL_FLOAT, GL_FALSE, sizeof(T), (GLvoid*)(2*sizeof(glm::vec3))); // COLOR / TEXCOORDS
 	}
 
 	glBindVertexArray(0);
@@ -96,7 +99,7 @@ void Model<T>::initBuffers()
 template <typename T>
 Model<T>::Model()
 	:numVertices(0),
-	numIndices(0),
+	numFaces(0),
 	vertexData(0),
 	indices(0),
 	VAO(GL_INVALID_VALUE),
@@ -111,15 +114,45 @@ void Model<T>::destroyBuffers()
 {
 	delete[] vertexData; vertexData = 0;
 	delete[] indices; indices = 0;
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &vertexBuffer);
-	glDeleteBuffers(1, &indexBuffer);
+	if(VAO != GL_INVALID_VALUE)
+		glDeleteVertexArrays(1, &VAO);
+	if(vertexBuffer != GL_INVALID_VALUE)
+		glDeleteBuffers(1, &vertexBuffer);
+	if(indexBuffer != GL_INVALID_VALUE)
+		glDeleteBuffers(1, &indexBuffer);
 }
 
 template <typename T>
-Model::~Model() // THIS NEEDS TO BE CHANGED IF COPYING MODELS IS A NECESSARY FEATURE
+Model<T>::~Model() // THIS NEEDS TO BE CHANGED IF COPYING MODELS IS A NECESSARY FEATURE
 {
 	destroyBuffers();
 }
+
+template <>
+bool Model<VertexNormalTexcrd>::loadFromFile(const char* path)
+{
+	std::ifstream infile(path, std::ios_base::binary | std::ios_base::in);
+	if(!infile)
+		return false;
+	int magic; infile.read((char*)&magic, sizeof(int));
+	int mode; infile.read((char*)&mode, sizeof(int));
+	if(magic != 1337 || mode != 1)
+		return false;
+
+	infile.read((char*)&numVertices, sizeof(int));
+	infile.read((char*)&numFaces, sizeof(int));
+
+	vertexData = new VertexNormalTexcrd[numVertices];
+	indices = new glm::uvec3[numFaces];
+
+	infile.read((char*)vertexData, sizeof(VertexNormalTexcrd)*numVertices);
+	infile.read((char*)indices, sizeof(glm::uvec3)*numFaces);
+
+	std::cout << "Read model with " << numVertices << " vertices and " << numFaces << " faces.\n";
+	initBuffers();
+
+	return true;
+}
+
 
 #endif
