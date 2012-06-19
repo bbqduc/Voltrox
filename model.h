@@ -10,32 +10,116 @@
 #include <string>
 #include <stdint.h>
 #include <glm/glm.hpp>
+#include <cstdlib>
+#include <cstring>
 
-class Model
+struct VertexNormal
 {
-	public:	int numVertices, numPolygons;
-	glm::vec3* vertices, *normals;
-	glm::vec2* texcoords;
-	glm::uvec3* polygons;
+	glm::vec3 vertex;
+	glm::vec3 normal;
+};
 
-	GLint drawMode;
-	GLuint texture;
-	GLuint VBO_vertices_id, VBO_normals_id, VBO_indices_id, VBO_color_id, VBO_texcoord_id, VAO_id;
+struct VertexNormalColor : public VertexNormal
+{
+	glm::vec3 color;
+};
 
-	void calculate_normals();
-	void InitVBOs();
-	void Init_Texture(const std::string& texturepath);
-
-	public:
-	Model();
-	Model(const Model&);
-	Model(int num_vertices, int num_polygons, glm::vec3 *vertices, glm::uvec3 *polygons, GLint drawMode = GL_TRIANGLES);
-	Model(int num_vertices, int num_polygons, glm::vec3 *vertices, glm::uvec3 *polygons, glm::vec2 *texcoords, GLint drawMode, std::string texturepath);
-	Model& operator=(const Model& rhs);
-	~Model();
-	GLuint GetTexture() const;
+struct VertexNormalTexcrd : public VertexNormal
+{
+	glm::vec2 texcrd;
 };
 
 
+template <typename T>
+class Model
+{
+	public:	int numVertices, numIndices;
+	T* vertexData;
+	glm::uvec3* indices;
+
+	GLuint VAO, vertexBuffer, indexBuffer, texture;
+
+	void loadVertexData(const T *vertexData, int numVertices, int numIndices);
+	void destroyBuffers();
+//	void initTexture(const std::string& texturepath); NYI
+
+	Model();
+	~Model();
+	private:
+	void initBuffers();
+	Model(const Model&);
+	Model& operator=(const Model& rhs);
+};
+
+template <typename T>
+void Model<T>::loadVertexData(const T *vertexData, const glm::uvec3* indices, int numVertices, int numIndices)
+{
+	if(this->vertexData)
+		destroyBuffers();
+	this->numVertices = numVertices;
+	this->numIndices = numIndices;
+	this->vertexData = new T[numVertices];
+	this->indices = new glm::uvec3[numIndices];
+
+	memcpy(this->vertexData, vertexData, numVertices*sizeof(T));
+	memcpy(this->indices, indices, numIndices*sizeof(glm::uvec3));
+
+	initBuffers();
+}
+
+template <typename T>
+void Model<T>::initBuffers()
+{
+	// initialize VAO
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	// initialize VBO for model vertices and polygon vertex indices
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, numVertices*sizeof(T), vertexData, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(T), 0);	// VERTICES
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(T), sizeof(glm::vec3)); // NORMALS
+	int numThirdChannel = (sizeof(T) - 2*sizeof(glm::vec3)) / sizeof(GLfloat); // COMPILE-TIME CONSTANT
+	if(numThirdChannel)
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, numThirdChannel, GL_FLOAT, GL_FALSE, sizeof(T), 2*sizeof(glm::vec3)); // COLOR / TEXCOORDS
+	}
+
+	glBindVertexArray(0);
+}
+
+template <typename T>
+Model<T>::Model()
+	:numVertices(0),
+	numIndices(0),
+	vertexData(0),
+	indices(0),
+	VAO(GL_INVALID_VALUE),
+	vertexBuffer(GL_INVALID_VALUE),
+	indexBuffer(GL_INVALID_VALUE),
+	texture(GL_INVALID_VALUE)
+{
+}
+
+template <typename T>
+void Model<T>::destroyBuffers()
+{
+	delete[] vertexData; vertexData = 0;
+	delete[] indices; indices = 0;
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &indexBuffer);
+}
+
+template <typename T>
+Model::~Model() // THIS NEEDS TO BE CHANGED IF COPYING MODELS IS A NECESSARY FEATURE
+{
+	destroyBuffers();
+}
 
 #endif

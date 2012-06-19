@@ -125,9 +125,11 @@ bool Shader::loadFromFile(const char* vPath, const char* fPath, const char* gPat
 	if(fSize) glAttachShader(id, f);
 	if(gSize) glAttachShader(id, g);
 
+	#ifdef TROL_USE_OLD_OPENGL
 	glBindAttribLocation(id, 0, "in_Position");
 	glBindAttribLocation(id, 1, "in_Normal");
 	glBindAttribLocation(id, 2, "in_Color");
+	#endif
 
 	glLinkProgram(id);
 	glUseProgram(id);

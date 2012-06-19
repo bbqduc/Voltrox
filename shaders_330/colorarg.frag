@@ -1,6 +1,6 @@
-layout(location=3) in vec3 in_color
+in vec4 out_Color;
 
 void main()
 {
-	gl_FragColor = vec4(in_color, 1.0);
+	gl_FragColor = out_Color;
 }

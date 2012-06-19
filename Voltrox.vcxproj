@@ -76,13 +76,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw.lib;polyvoxcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gl3w.c" />
     <ClCompile Include="glutils.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="model.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shapes.cpp" />
   </ItemGroup>
@@ -94,6 +94,7 @@
     <ClInclude Include="voxelmodel.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders_330\colorarg.frag" />
     <None Include="shaders_330\demo.frag" />
     <None Include="shaders_330\disco.frag" />
     <None Include="shaders_330\distanceblur.frag" />

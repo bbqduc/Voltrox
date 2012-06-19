@@ -21,9 +21,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="shaders_330\tunnel.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\colorarg.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
