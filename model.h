@@ -14,6 +14,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <pnglite.h>
 
 struct VertexNormal
 {
@@ -44,8 +45,9 @@ class Model
 	bool loadFromFile(const char* path);
 	void loadVertexData(const T *vertexData, const glm::uvec3* indices, int numVertices, int numFaces);
 	void destroyBuffers();
-//	void initTexture(const std::string& texturepath); NYI
+	void loadTexture(const std::string& texturepath);
 
+	void fullScreenQuadModel();
 	Model();
 	~Model();
 	private:
@@ -92,6 +94,11 @@ void Model<T>::initBuffers()
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, numThirdChannel, GL_FLOAT, GL_FALSE, sizeof(T), (GLvoid*)(2*sizeof(glm::vec3))); // COLOR / TEXCOORDS
 	}
+
+	glGenBuffers(1, &indexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numFaces*sizeof(glm::uvec3), indices, GL_STATIC_DRAW);
+
 
 	glBindVertexArray(0);
 }
@@ -154,5 +161,43 @@ bool Model<VertexNormalTexcrd>::loadFromFile(const char* path)
 	return true;
 }
 
+template<typename T>
+void Model<T>::fullScreenQuadModel()
+{
+	VertexNormal v[4];
+	v[0].vertex = glm::vec3(-1.0f, -1.0f, 0.0f);
+	v[1].vertex = glm::vec3(-1.0f, 1.0f, 0.0f);
+	v[2].vertex = glm::vec3(1.0f, 1.0f, 0.0f);
+	v[3].vertex = glm::vec3(1.0f, -1.0f, 0.0f);
 
+	v[0].normal = glm::vec3(-1.0f, -1.0f, 0.0f);
+	v[1].normal = glm::vec3(-1.0f, 1.0f, 0.0f);
+	v[2].normal = glm::vec3(1.0f, 1.0f, 0.0f);
+	v[3].normal = glm::vec3(1.0f, -1.0f, 0.0f);
+
+	glm::uvec3 polygons2[2];
+	polygons2[0] = glm::uvec3(0,1,2);
+	polygons2[1] = glm::uvec3(2,3,0);
+
+	loadVertexData(v, &polygons2[0], 4, 2);
+}
+
+template <typename T>
+void Model<T>::loadTexture(const std::string& texturePath)
+{
+	png_t tex;
+	unsigned char* data;
+
+	png_init(0,0);
+	png_open_file_read(&tex, texturePath.c_str());
+	data = new unsigned char[tex.width * tex.height * tex.bpp];
+	png_get_data(&tex, data);
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex.width, tex.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	delete[] data;
+}
 #endif

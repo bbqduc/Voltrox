@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS=-O3 -std=c++0x -DTROL_USE_OLD_OPENGL
 INCLUDE=-I ext/include
-LIBS=-L ext/lib -Wl,-rpath,ext/lib -lGLEW -lglfw -lPolyVoxCore
+LIBS=-L ext/lib -Wl,-rpath,ext/lib -lGLEW -lglfw -lPolyVoxCore -lz
 
 SRC=shader.cpp glutils.cpp shapes.cpp
 HEADERS=shader.h voxelmodel.h glutils.h shapes.h model.h
@@ -11,7 +11,7 @@ EXENAME=main
 OBJ=$(SRC:.cpp=.o)
 
 all: $(MAIN) $(OBJ)
-	$(CXX) $(CXXFLAGS) $(LIBS) $(MAIN) $(INCLUDE) $(OBJ) -o $(EXENAME)
+	$(CXX) $(CXXFLAGS) $(LIBS) $(MAIN) $(INCLUDE) $(OBJ) pnglite.o -o $(EXENAME)
 $(OBJ) : $(SRC) $(HEADERS)
 %.o : %.cpp
 	$(CXX) $(CXXFLAGS) -c -MMD $< -o $@ $(INCLUDE) $(LIBS)

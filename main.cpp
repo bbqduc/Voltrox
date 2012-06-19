@@ -25,32 +25,60 @@ int main()
 		exit(-1);
 	
 	Shader plain;
-	if(!plain.loadFromShaderDir("plainMVP.vert", "plain.frag", 0))
+	if(!plain.loadFromShaderDir("plainMVP.vert", "plainTextured.frag", 0))
 		exit(-1);
 	uint8_t MVPI = plain.storeUniformLoc("MVP");
+	uint8_t samplerI = plain.storeUniformLoc("sampler");
 
 	checkGLErrors("InitShaders");
 
-	glm::mat4 perspective = glm::perspective(45.0f, 1024.0f/768.0f, 1.0f, 1000.0f);
-	glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,-30));
 
-	glm::mat4 result = perspective * MVP;
-
-	glEnable(GL_DEPTH_TEST);
+/*	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glClearDepth(1.0f);
+	glClearDepth(1.0f);*/
 
 	glUseProgram(plain.id);
-	glUniformMatrix4fv(plain.uniformLocs[MVPI], 1, GL_FALSE, glm::value_ptr(result));
 	checkGLErrors("Preloop");
 	bool running = true;
 
 	Model<VertexNormalTexcrd> model;
 	model.loadFromFile("ship.trollo");
+	model.loadTexture("ship.png");
+//	model.fullScreenQuadModel();
 
+	for(int i = 0; i < model.numVertices; ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+			std::cout << model.vertexData[i].vertex[j] << ' ';
+		std::cout << '\n';
+	}
+	for(int i = 0; i < model.numFaces; ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+			std::cout << model.indices[i][j] << ' ';
+		std::cout << '\n';
+	}
+	for(int i = 0; i < model.numVertices; ++i)
+	{
+		for(int j = 0; j < 2; ++j)
+			std::cout << model.vertexData[i].texcrd[j] << ' ';
+		std::cout << '\n';
+	}
+	glUniform1i(plain.uniformLocs[samplerI], 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, model.texture);
+
+	float time = -100.0f;
 	while(running)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		time += 0.5f;
+		glm::mat4 perspective = glm::perspective(45.0f, 1024.0f/768.0f, 1.0f, 1000.0f);
+		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,time));
+
+		glm::mat4 result = perspective * MVP;
+
+		glUniformMatrix4fv(plain.uniformLocs[MVPI], 1, GL_FALSE, glm::value_ptr(result));
+		glClear(GL_COLOR_BUFFER_BIT);
 		glBindVertexArray(model.VAO);
 		glDrawElements(GL_TRIANGLES, model.numFaces*3, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);

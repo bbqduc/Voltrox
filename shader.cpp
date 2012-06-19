@@ -128,7 +128,7 @@ bool Shader::loadFromFile(const char* vPath, const char* fPath, const char* gPat
 	#ifdef TROL_USE_OLD_OPENGL
 	glBindAttribLocation(id, 0, "in_Position");
 	glBindAttribLocation(id, 1, "in_Normal");
-	glBindAttribLocation(id, 2, "in_Color");
+	glBindAttribLocation(id, 2, "in_Texcoord");
 	#endif
 
 	glLinkProgram(id);
