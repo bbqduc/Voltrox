@@ -1,0 +1,45 @@
+#pragma once
+
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include "shader.h"
+#include <glm/glm.hpp>
+
+class TextManager
+{
+	public:
+	TextManager();
+	bool initGraphics();
+
+	bool loadFace(const char* path, int height = 48);
+	void renderText(const char* text, float x, float y, float sx, float sy);
+
+	private:
+
+	void initAtlas();
+
+	GLuint tex, vbo, vao;
+	int width,height; // width and height of texture
+	Shader textShader;
+
+	FT_Library ft;
+	FT_Face face; // Just one for now
+	int numFaces;
+
+	struct {
+		float ax; // advance.x
+		float ay; // advance.y
+
+		float bw; // bitmap width
+		float bh; // bitmap height
+
+		float bl; // bitmap left
+		float bt; // bitmap top
+
+		float tx; // x offset of glyph in texture coordinates
+		float ty; // y offset of glyhp in texture coordinates
+	} c[128]; // character information
+
+};

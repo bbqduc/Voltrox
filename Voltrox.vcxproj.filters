@@ -30,6 +30,9 @@
     <ClCompile Include="shapes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gltext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="glutils.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gltext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,6 +98,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="shaders_330\plainTextured.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\text.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders_330\text.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -31,10 +31,12 @@ int init()
 		return -1;
 	}
 
-	//	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	//	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-	//	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	//	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	#ifndef TROL_USE_OLD_OPENGL
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
+	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	#endif
 	if(!glfwOpenWindow(1024,768,0,0,0,0,0,0, GLFW_WINDOW))
 	{
 		printf("Cannot open window!\n");
@@ -64,5 +66,15 @@ int init()
 
 	std::cout << "OpenGL version " << glGetString(GL_VERSION) << " GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glClearDepth(1.0f);	  
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	checkGLErrors("post_init");
 	return 0;
 }
