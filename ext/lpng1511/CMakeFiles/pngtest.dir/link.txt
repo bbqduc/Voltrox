@@ -1,0 +1,1 @@
+/usr/bin/gcc  -O2 -g   CMakeFiles/pngtest.dir/pngtest.o  -o pngtest -rdynamic libpng15.so.15.11.0 -lz -lm -Wl,-rpath,/home/joylinen/Voltrox/ext/lpng1511 

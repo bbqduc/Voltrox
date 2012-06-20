@@ -33,6 +33,7 @@ int main()
 	checkGLErrors("InitShaders");
 
 
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);
@@ -43,9 +44,10 @@ int main()
 	bool running = true;
 
 	Model<VertexNormalTexcrd> model;
-	model.loadFromFile("ship.trollo");
+//	model.loadFromFile("ship.trollo");
+	model.makeTexturedCube();
 //	model.fullScreenQuadModel();
-	if(!model.loadTexturePNG("ship_backup.png"))
+	if(!model.loadTextureBMP("ship.bmp"))
 	{
 		std::cerr << "Texture load failed!\n";
 		return -1;
@@ -57,11 +59,16 @@ int main()
 	glBindTexture(GL_TEXTURE_2D, model.texture);
 
 	float time = -100.0f;
+	double prevTime = glfwGetTime();
 	while(running)
 	{
-		time += 0.1f;
+		double t = glfwGetTime();
+		time += t-prevTime;
+		prevTime=t;
 		glm::mat4 perspective = glm::perspective(45.0f, 1024.0f/768.0f, 1.0f, 1000.0f);
-		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,time));
+		glm::mat4 rot = glm::rotate(glm::mat4(), time*10, glm::vec3(1.0f, 1.0f,1.0f));
+		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,-10));
+		MVP = MVP * rot;
 
 		glm::mat4 result = perspective * MVP;
 
