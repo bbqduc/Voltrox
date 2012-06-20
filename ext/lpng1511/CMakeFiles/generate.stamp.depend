@@ -1,0 +1,21 @@
+# CMake generation dependency list for this directory.
+D:/Voltrox/ext/lpng1511/CMakeLists.txt
+D:/Voltrox/ext/lpng1511/CMakeFiles/CMakeSystem.cmake
+D:/Voltrox/ext/lpng1511/CMakeFiles/CMakeCCompiler.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/CMakeSystemSpecificInformation.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/CMakeGenericSystem.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/Platform/Windows.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/Platform/WindowsPaths.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/CMakeCInformation.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/Platform/Windows-cl.cmake
+D:/Voltrox/ext/lpng1511/CMakeFiles/CMakeCPlatform.cmake
+D:/Voltrox/ext/lpng1511/CMakeFiles/CMakeCXXPlatform.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/Platform/cl.cmake
+D:/Voltrox/ext/lpng1511/CMakeFiles/CMakeRCCompiler.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/CMakeRCInformation.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/CMakeCommonLanguageInclude.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/FindZLIB.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/FindPackageHandleStandardArgs.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/FindPackageMessage.cmake
+D:/Program Files (x86)/CMake 2.8/share/cmake-2.8/Modules/CMakeParseArguments.cmake
+D:/Voltrox/ext/lpng1511/scripts/pnglibconf.h.prebuilt

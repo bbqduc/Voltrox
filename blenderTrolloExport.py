@@ -22,6 +22,7 @@ bl_info = {
     "category": "Import-Export"}
 
 
+from array import array
 import os
 import bpy
 from struct import *
@@ -36,32 +37,47 @@ def write_obj(filepath, context):
   objs = [Object for Object in context.scene.objects
           if Object.type in ('MESH') and Object.parent is None]
   mesh = objs[0].to_mesh(bpy.context.scene, True, "PREVIEW")
-  uvcoords = mesh.uv_layers.active.data
 
-  out.write(pack('I', len(mesh.vertices)))
+  activeUV = mesh.tessface_uv_textures.active.data
+
+  lvdic = {}
+  lfl = []
+  lvcnt = 0
+  vertexdata = array('f')
+
+  for i, f in enumerate(mesh.tessfaces):
+    tmpfaces = []
+    for j,v in enumerate(f.vertices):
+      vec = mesh.vertices[v].co.to_tuple()
+      nor = mesh.vertices[v].normal.to_tuple()
+      co = tuple(activeUV[i].uv[j])
+      key = vec, nor, co
+      vinx = lvdic.get(key)
+
+      if (vinx is None):
+        lvdic[key] = lvcnt
+        tmpfaces.append(lvcnt)
+        lvcnt+=1
+        for t in range(0,3):
+                vertexdata.append(vec[t]);
+        for t in range(0,3):
+                vertexdata.append(nor[t]);
+        for t in range(0,2):
+                vertexdata.append(co[t]);
+      else:
+        inx = lvdic[key]
+        tmpfaces.append(inx)
+
+    lfl.append(tmpfaces)
+
+  out.write(pack('I', lvcnt))
   out.write(pack('I', len(mesh.polygons)))
 
-  Vertices = []
-  for Polygon in mesh.polygons:
-      for Vertex in [uvcoords[Vertex] for Vertex in Polygon.loop_indices]:
-        Vertices.append(tuple(Vertex.uv))
-
-  for i in range(0, len(mesh.vertices)):
-    out.write(pack('f',mesh.vertices[i].co.x))
-    out.write(pack('f',mesh.vertices[i].co.y))
-    out.write(pack('f',mesh.vertices[i].co.z))
-
-    out.write(pack('f',mesh.vertices[i].normal.x))
-    out.write(pack('f',mesh.vertices[i].normal.y))
-    out.write(pack('f',mesh.vertices[i].normal.z))
-
-    out.write(pack('f',Vertices[i][0]))
-    out.write(pack('f',Vertices[i][1]))
-  for polygon in mesh.polygons:
-      out.write(pack('I',polygon.vertices[0]))
-      out.write(pack('I',polygon.vertices[1]))
-      out.write(pack('I',polygon.vertices[2]))
+  vertexdata.tofile(out)
   
+  for i in lfl:
+          for j in i:
+                  out.write(pack('I', j))
   out.close()
 
 

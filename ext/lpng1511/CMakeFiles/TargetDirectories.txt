@@ -1,0 +1,6 @@
+D:/Voltrox/ext/lpng1511/CMakeFiles/ALL_BUILD.dir
+D:/Voltrox/ext/lpng1511/CMakeFiles/ZERO_CHECK.dir
+D:/Voltrox/ext/lpng1511/CMakeFiles/png15.dir
+D:/Voltrox/ext/lpng1511/CMakeFiles/png15_static.dir
+D:/Voltrox/ext/lpng1511/CMakeFiles/pngtest.dir
+D:/Voltrox/ext/lpng1511/CMakeFiles/pngvalid.dir

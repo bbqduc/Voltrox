@@ -91,5 +91,8 @@
     <None Include="shaders_330\colorarg.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="shaders_330\plainTextured.frag">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

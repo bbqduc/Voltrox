@@ -33,9 +33,10 @@ int main()
 	checkGLErrors("InitShaders");
 
 
-/*	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glClearDepth(1.0f);*/
+	glClearDepth(1.0f);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	glUseProgram(plain.id);
 	checkGLErrors("Preloop");
@@ -43,27 +44,14 @@ int main()
 
 	Model<VertexNormalTexcrd> model;
 	model.loadFromFile("ship.trollo");
-	model.loadTexture("ship.png");
 //	model.fullScreenQuadModel();
+	if(!model.loadTexturePNG("ship_backup.png"))
+	{
+		std::cerr << "Texture load failed!\n";
+		return -1;
+	}
 
-	for(int i = 0; i < model.numVertices; ++i)
-	{
-		for(int j = 0; j < 3; ++j)
-			std::cout << model.vertexData[i].vertex[j] << ' ';
-		std::cout << '\n';
-	}
-	for(int i = 0; i < model.numFaces; ++i)
-	{
-		for(int j = 0; j < 3; ++j)
-			std::cout << model.indices[i][j] << ' ';
-		std::cout << '\n';
-	}
-	for(int i = 0; i < model.numVertices; ++i)
-	{
-		for(int j = 0; j < 2; ++j)
-			std::cout << model.vertexData[i].texcrd[j] << ' ';
-		std::cout << '\n';
-	}
+	glEnable(GL_TEXTURE_2D);
 	glUniform1i(plain.uniformLocs[samplerI], 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model.texture);
@@ -71,14 +59,14 @@ int main()
 	float time = -100.0f;
 	while(running)
 	{
-		time += 0.5f;
+		time += 0.1f;
 		glm::mat4 perspective = glm::perspective(45.0f, 1024.0f/768.0f, 1.0f, 1000.0f);
 		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,time));
 
 		glm::mat4 result = perspective * MVP;
 
 		glUniformMatrix4fv(plain.uniformLocs[MVPI], 1, GL_FALSE, glm::value_ptr(result));
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindVertexArray(model.VAO);
 		glDrawElements(GL_TRIANGLES, model.numFaces*3, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
