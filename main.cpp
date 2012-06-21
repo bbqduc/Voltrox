@@ -18,6 +18,7 @@
 #include "shader.h"
 #include "glutils.h"
 #include "gltext.h"
+#include <cmath>
 
 void drawModelWithMVP(const Shader& shader, const Model<VertexNormalTexcrd>& model, const glm::mat4& MVP);
 
@@ -63,16 +64,16 @@ int main()
 		
 		glm::mat4 perspective = glm::perspective(45.0f, 1024.0f/768.0f, 1.0f, 1000.0f);
 		glm::mat4 rot = glm::rotate(glm::mat4(), time*10, glm::vec3(1.0f, 1.0f,1.0f));
-		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,-10));
+		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,sin(time),-10));
 		MVP = perspective * MVP * rot;
 
 		drawModelWithMVP(plain, model, MVP);
 
 		char a[64];
-		sprintf(a, "TROLLO %f", t);
+		sprintf(a, "FPS : %f", t-prevTime);
 		checkGLErrors("loop");
 
-		textManager.renderText(a, -0.5, -1, 1.0/1024.0, 1.0/768.0);
+		textManager.renderText(a, -0.5, 0, 1.0/1024.0, 1.0/768.0);
 
 		glfwSwapBuffers();
 		glfwSleep(0.01);
