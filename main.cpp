@@ -19,6 +19,7 @@
 #include "glutils.h"
 #include "gltext.h"
 
+void drawModelWithMVP(const Shader& shader, const Model<VertexNormalTexcrd>& model, const glm::mat4& MVP);
 
 int main()
 {
@@ -55,10 +56,6 @@ int main()
 	{
 	
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glUseProgram(plain.id);
-		glActiveTexture(GL_TEXTURE0);
-		glUniform1i(plain.uniformLocs[samplerI], 0);
-		glBindTexture(GL_TEXTURE_2D, model.texture);
 
 		double t = glfwGetTime();
 		time += t-prevTime;
@@ -67,20 +64,15 @@ int main()
 		glm::mat4 perspective = glm::perspective(45.0f, 1024.0f/768.0f, 1.0f, 1000.0f);
 		glm::mat4 rot = glm::rotate(glm::mat4(), time*10, glm::vec3(1.0f, 1.0f,1.0f));
 		glm::mat4 MVP = glm::translate(glm::mat4(), glm::vec3(0,0,-10));
-		MVP = MVP * rot;
+		MVP = perspective * MVP * rot;
 
-		glm::mat4 result = perspective * MVP;
+		drawModelWithMVP(plain, model, MVP);
 
-		glUniformMatrix4fv(plain.uniformLocs[MVPI], 1, GL_FALSE, glm::value_ptr(result));
-		glBindVertexArray(model.VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, model.vertexBuffer);
-		glDrawElements(GL_TRIANGLES, model.numFaces*3, GL_UNSIGNED_INT, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-		glUseProgram(0);
+		char a[64];
+		sprintf(a, "TROLLO %f", t);
 		checkGLErrors("loop");
 
-		textManager.renderText("HAIL TROLLO!", -1, 0, 2.0/1024.0, 2.0/768.0);
+		textManager.renderText(a, -0.5, -1, 1.0/1024.0, 1.0/768.0);
 
 		glfwSwapBuffers();
 		glfwSleep(0.01);
@@ -90,4 +82,21 @@ int main()
 	glfwTerminate();
 	return 0;
 
+}
+
+// TODO : group so less shader changes etc
+void drawModelWithMVP(const Shader& shader, const Model<VertexNormalTexcrd>& model, const glm::mat4& MVP)
+{
+		glUseProgram(shader.id);
+
+		glActiveTexture(GL_TEXTURE0);
+		glUniform1i(shader.uniformLocs[1], 0);
+		glBindTexture(GL_TEXTURE_2D, model.texture);
+		glUniformMatrix4fv(shader.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
+		glBindVertexArray(model.VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, model.vertexBuffer);
+		glDrawElements(GL_TRIANGLES, model.numFaces*3, GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		glUseProgram(0);
 }
