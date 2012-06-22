@@ -4,14 +4,14 @@
 
 #define MAXWIDTH 1024
 
-TextManager::TextManager()
+TextRenderer::TextRenderer()
 	:numFaces(0)
 {
 	if(FT_Init_FreeType(&ft))
 		std::cerr << "Could not init freetype library!\n";
 }
 
-void TextManager::initAtlas()
+void TextRenderer::initAtlas()
 {
 	FT_GlyphSlot g = face->glyph;
 	int roww = 0;
@@ -92,11 +92,11 @@ void TextManager::initAtlas()
 	}
 
 	std::cerr << "Generated a " << width << " x " << height << " ( " << width*height/MAXWIDTH << " kb) texture atlas!\n";
-	checkGLErrors("TextManager::initAtlas()");
+	checkGLErrors("TextRenderer::initAtlas()");
 
 }
 
-bool TextManager::loadFace(const char* path, int height)
+bool TextRenderer::loadFace(const char* path, int height)
 {
 	bool ret = !FT_New_Face(ft, path, numFaces++, &face);
 	if(ret)
@@ -108,7 +108,7 @@ bool TextManager::loadFace(const char* path, int height)
 	return ret;
 }
 
-bool TextManager::initGraphics()
+bool TextRenderer::initGraphics()
 {
 	glGenTextures(1, &tex);
 	glGenBuffers(1, &vbo);
@@ -132,7 +132,7 @@ bool TextManager::initGraphics()
 	return true;
 }
 
-void TextManager::renderText(const char *text, float x, float y, float sx, float sy)
+void TextRenderer::renderText(const char *text, float x, float y, float sx, float sy)
 {
 	const unsigned char* p;
 

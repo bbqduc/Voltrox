@@ -1,5 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
 #ifdef TROL_USE_OLD_OPENGL
 	#include <GL/glew.h>
@@ -27,5 +26,3 @@ struct Shader
 
 	static const std::string shaderPath;
 };
-
-#endif
