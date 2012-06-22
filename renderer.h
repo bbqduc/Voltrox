@@ -14,8 +14,8 @@ class Renderer
 public:
 	enum SHADERS { MVP_TEXTURED };
 
-	const std::vector<Entity<VertexNormalTexcrd> >& entities;
-	Renderer(const std::vector<Entity<VertexNormalTexcrd> >& entities_, int resX_ = 1024, int resY_ = 768);
+	const std::vector<Entity>& entities;
+	Renderer(const std::vector<Entity>& entities_, int resX_ = 1024, int resY_ = 768);
 	int addShader(const char* vPath, const char* fPath, const char* gPath);
 	void renderEntities();
 	void renderText(const char* text, float x, float y, float scaleX, float scaleY);

@@ -13,7 +13,7 @@
 #include <exception>
 #include "glutils.h"
 
-Renderer::Renderer(const std::vector<Entity<VertexNormalTexcrd> >& entities_, int resX_, int resY_)
+Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 	:entities(entities_),
 //	renderThread(this->render),
 	perspectiveProjection(glm::perspective(45.0f, (float)resX/resY, 1.0f, 1000.0f)),

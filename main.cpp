@@ -21,14 +21,14 @@
 #include "renderer.h"
 #include "entity.h"
 
-void drawModelWithMVP(const Shader& shader, const Model<VertexNormalTexcrd>& model, const glm::mat4& MVP);
+void drawModelWithMVP(const Shader& shader, const Model& model, const glm::mat4& MVP);
 
 int main()
 {
-	std::vector<Entity<VertexNormalTexcrd> > entities;
+	std::vector<Entity> entities;
 	Renderer renderer(entities);
 
-	Model<VertexNormalTexcrd> model;
+	Model model;
 	if(!model.loadTextureBMP("ship.bmp"))
 	{
 		std::cerr << "Texture load failed!\n";
@@ -38,8 +38,9 @@ int main()
 	model.makeTexturedCube();
 //	model.fullScreenQuadModel();
 
-	for(float i = -1; i < 1; i+=0.1f)
-		entities.push_back(Entity<VertexNormalTexcrd>(&model, glm::vec3(i,-i,-10)));
+	float i = -1;
+//	for(float i = -1; i < 1; i+=0.1f)
+		entities.push_back(Entity(&model, glm::vec3(i,-i,-10)));
 
 	checkGLErrors("Preloop");
 	bool running = true;
