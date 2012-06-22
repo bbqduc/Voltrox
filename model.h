@@ -28,7 +28,7 @@ public:
 	void setAttribNumbers(uint8_t a, uint8_t b=0, uint8_t c=0, uint8_t d=0);
 	
 	public:	int numVertices, numFaces;
-	void* vertexData;
+	GLfloat* vertexData;
 	glm::uvec3* indices;
 
 	GLuint VAO, vertexBuffer, indexBuffer, texture;
@@ -41,6 +41,8 @@ public:
 
 	void makeTexturedCube();
 	void makeTexturedQuad();
+	void makeTriangle();
+
 	Model();
 	~Model();
 

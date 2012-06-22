@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-O3 -std=c++0x -DTROL_USE_OLD_OPENGL
+CXXFLAGS=-ggdb -std=c++0x -DTROL_USE_OLD_OPENGL
 INCLUDE=-I ext/include
 LIBS=-L ext/lib -Wl,-rpath,ext/lib -lGLEW -lglfw -lPolyVoxCore -lz -lpng -lfreetype
 

@@ -30,17 +30,17 @@ int main()
 	Renderer renderer(entities);
 
 	Model model;
-	if(!model.loadTextureBMP("ship.bmp"))
+	if(!model.loadTexturePNG("ship.png"))
 	{
 		std::cerr << "Texture load failed!\n";
 		return -1;
 	}
 //	model.loadFromFile("ship.trollo");
 	model.makeTexturedCube();
+//	model.makeTriangle();
 //	model.makeTexturedQuad();
 
-	float i = -1;
-//	for(float i = -1; i < 1; i+=0.1f)
+	for(float i = -1; i < 1; i+=0.1f)
 		entities.push_back(Entity(&model, glm::vec3(i,-i,-10)));
 
 	checkGLErrors("Preloop");
@@ -63,7 +63,7 @@ int main()
 		sprintf(a, "FPS %f", c);
 
 		renderer.renderEntities();
-		renderer.renderText(a, -0.5, -1, 1.0, 1.0);
+		renderer.renderText(a, -0.5, 0.8, 1.0, 1.0);
 
 		checkGLErrors("loop");
 

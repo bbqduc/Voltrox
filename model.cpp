@@ -44,6 +44,25 @@ void Model::makeTexturedCube()
 	loadVertexData(&vbuffer[0][0], &polygons2[0], 8, 12);
 }
 
+void Model::makeTriangle()
+{
+	setAttribNumbers(3,0,0); // No normals for now
+
+	GLfloat vbuffer[3][3] = {
+									{-1.0f, -1.0f, 0.0f},
+									{0.0f, 1.0f, 0.0f},
+									{1.0f, -1.0f, 0.0f}
+									};
+
+
+	// By default, CCW polygons are front-facing!
+	glm::uvec3 polygons2; // 2 Triangles for each face
+	// Back
+	polygons2 = glm::uvec3(0,2,1);
+
+	loadVertexData(&vbuffer[0][0], &polygons2, 3, 1);
+}
+
 void Model::makeTexturedQuad()
 {
 	// By default, CCW polygons are front-facing!
@@ -75,7 +94,7 @@ bool Model::loadFromFile(const char* path)
 	infile.read((char*)&numVertices, sizeof(int));
 	infile.read((char*)&numFaces, sizeof(int));
 
-	vertexData = new uint8_t[numVertices*vertexBytes];
+	vertexData = (GLfloat*)new uint8_t[numVertices*vertexBytes];
 	indices = new glm::uvec3[numFaces];
 
 	infile.read((char*)vertexData, sizeof(VertexNormalTexcrd)*numVertices);
@@ -127,7 +146,7 @@ void Model::loadVertexData(const void *vertexData, const glm::uvec3* indices, in
 		destroyBuffers();
 	this->numVertices = numVertices;
 	this->numFaces = numFaces;
-	this->vertexData = new uint8_t[numVertices*vertexBytes];
+	this->vertexData = (GLfloat*)new uint8_t[numVertices*vertexBytes];
 	this->indices = new glm::uvec3[numFaces];
 
 	memcpy(this->vertexData, vertexData, numVertices*vertexBytes);
@@ -152,7 +171,7 @@ void Model::initBuffers()
 		if(attribNumbers[i])
 		{
 			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, attribNumbers[i], GL_FLOAT, GL_FALSE, vertexBytes, (GLvoid*)accumOffset);	// VERTICES
+			glVertexAttribPointer(i, attribNumbers[i], GL_FLOAT, GL_FALSE, vertexBytes, (GLvoid*)accumOffset);
 			accumOffset += attribNumbers[i]*sizeof(GLfloat);
 		}
 

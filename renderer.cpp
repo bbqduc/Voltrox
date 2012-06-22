@@ -16,14 +16,14 @@
 Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 	:entities(entities_),
 //	renderThread(this->render),
-	perspectiveProjection(glm::perspective(45.0f, (float)resX/resY, 1.0f, 1000.0f)),
+	perspectiveProjection(glm::perspective(45.0f, (float)resX_/resY_, 1.0f, 1000.0f)),
 	resX(resX_),
 	resY(resY_)
 {
 	initGL(resX, resY);
+	initBasicShaders();
 	textRenderer.initGraphics();
 	textRenderer.loadFace("FreeSans.ttf");
-	initBasicShaders();
 }
 
 void Renderer::initGL(int resX, int resY)
@@ -67,11 +67,12 @@ void Renderer::initGL(int resX, int resY)
 	std::cout << "OpenGL version " << glGetString(GL_VERSION) << " GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
 	glEnable(GL_CULL_FACE);
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);	  
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -84,9 +85,10 @@ void Renderer::renderEntities()
 	glUseProgram(s.id);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
+	float time = glfwGetTime();
 	for(auto i = entities.begin(); i != entities.end(); ++i)
 	{
-		glm::mat4 MVP = glm::translate(perspectiveProjection, i->position);
+		glm::mat4 MVP = glm::rotate(glm::translate(perspectiveProjection, i->position), 10*time, glm::vec3(1,1,1));
 		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 		glBindTexture(GL_TEXTURE_2D, i->model->texture);
 		glBindVertexArray(i->model->VAO);
@@ -109,11 +111,12 @@ void Renderer::initBasicShaders()
 int Renderer::addShader(const char* vPath, const char* fPath, const char* gPath)
 {
 	shaders.push_back(Shader());
-	shaders.back().loadFromShaderDir(vPath, fPath, gPath);
+	if(!shaders.back().loadFromShaderDir(vPath, fPath, gPath))
+		throw TrolloException("Couldn't load basic shaders!");
 	return shaders.size()-1;
 }
 
 void Renderer::renderText(const char* text, float x, float y, float scaleX, float scaleY)
 {
-		textRenderer.renderText(text, x, y, scaleX/resX, scaleY/resY);
+	textRenderer.renderText(text, x, y, scaleX/resX, scaleY/resY);
 }
