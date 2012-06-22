@@ -10,5 +10,4 @@ public:
 private:
 	char* backlog[BACKLOGROWS][MAXROWSIZE];
 	uint8_t cursorPosition; // Position on current row
-	
 };

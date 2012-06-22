@@ -7,10 +7,10 @@
 #include "shader.h"
 #include <glm/glm.hpp>
 
-class TextManager
+class TextRenderer
 {
 	public:
-	TextManager();
+	TextRenderer();
 	bool initGraphics();
 
 	bool loadFace(const char* path, int height = 48);
