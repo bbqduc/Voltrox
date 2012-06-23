@@ -13,64 +13,45 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="glutils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gl3w.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shapes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gltext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="texturemanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="glutils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="voxelmodel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shapes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gltext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="texturemanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Filter Include="Header Files\TROLGraphics">
+      <UniqueIdentifier>{39c19b68-7208-4222-88c4-95655e2566a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TROLConsole">
+      <UniqueIdentifier>{ee26e734-a016-485d-a362-9cd172481958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TROLLogic">
+      <UniqueIdentifier>{7e86069b-a175-4cf6-9d60-a93d5340d6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TROLLogic\Data">
+      <UniqueIdentifier>{936ff539-7f2b-489a-a026-c074de689d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TROLGraphics\Voxel">
+      <UniqueIdentifier>{05c7a2c1-487d-4d30-bc2f-31b96a01a2de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TROLGraphics\Managers">
+      <UniqueIdentifier>{5143699e-5f5b-4ed5-a40f-afcb6ec5d547}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TROLGraphics\Data">
+      <UniqueIdentifier>{ddb10f84-0ebc-4746-a1b9-37acf9f8a7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TROLGraphics">
+      <UniqueIdentifier>{9f584ae3-a4cb-4466-9d26-24c6dd5d2463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TROLConsole">
+      <UniqueIdentifier>{d9155c0c-c3f3-424c-afb7-e75abd2104e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TrolLogic">
+      <UniqueIdentifier>{e6932225-99e3-4a53-b218-36146eac230f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TROLGraphics\Data">
+      <UniqueIdentifier>{0099e541-1450-4bc1-a327-9ecf63f88c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Voxel">
+      <UniqueIdentifier>{b833155c-dd5e-40d7-88ef-cbed51d89abe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TROLGraphics\Managers">
+      <UniqueIdentifier>{9db47af1-1482-4f29-be01-e3294b2d3833}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders_330\demo.frag">
@@ -124,5 +105,69 @@
     <None Include="shaders_330\text.frag">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\renderer.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\glutils.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\Data\model.cpp">
+      <Filter>Source Files\TROLGraphics\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\shader.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\Voxel\shapes.cpp">
+      <Filter>Source Files\Voxel</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\Managers\texturemanager.cpp">
+      <Filter>Source Files\TROLGraphics\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\textrenderer.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ext\gl3w.c">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TROLGraphics\textrenderer.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\shader.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\renderer.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\glutils.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLConsole\console.h">
+      <Filter>Header Files\TROLConsole</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLLogic\Data\entity.h">
+      <Filter>Header Files\TROLLogic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\Voxel\shapes.h">
+      <Filter>Header Files\TROLGraphics\Voxel</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\Managers\modelmanager.h">
+      <Filter>Header Files\TROLGraphics\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\Managers\shadermanager.h">
+      <Filter>Header Files\TROLGraphics\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\Managers\texturemanager.h">
+      <Filter>Header Files\TROLGraphics\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\Data\model.h">
+      <Filter>Header Files\TROLGraphics\Data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

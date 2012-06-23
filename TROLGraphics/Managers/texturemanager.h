@@ -2,6 +2,19 @@
 
 #include <map>
 #include <string>
+#include <png.h>
+#include <pnginfo.h>
+
+#ifdef TROL_USE_OLD_OPENGL
+	#include <GL/glew.h>
+#else
+	#include <GL3/gl3w.h>
+#endif
+
+#include <GL/glfw.h>
+#include <GL/gl.h>
+
+#include "../glutils.h"
 
 class TextureManager
 {

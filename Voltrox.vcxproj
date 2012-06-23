@@ -80,28 +80,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gl3w.c" />
-    <ClCompile Include="gltext.cpp" />
-    <ClCompile Include="glutils.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="model.cpp" />
-    <ClCompile Include="renderer.cpp" />
-    <ClCompile Include="shader.cpp" />
-    <ClCompile Include="shapes.cpp" />
-    <ClCompile Include="texturemanager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="entity.h" />
-    <ClInclude Include="gltext.h" />
-    <ClInclude Include="glutils.h" />
-    <ClInclude Include="model.h" />
-    <ClInclude Include="renderer.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="shapes.h" />
-    <ClInclude Include="texturemanager.h" />
-    <ClInclude Include="voxelmodel.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="shaders_330\colorarg.frag" />
     <None Include="shaders_330\demo.frag" />
     <None Include="shaders_330\disco.frag" />
@@ -119,6 +97,30 @@
     <None Include="shaders_330\text.vert" />
     <None Include="shaders_330\timemover.vert" />
     <None Include="shaders_330\tunnel.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ext\gl3w.c" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TROLGraphics\Data\model.cpp" />
+    <ClCompile Include="TROLGraphics\glutils.cpp" />
+    <ClCompile Include="TROLGraphics\Managers\texturemanager.cpp" />
+    <ClCompile Include="TROLGraphics\renderer.cpp" />
+    <ClCompile Include="TROLGraphics\shader.cpp" />
+    <ClCompile Include="TROLGraphics\textrenderer.cpp" />
+    <ClCompile Include="TROLGraphics\Voxel\shapes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TROLConsole\console.h" />
+    <ClInclude Include="TROLGraphics\Data\model.h" />
+    <ClInclude Include="TROLGraphics\glutils.h" />
+    <ClInclude Include="TROLGraphics\Managers\modelmanager.h" />
+    <ClInclude Include="TROLGraphics\Managers\shadermanager.h" />
+    <ClInclude Include="TROLGraphics\Managers\texturemanager.h" />
+    <ClInclude Include="TROLGraphics\renderer.h" />
+    <ClInclude Include="TROLGraphics\shader.h" />
+    <ClInclude Include="TROLGraphics\textrenderer.h" />
+    <ClInclude Include="TROLGraphics\Voxel\shapes.h" />
+    <ClInclude Include="TROLLogic\Data\entity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,10 +4,14 @@
 #include <map>
 #include <string>
 
-#include "entity.h"
-#include "model.h"
+#include "../TROLLogic/Data/entity.h"
+#include "Data/model.h"
 #include "shader.h"
-#include "gltext.h"
+#include "textrenderer.h"
+
+#include "Managers\texturemanager.h"
+#include "Managers\modelmanager.h"
+#include "Managers\shadermanager.h"
 
 class Renderer
 {

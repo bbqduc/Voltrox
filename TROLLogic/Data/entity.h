@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "model.h"
+
+class Model;
 
 struct Entity
 {

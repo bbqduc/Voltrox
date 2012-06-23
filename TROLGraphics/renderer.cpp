@@ -120,12 +120,3 @@ void Renderer::renderText(const char* text, float x, float y, float scaleX, floa
 {
 	textRenderer.renderText(text, x, y, scaleX/resX, scaleY/resY);
 }
-
-const Model& Renderer::getModel(std::string s)
-{
-	return models[s];
-}
-
-const Model& addModelFromFile()
-{
-}

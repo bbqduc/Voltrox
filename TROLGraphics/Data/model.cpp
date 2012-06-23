@@ -1,5 +1,5 @@
 #include "model.h"
-#include "glutils.h"
+#include "../glutils.h"
 
 /**
  * Same image on each face

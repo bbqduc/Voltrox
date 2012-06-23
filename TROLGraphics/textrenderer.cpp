@@ -1,4 +1,4 @@
-#include "gltext.h"
+#include "textrenderer.h"
 #include "glutils.h"
 #include <iostream>
 

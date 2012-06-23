@@ -13,8 +13,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <png.h>
-#include <pnginfo.h>
 
 class Model
 {
@@ -34,8 +32,6 @@ public:
 
 	bool loadFromFile(const char* path);
 	void loadVertexData(const void *vertexData, const glm::uvec3* indices, int numVertices, int numFaces);
-	bool loadTexturePNG(const std::string& texturepath);
-	bool loadTextureBMP(std::string texturepath);
 
 	void makeTexturedCube();
 	void makeTexturedQuad();

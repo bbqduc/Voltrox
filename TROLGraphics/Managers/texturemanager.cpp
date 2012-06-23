@@ -1,6 +1,6 @@
 #include "texturemanager.h"
 
-GLuint TextureManager::addFromBMP(std::string texturePath, std::string id)
+GLuint TextureManager::addFromBMP(const std::string& texturePath, const std::string& id)
 {
 	unsigned char header[54];
 	unsigned int dataPos;

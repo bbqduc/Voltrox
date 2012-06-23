@@ -6,6 +6,9 @@
 	#include <GL3/gl3w.h>
 #endif
 
+#include <GL/glfw.h>
+#include <GL/gl.h>
+
 #include <map>
 #include <string>
 #include <stdint.h>

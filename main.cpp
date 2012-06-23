@@ -14,13 +14,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "model.h"
-#include "shader.h"
-#include "glutils.h"
-#include "gltext.h"
-#include <cmath>
-#include "renderer.h"
-#include "entity.h"
+#include "TROLLogic/Data/entity.h"
+#include "TROLGraphics/renderer.h"
+#include "TROLGraphics/glutils.h"
 
 void drawModelWithMVP(const Shader& shader, const Model& model, const glm::mat4& MVP);
 
