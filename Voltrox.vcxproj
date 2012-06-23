@@ -88,6 +88,7 @@
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shapes.cpp" />
+    <ClCompile Include="texturemanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entity.h" />
@@ -97,6 +98,7 @@
     <ClInclude Include="renderer.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shapes.h" />
+    <ClInclude Include="texturemanager.h" />
     <ClInclude Include="voxelmodel.h" />
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ class Model
 {
 public:
 	enum AttribType {VertexNormal, VertexNormalColor, VertexNormalTexcrd};
+	GLuint VAO, vertexBuffer, indexBuffer, texture;
 
 	uint8_t attribNumbers[4]; // This is to avoid templatizing or virtualizing this class
 	uint8_t vertexBytes;
@@ -31,11 +32,8 @@ public:
 	GLfloat* vertexData;
 	glm::uvec3* indices;
 
-	GLuint VAO, vertexBuffer, indexBuffer, texture;
-
 	bool loadFromFile(const char* path);
 	void loadVertexData(const void *vertexData, const glm::uvec3* indices, int numVertices, int numFaces);
-	void destroyBuffers();
 	bool loadTexturePNG(const std::string& texturepath);
 	bool loadTextureBMP(std::string texturepath);
 
@@ -47,6 +45,9 @@ public:
 	~Model();
 
 private:
-	void initBuffers();
-};
+	Model& operator=(const Model& rhs);
+	Model(const Model&);
 
+	void initBuffers();
+	void destroyBuffers();
+};
