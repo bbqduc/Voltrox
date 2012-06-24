@@ -9,9 +9,9 @@
 #include "shader.h"
 #include "textrenderer.h"
 
-#include "Managers\texturemanager.h"
-#include "Managers\modelmanager.h"
-#include "Managers\shadermanager.h"
+#include "Managers/texturemanager.h"
+#include "Managers/modelmanager.h"
+#include "Managers/shadermanager.h"
 
 class Renderer
 {

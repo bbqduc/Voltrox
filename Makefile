@@ -1,10 +1,10 @@
 CXX=g++
 CXXFLAGS=-ggdb -std=c++0x -DTROL_USE_OLD_OPENGL
-INCLUDE=-I ext/include
+INCLUDE=-I ext/include -I .
 LIBS=-L ext/lib -Wl,-rpath,ext/lib -lGLEW -lglfw -lPolyVoxCore -lz -lpng -lfreetype
 
-SRC=shader.cpp glutils.cpp shapes.cpp gltext.cpp model.cpp renderer.cpp
-HEADERS=shader.h voxelmodel.h glutils.h shapes.h model.h gltext.h renderer.h
+SRC=TROLGraphics/shader.cpp TROLGraphics/glutils.cpp TROLGraphics/Voxel/shapes.cpp TROLGraphics/textrenderer.cpp TROLGraphics/Data/model.cpp TROLGraphics/renderer.cpp
+HEADERS=TROLGraphics/shader.h TROLGraphics/glutils.h TROLGraphics/Voxel/shapes.h TROLGraphics/Data/model.h TROLGraphics/textrenderer.h TROLGraphics/renderer.h
 MAIN=main.cpp
 EXENAME=main
 

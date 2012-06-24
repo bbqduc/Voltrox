@@ -18,13 +18,14 @@
 #include "TROLGraphics/renderer.h"
 #include "TROLGraphics/glutils.h"
 
-void drawModelWithMVP(const Shader& shader, const Model& model, const glm::mat4& MVP);
-
 int main()
 {
 	std::vector<Entity> entities;
 	Renderer renderer(entities);
 
+	renderer.textureManager.addFromPNG("ship", "resources/ship.png");
+
+	renderer.modelManager.addFromTROLLO();
 	Model model;
 	if(!model.loadTexturePNG("ship.png"))
 	{

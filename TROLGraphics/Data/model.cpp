@@ -141,48 +141,6 @@ void Model::setAttribNumbers(AttribType a)
 	}
 }
 
-void Model::loadVertexData(const void *vertexData, const glm::uvec3* indices, int numVertices, int numFaces)
-{
-	if(this->vertexData)
-		destroyBuffers();
-	this->numVertices = numVertices;
-	this->numFaces = numFaces;
-	this->vertexData = (GLfloat*)new uint8_t[numVertices*vertexBytes];
-	this->indices = new glm::uvec3[numFaces];
-
-	memcpy(this->vertexData, vertexData, numVertices*vertexBytes);
-	memcpy(this->indices, indices, numFaces*sizeof(glm::uvec3));
-
-	initBuffers();
-}
-
-void Model::initBuffers()
-{
-	// initialize VAO
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	// initialize VBO for model vertices and polygon vertex indices
-	glGenBuffers(1, &vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, numVertices*vertexBytes, vertexData, GL_STATIC_DRAW);
-
-	int accumOffset = 0;
-	for(int i = 0; i < 4; ++i)
-		if(attribNumbers[i])
-		{
-			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, attribNumbers[i], GL_FLOAT, GL_FALSE, vertexBytes, (GLvoid*)accumOffset);
-			accumOffset += attribNumbers[i]*sizeof(GLfloat);
-		}
-
-	glGenBuffers(1, &indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numFaces*sizeof(glm::uvec3), indices, GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
-}
-
 Model::Model()
 	:numVertices(0),
 	numFaces(0),
