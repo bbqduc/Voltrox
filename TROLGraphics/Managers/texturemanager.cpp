@@ -1,6 +1,6 @@
 #include "texturemanager.h"
 
-GLuint TextureManager::addFromBMP(const std::string& texturePath, const std::string& id)
+GLuint TextureManager::addFromBMP(const std::string& id, const std::string& texturePath)
 {
 	unsigned char header[54];
 	unsigned int dataPos;
@@ -34,12 +34,11 @@ GLuint TextureManager::addFromBMP(const std::string& texturePath, const std::str
 	return textures[id];
 }
 
-GLuint TextureManager::addFromPNG(const std::string& texturePath, const std::string& id)
+GLuint TextureManager::addFromPNG(const std::string& id, const std::string& texturePath)
 {
 	FILE *fp = fopen(texturePath.c_str(), "rb");
 	if(!fp)
 		throw TrolloException("Could not open PNG file.\n");
-		return false;
 	png_byte header[8];
 	fread(header, 1, 8, fp);
 	if(png_sig_cmp(header, 0, 8))

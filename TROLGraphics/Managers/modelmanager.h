@@ -1,21 +1,34 @@
 #pragma once
 
+#ifdef TROL_USE_OLD_OPENGL
+	#include <GL/glew.h>
+#else
+	#include <GL3/gl3w.h>
+#endif
+
+#include <GL/glfw.h>
+#include <GL/gl.h>
+
 #include <vector>
 #include <map>
 #include <string>
 #include <stdint.h>
+
+#include "../Data/model.h"
 
 class Renderer;
 
 class ModelManager
 {
 public:
-	void addFromTROLLO(const char* id, const char* path, const char* textureID=0);
-	void addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums, const char* textureName);
+	void addFromTROLLO(const char* id, const char* path, GLuint texture = GL_INVALID_VALUE);
+	void addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums, GLuint texture = GL_INVALID_VALUE);
 	const Model& getModel(const std::string& s) { return models[s]; }
+	void setModelTexture(const char* mid, GLuint tid) { models[mid].texture = tid; }
 private:
+	void initBuffers(Model&);
 	std::map<std::string, Model> models;
-	friend Renderer::Renderer(const std::vector<Entity>&, int, int);
+	friend class Renderer;
 	void init();
 	void addTexturedCube();
 	void addTexturedQuad();

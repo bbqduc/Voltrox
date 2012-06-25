@@ -23,22 +23,9 @@ int main()
 	std::vector<Entity> entities;
 	Renderer renderer(entities);
 
-	renderer.textureManager.addFromPNG("ship", "resources/ship.png");
-
-	renderer.modelManager.addFromTROLLO();
-	Model model;
-	if(!model.loadTexturePNG("ship.png"))
-	{
-		std::cerr << "Texture load failed!\n";
-		return -1;
-	}
-//	model.loadFromFile("ship.trollo");
-	model.makeTexturedCube();
-//	model.makeTriangle();
-//	model.makeTexturedQuad();
-
-	for(float i = -1; i < 1; i+=0.1f)
-		entities.push_back(Entity(&model, glm::vec3(i,-i,-10)));
+	renderer.textureManager.addFromBMP("ship", "resources/ship.BMP");
+	renderer.addModelTROLLO("ship", "resources/ship.trollo", "ship");
+	entities.push_back(Entity(&renderer.modelManager.getModel("ship"), glm::vec3(0,0,-100)));
 
 	checkGLErrors("Preloop");
 	bool running = true;

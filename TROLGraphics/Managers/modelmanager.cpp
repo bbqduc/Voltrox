@@ -1,4 +1,5 @@
 #include "modelmanager.h"
+#include "../glutils.h"
 
 void ModelManager::init()
 {
@@ -7,10 +8,43 @@ void ModelManager::init()
 	addTriangle();
 }
 
+void ModelManager::addTriangle()
+{
+	GLfloat vbuffer[3][3] = {
+									{-1.0f, -1.0f, 0.0f},
+									{0.0f, 1.0f, 0.0f},
+									{1.0f, -1.0f, 0.0f}
+									};
+
+
+	// By default, CCW polygons are front-facing!
+	glm::uvec3 polygons2; // 2 Triangles for each face
+	// Back
+	polygons2 = glm::uvec3(0,2,1);
+
+	uint8_t attribNums[4] = {3,0,0,0};
+	addFromPointer("triangle", &vbuffer[0][0], &polygons2[0], 3, 1, attribNums);	
+}
+
+void ModelManager::addTexturedQuad()
+{
+	// By default, CCW polygons are front-facing!
+	GLfloat vbuffer[4][5] = {
+									{-1.0f, -1.0f, 0.0f, 0.0f, 0.0f},
+									{-1.0f, 1.0f, 0.0f, 0.0f, 1.0f},
+									{1.0f, 1.0f, 0.0f, 1.0f, 1.0f},
+									{1.0f, -1.0f, 0.0f, 1.0f, 0.0f}
+									};
+	glm::uvec3 polygons2[2];
+	polygons2[0] = glm::uvec3(0,2,1);
+	polygons2[1] = glm::uvec3(0,3,2);
+
+	uint8_t attribNums[4] = {3,0,2,0};
+	addFromPointer("quad_tex", &vbuffer[0][0], &polygons2[0][0], 4, 2, attribNums);	
+}
+
 void ModelManager::addTexturedCube()
 {
-	setAttribNumbers(3,0,2); // No normals for now
-
 	GLfloat vbuffer[8][5] = {
 									{-1.0f, -1.0f, -1.0f, 0.0f, 1.0f},
 									{-1.0f, 1.0f, -1.0f, 1.0f, 1.0f},
@@ -46,23 +80,23 @@ void ModelManager::addTexturedCube()
 	polygons2[11] = glm::uvec3(0,3,7);
 
 	uint8_t attribNums[4] = {3,0,2,0};
-	addFromPointer("Cube_Tex", &vbuffer[0][0], &polygons2[0], 8, 12, attribNums);	
-	loadVertexData(&vbuffer[0][0], &polygons2[0], 8, 12);
+	addFromPointer("cube_tex", &vbuffer[0][0], &polygons2[0][0], 8, 12, attribNums);	
 }
 
-void ModelManager::addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums)
+void ModelManager::addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums, GLuint texture)
 {
-	m.setAttribNumbers(attribNums);
 	Model& m = models[id];
+	m.setAttribNumbers(attribNums);
 	if(m.vertexData)
 		m.destroyBuffers();
 	m.numVertices = numVertices;
 	m.numFaces = numFaces;
-	m.vertexData = (GLfloat*)new uint8_t[numVertices*vertexBytes];
-	m.indices = new glm::uvec3[numFaces];
+	m.vertexData = (GLfloat*)new uint8_t[m.numVertices*m.vertexBytes];
+	m.indices = new glm::uvec3[m.numFaces];
 
-	memcpy(m.vertexData, vertexData, numVertices*m.vertexBytes);
-	memcpy(m.indices, indices, numFaces*sizeof(glm::uvec3));
+	memcpy(m.vertexData, vertexData, m.numVertices*m.vertexBytes);
+	memcpy(m.indices, polygons, m.numFaces*sizeof(glm::uvec3));
+	m.texture = texture;
 
 	initBuffers(m);
 }
@@ -94,7 +128,7 @@ void ModelManager::initBuffers(Model& m)
 	glBindVertexArray(0);
 }
 
-void ModelManager::addFromTROLLO()
+void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint texture)
 {
 	std::ifstream infile(path, std::ios_base::binary | std::ios_base::in);
 	if(!infile)
@@ -106,17 +140,25 @@ void ModelManager::addFromTROLLO()
 
 	Model& m = models[id];
 	
-	m.setAttribNumbers(3,3,2);
-
+	m.vertexBytes = 0;
 	infile.read((char*)&m.numVertices, sizeof(int));
 	infile.read((char*)&m.numFaces, sizeof(int));
+	for(int i = 0; i < 4; ++i)
+	{
+		int t;
+		infile.read((char*)&t, sizeof(int));
+		m.attribNumbers[i] = t;
+		m.vertexBytes += m.attribNumbers[i];
+	}
+	m.vertexBytes *= sizeof(GLfloat);
 
-	m.vertexData = (GLfloat*)new uint8_t[numVertices*vertexBytes];
-	m.indices = new glm::uvec3[numFaces];
+	m.vertexData = (GLfloat*)new uint8_t[m.numVertices*m.vertexBytes];
+	m.indices = new glm::uvec3[m.numFaces];
 
-	infile.read((char*)m.vertexData, sizeof(VertexNormalTexcrd)*numVertices);
-	infile.read((char*)m.indices, sizeof(glm::uvec3)*numFaces);
+	infile.read((char*)m.vertexData, m.vertexBytes*m.numVertices);
+	infile.read((char*)m.indices, sizeof(glm::uvec3)*m.numFaces);
+	m.texture = texture;
 
-	std::cout << "Read model with " << numVertices << " vertices and " << numFaces << " faces.\n";
-	initBuffers();
+	std::cout << "Read model '" << id << "' with " << m.numVertices << " vertices and " << m.numFaces << " faces.\n";
+	initBuffers(m);
 }

@@ -73,6 +73,11 @@ def write_obj(filepath, context):
   out.write(pack('I', lvcnt))
   out.write(pack('I', len(mesh.polygons)))
 
+  out.write(pack('I', 3)); # VERTICES
+  out.write(pack('I', 3)); # NORMALS
+  out.write(pack('I', 2)); # TEXCOORDS
+  out.write(pack('I', 0)); # SOMETHING ELSE
+
   vertexdata.tofile(out)
   
   for i in lfl:

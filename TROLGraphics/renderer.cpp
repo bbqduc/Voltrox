@@ -23,7 +23,8 @@ Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 	initGL(resX, resY);
 	initBasicShaders();
 	textRenderer.initGraphics();
-	textRenderer.loadFace("FreeSans.ttf");
+	textRenderer.loadFace("resources/FreeSans.ttf");
+	modelManager.init();
 }
 
 void Renderer::initGL(int resX, int resY)
@@ -88,16 +89,17 @@ void Renderer::renderEntities()
 	float time = glfwGetTime();
 	for(auto i = entities.begin(); i != entities.end(); ++i)
 	{
-		glm::mat4 MVP = glm::rotate(glm::translate(perspectiveProjection, i->position), 10*time, glm::vec3(1,1,1));
+		glm::mat4 MVP = glm::rotate(glm::translate(perspectiveProjection, i->position), 0*time, glm::vec3(1,1,1));
 		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 		glBindTexture(GL_TEXTURE_2D, i->model->texture);
-		glBindVertexArray(i->model->VAO);
+		glBindVertexArray(i->model->vao);
 		glBindBuffer(GL_ARRAY_BUFFER, i->model->vertexBuffer);
 		glDrawElements(GL_TRIANGLES, i->model->numFaces*3, GL_UNSIGNED_INT, 0);
 	}
 	glUseProgram(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+	checkGLErrors("Renderer::renderEntities()");
 }
 
 void Renderer::initBasicShaders()
