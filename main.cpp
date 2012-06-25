@@ -18,10 +18,23 @@
 #include "TROLGraphics/renderer.h"
 #include "TROLGraphics/glutils.h"
 
+#include "TROLConsole/console.h"
+
+struct Stub_Engine 
+{
+	static Console* activeConsole;
+	static void GLFWCALL handleKeyEvent(int key, int action) { activeConsole->handleKeyEvent(key, action); }
+};
+
+Console* Stub_Engine::activeConsole = 0;
+
 int main()
 {
 	std::vector<Entity> entities;
 	Renderer renderer(entities);
+	Console console;
+	Stub_Engine::activeConsole = &console;
+	glfwSetKeyCallback(&Stub_Engine::handleKeyEvent);
 
 	renderer.addBMPTexture("ship", "resources/ship.BMP");
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "ship");
@@ -47,7 +60,7 @@ int main()
 		sprintf(a, "FPS %f", c);
 
 		renderer.renderEntities();
-		renderer.renderText(a, -0.5, 0.8, 1.0, 1.0);
+		renderer.renderConsole(console);
 
 		checkGLErrors("loop");
 

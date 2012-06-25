@@ -122,3 +122,8 @@ void Renderer::renderText(const char* text, float x, float y, float scaleX, floa
 {
 	textRenderer.renderText(text, x, y, scaleX/resX, scaleY/resY);
 }
+
+void Renderer::renderConsole(Console& c)
+{
+	renderText(c.getCurrentText(), 0.5, 0.5, 1.0, 1.0);
+}

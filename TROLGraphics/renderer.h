@@ -13,14 +13,18 @@
 #include "Managers/modelmanager.h"
 #include "Managers/shadermanager.h"
 
+#include "../TROLConsole/console.h"
+
 class Renderer
 {
 
 public:
 	Renderer(const std::vector<Entity>& entities_, int resX_ = 1024, int resY_ = 768);
 	void renderEntities();
-	void renderText(const char* text, float x, float y, float scaleX, float scaleY);
+	void renderConsole(Console&);
+	void renderText(const char* text, float x, float y, float scaleX = 1.0f, float scaleY = 1.0f);
 	void addBMPTexture(const char* id, const char* path) { textureManager.addFromBMP(id, path); }
+	void addPNGTexture(const char* id, const char* path) { textureManager.addFromPNG(id, path); }
 
 	const Model& getModel(const char* id) { return modelManager.getModel(id); }
 	void setModelTexture(const char* mid, const char* tid) { modelManager.setModelTexture(mid, textureManager.getTexture(tid)); }

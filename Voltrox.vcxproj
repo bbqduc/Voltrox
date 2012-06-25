@@ -101,6 +101,7 @@
   <ItemGroup>
     <ClCompile Include="ext\gl3w.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TROLConsole\console.cpp" />
     <ClCompile Include="TROLGraphics\Data\model.cpp" />
     <ClCompile Include="TROLGraphics\glutils.cpp" />
     <ClCompile Include="TROLGraphics\Managers\modelmanager.cpp" />

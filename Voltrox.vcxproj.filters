@@ -140,6 +140,9 @@
     <ClCompile Include="TROLGraphics\Managers\shadermanager.cpp">
       <Filter>Source Files\TROLGraphics\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="TROLConsole\console.cpp">
+      <Filter>Source Files\TROLConsole</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLGraphics\textrenderer.h">
