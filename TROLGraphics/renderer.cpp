@@ -22,9 +22,10 @@ Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 {
 	initGL(resX, resY);
 	initBasicShaders();
+	textureManager.addFromBMP("default", "resources/ship.bmp");
 	textRenderer.initGraphics(shaderManager.getShader("text"));
 	textRenderer.loadFace("resources/FreeSans.ttf");
-	modelManager.init();
+	modelManager.init(textureManager.getTexture("default"));
 }
 
 void Renderer::initGL(int resX, int resY)
@@ -89,7 +90,8 @@ void Renderer::renderEntities()
 	float time = glfwGetTime();
 	for(auto i = entities.begin(); i != entities.end(); ++i)
 	{
-		glm::mat4 MVP = glm::rotate(glm::translate(perspectiveProjection, i->position), 0*time, glm::vec3(1,1,1));
+		glm::mat4 rot = glm::mat4_cast(i->orientation);
+		glm::mat4 MVP = glm::translate(perspectiveProjection, i->position) * rot;
 		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 		glBindTexture(GL_TEXTURE_2D, i->model->texture);
 		glBindVertexArray(i->model->vao);

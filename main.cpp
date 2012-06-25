@@ -36,9 +36,11 @@ int main()
 	Stub_Engine::activeConsole = &console;
 	glfwSetKeyCallback(&Stub_Engine::handleKeyEvent);
 
-	renderer.addBMPTexture("ship", "resources/ship.BMP");
-	renderer.addModelTROLLO("ship", "resources/ship.trollo", "ship");
+	renderer.addBMPTexture("default", "resources/ship.BMP");
+	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
+
 	entities.push_back(Entity(&renderer.getModel("ship"), glm::vec3(0,0,-100)));
+	entities.push_back(Entity(&renderer.getModel("cube_tex"), glm::vec3(-2,2,-10)));
 
 	checkGLErrors("Preloop");
 	bool running = true;
@@ -67,6 +69,12 @@ int main()
 		glfwSwapBuffers();
 		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
+
+		for(auto i = entities.begin(); i != entities.end(); ++i)
+		{
+			glm::quat r(glm::vec3(0.1f,0.1f,0.1f));
+			i->orientation = i->orientation * r;
+		}
 	}
 	glUseProgram(0);
 	glfwTerminate();

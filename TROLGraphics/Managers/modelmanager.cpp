@@ -1,10 +1,10 @@
 #include "modelmanager.h"
 #include "../glutils.h"
 
-void ModelManager::init()
+void ModelManager::init(GLuint defaultTexture)
 {
-	addTexturedCube();
-	addTexturedQuad();
+	addTexturedCube(defaultTexture);
+	addTexturedQuad(defaultTexture);
 	addTriangle();
 }
 
@@ -26,7 +26,7 @@ void ModelManager::addTriangle()
 	addFromPointer("triangle", &vbuffer[0][0], &polygons2[0], 3, 1, attribNums);	
 }
 
-void ModelManager::addTexturedQuad()
+void ModelManager::addTexturedQuad(GLuint defaultTexture)
 {
 	// By default, CCW polygons are front-facing!
 	GLfloat vbuffer[4][5] = {
@@ -40,10 +40,10 @@ void ModelManager::addTexturedQuad()
 	polygons2[1] = glm::uvec3(0,3,2);
 
 	uint8_t attribNums[4] = {3,0,2,0};
-	addFromPointer("quad_tex", &vbuffer[0][0], &polygons2[0][0], 4, 2, attribNums);	
+	addFromPointer("quad_tex", &vbuffer[0][0], &polygons2[0][0], 4, 2, attribNums, defaultTexture);	
 }
 
-void ModelManager::addTexturedCube()
+void ModelManager::addTexturedCube(GLuint defaultTexture)
 {
 	GLfloat vbuffer[8][5] = {
 									{-1.0f, -1.0f, -1.0f, 0.0f, 1.0f},
@@ -80,7 +80,7 @@ void ModelManager::addTexturedCube()
 	polygons2[11] = glm::uvec3(0,3,7);
 
 	uint8_t attribNums[4] = {3,0,2,0};
-	addFromPointer("cube_tex", &vbuffer[0][0], &polygons2[0][0], 8, 12, attribNums);	
+	addFromPointer("cube_tex", &vbuffer[0][0], &polygons2[0][0], 8, 12, attribNums, defaultTexture);	
 }
 
 void ModelManager::addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums, GLuint texture)

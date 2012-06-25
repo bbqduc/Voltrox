@@ -30,8 +30,8 @@ private:
 	void initBuffers(Model&);
 	std::map<std::string, Model> models;
 	friend class Renderer;
-	void init();
-	void addTexturedCube();
-	void addTexturedQuad();
+	void init(GLuint);
+	void addTexturedCube(GLuint);
+	void addTexturedQuad(GLuint);
 	void addTriangle();
 };
