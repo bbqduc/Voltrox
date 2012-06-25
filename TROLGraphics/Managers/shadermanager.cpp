@@ -126,9 +126,9 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 	if(gSize) glAttachShader(s.id, g);
 
 #ifdef TROL_USE_OLD_OPENGL
-	glBindAttribLocation(id, 0, "in_Position");
-	glBindAttribLocation(id, 1, "in_Normal");
-	glBindAttribLocation(id, 2, "in_Texcoord");
+	glBindAttribLocation(s.id, 0, "in_Position");
+	glBindAttribLocation(s.id, 1, "in_Normal");
+	glBindAttribLocation(s.id, 2, "in_Texcoord");
 #endif
 
 	glLinkProgram(s.id);
