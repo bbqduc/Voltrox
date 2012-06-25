@@ -27,17 +27,18 @@ public:
 
 	uint8_t attribNumbers[4]; // This is to avoid templatizing or virtualizing this class
 	uint8_t vertexBytes;
-	void setAttribNumbers(AttribType a);
-	void setAttribNumbers(const uint8_t*);
-	void setAttribNumbers(uint8_t a, uint8_t b=0, uint8_t c=0, uint8_t d=0);
 	
-	public:	int numVertices, numFaces;
+	int numVertices, numFaces;
 	GLfloat* vertexData;
 	glm::uvec3* indices;
 
-	Model();
-
 private:
+
+	void setAttribNumbers(AttribType a);
+	void setAttribNumbers(const uint8_t*);
+	void setAttribNumbers(uint8_t a, uint8_t b=0, uint8_t c=0, uint8_t d=0);
+
+	Model();
 
 	void initBuffers();
 	void destroyBuffers();
