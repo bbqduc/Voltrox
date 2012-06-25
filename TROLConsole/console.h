@@ -1,23 +1,24 @@
 #pragma once
 
-#define MAXROWSIZE 256
-#define BACKLOGROWS 64
+#define BACKLOGROWS 4
 
 #include <ctype.h> // int isascii(int c)
 #include <cstring>
 #include <GL/glfw.h>
 #include <stdint.h>
 #include <iostream>
+#include <string>
 
 class Console
 {
 	public:
 		void handleKeyEvent(int key, int action);
-		const char* getCurrentText() { return backlog[0]; }
+		const char* getCurrentText() { return backlog[0].c_str(); }
+		std::string backlog[BACKLOGROWS];
+		Console():cursorPosition(0) {}
+
 	private:
-		char backlog[BACKLOGROWS][MAXROWSIZE];
-		uint8_t cursorPosition; // Position on current row
-		uint8_t currentCmdLength;
+		int cursorPosition; // Position on current row
 		void performCommand(const char* c) { std::cout << "PERFORMED COMMAND : " << c << '\n'; }
 };
 
