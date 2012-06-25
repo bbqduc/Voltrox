@@ -23,9 +23,9 @@ int main()
 	std::vector<Entity> entities;
 	Renderer renderer(entities);
 
-	renderer.textureManager.addFromBMP("ship", "resources/ship.BMP");
+	renderer.addBMPTexture("ship", "resources/ship.BMP");
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "ship");
-	entities.push_back(Entity(&renderer.modelManager.getModel("ship"), glm::vec3(0,0,-100)));
+	entities.push_back(Entity(&renderer.getModel("ship"), glm::vec3(0,0,-100)));
 
 	checkGLErrors("Preloop");
 	bool running = true;

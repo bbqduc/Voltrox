@@ -108,8 +108,9 @@ bool TextRenderer::loadFace(const char* path, int height)
 	return ret;
 }
 
-bool TextRenderer::initGraphics()
+bool TextRenderer::initGraphics(Shader& shader)
 {
+	textShader = &shader;
 	glGenTextures(1, &tex);
 	glGenBuffers(1, &vbo);
 	glGenVertexArrays(1, &vao);
@@ -120,14 +121,6 @@ bool TextRenderer::initGraphics()
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindVertexArray(0);
 
-	// Compile shader
-	if(!textShader.loadFromShaderDir("text.vert", "text.frag", 0))
-	{
-		std::cerr << "Failed to compile Text-shader!!!\n";
-		return false;
-	}
-	textShader.storeUniformLoc("sampler");
-
 	checkGLErrors("TextureManager::initGraphics");
 	return true;
 }
@@ -136,11 +129,11 @@ void TextRenderer::renderText(const char *text, float x, float y, float sx, floa
 {
 	const unsigned char* p;
 
-	glUseProgram(textShader.id);
+	glUseProgram(textShader->id);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, tex);
-	glUniform1i(textShader.uniformLocs[0], 1);
+	glUniform1i(textShader->uniformLocs[0], 1);
 
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);

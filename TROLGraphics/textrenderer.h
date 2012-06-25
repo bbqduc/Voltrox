@@ -19,7 +19,7 @@ class TextRenderer
 {
 	public:
 	TextRenderer();
-	bool initGraphics();
+	bool initGraphics(Shader&);
 
 	bool loadFace(const char* path, int height = 48);
 	void renderText(const char* text, float x, float y, float sx, float sy);
@@ -30,7 +30,7 @@ class TextRenderer
 
 	GLuint tex, vbo, vao;
 	int width,height; // width and height of texture
-	Shader textShader;
+	Shader* textShader;
 
 	FT_Library ft;
 	FT_Face face; // Just one for now

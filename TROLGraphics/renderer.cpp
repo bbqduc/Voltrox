@@ -22,7 +22,7 @@ Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 {
 	initGL(resX, resY);
 	initBasicShaders();
-	textRenderer.initGraphics();
+	textRenderer.initGraphics(shaderManager.getShader("text"));
 	textRenderer.loadFace("resources/FreeSans.ttf");
 	modelManager.init();
 }
@@ -82,7 +82,7 @@ void Renderer::initGL(int resX, int resY)
 
 void Renderer::renderEntities()
 {
-	const Shader& s = shaders[MVP_TEXTURED];
+	const Shader& s = shaderManager.getShader(ShaderManager::MVP_TEXTURED);
 	glUseProgram(s.id);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
@@ -104,18 +104,18 @@ void Renderer::renderEntities()
 
 void Renderer::initBasicShaders()
 {
-	addShader("plainMVP.vert", "plainTextured.frag", 0);
-	shaders.back().storeUniformLoc("MVP");
-	shaders.back().storeUniformLoc("sampler");
+	Shader& s = shaderManager.loadFromShaderDir("mvp_tex", "plainMVP.vert", "plainTextured.frag", 0);
+	s.storeUniformLoc("MVP");
+	s.storeUniformLoc("sampler");
+
+	Shader& t = shaderManager.loadFromShaderDir("text", "text.vert", "text.frag", 0);
+	t.storeUniformLoc("sampler");
 }
 
 // Returns the shader index in the shaders vector
-int Renderer::addShader(const char* vPath, const char* fPath, const char* gPath)
+Shader& Renderer::addShader(const char* id, const char* vPath, const char* fPath, const char* gPath)
 {
-	shaders.push_back(Shader());
-	if(!shaders.back().loadFromShaderDir(vPath, fPath, gPath))
-		throw TrolloException("Couldn't load basic shaders!");
-	return shaders.size()-1;
+	return shaderManager.loadFromShaderDir(id, vPath, fPath, gPath);
 }
 
 void Renderer::renderText(const char* text, float x, float y, float scaleX, float scaleY)

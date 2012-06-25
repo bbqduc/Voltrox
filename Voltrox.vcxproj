@@ -104,6 +104,7 @@
     <ClCompile Include="TROLGraphics\Data\model.cpp" />
     <ClCompile Include="TROLGraphics\glutils.cpp" />
     <ClCompile Include="TROLGraphics\Managers\modelmanager.cpp" />
+    <ClCompile Include="TROLGraphics\Managers\shadermanager.cpp" />
     <ClCompile Include="TROLGraphics\Managers\texturemanager.cpp" />
     <ClCompile Include="TROLGraphics\renderer.cpp" />
     <ClCompile Include="TROLGraphics\shader.cpp" />

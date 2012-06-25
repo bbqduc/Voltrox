@@ -22,10 +22,6 @@ struct Shader
 	uint8_t numUniforms;
 	std::map<std::string, GLint> stringLocations;
 
-	bool loadFromFile(const char* vPath, const char* fPath, const char* gPath);
-	bool loadFromShaderDir(const char* vPath, const char* fPath, const char* gPath);
 	uint8_t storeUniformLoc(const char* name);
 	Shader():numUniforms(0) {}
-
-	static const std::string shaderPath;
 };
