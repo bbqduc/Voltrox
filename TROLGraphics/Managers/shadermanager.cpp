@@ -1,5 +1,6 @@
 #include "shadermanager.h"
 #include "../glutils.h"
+#include <iostream>
 
 #ifdef TROL_USE_OLD_OPENGL
 const std::string ShaderManager::shaderDir="shaders_120/";
@@ -145,8 +146,8 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 
 
 	shaders.push_back(s);
-	shadersString[id] = &shaders[numShaders];
+	shadersString[id] = numShaders++;
 	checkGLErrors("ShaderManager::loadFromFile");
 
-	return shaders[numShaders++];
+	return shaders.back();
 }

@@ -24,12 +24,12 @@ public:
 
 	Shader& loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath);
 	Shader& loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath);
-	Shader& getShader(const char* id) { auto a = shadersString.find(id); if(a == shadersString.end() || !a->second) throw TrolloException("Requested NULL shader!\n"); else return *(a->second);}
+	Shader& getShader(const char* id) { auto a = shadersString.find(id); if(a == shadersString.end()) throw TrolloException("Requested NULL shader!\n"); else return shaders[a->second];}
 	Shader& getShader(int i) { return shaders[i]; }
 
 	static const std::string shaderDir;
 private:
 	int numShaders;
-	std::map<std::string, Shader*> shadersString; // For access by shader name
+	std::map<std::string, int> shadersString; // For access by shader name (contains index to vector)
 	std::vector<Shader> shaders; // For access by shader index
 };
