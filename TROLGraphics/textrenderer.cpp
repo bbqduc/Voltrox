@@ -129,22 +129,15 @@ void TextRenderer::renderText(const char *text, float x, float y, float sx, floa
 {
 	const unsigned char* p;
 
-	checkGLErrors("TextureManager::renderText2");
 	glUseProgram(textShader->id);
-	checkGLErrors("TextureManager::renderText6");
 
 	glActiveTexture(GL_TEXTURE1);
-	checkGLErrors("TextureManager::renderText5");
 	glBindTexture(GL_TEXTURE_2D, tex);
-	checkGLErrors("TextureManager::renderText4");
 	glUniform1i(textShader->uniformLocs[0], 1);
-
-	checkGLErrors("TextureManager::renderText3");
 
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	checkGLErrors("TextureManager::renderText1");
 	glm::vec4* coords = new glm::vec4[6*strlen(text)];
 
 	int i = 0;
