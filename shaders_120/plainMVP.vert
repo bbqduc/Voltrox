@@ -3,8 +3,8 @@
 uniform mat4 MVP;
 
 attribute vec3 in_Position;
+attribute vec3 in_Normal;
 attribute vec2 in_Texcoord;
-//attribute vec3 in_Normal;
 //attribute vec3 in_Color;
 
 varying vec2 texcoord;

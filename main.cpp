@@ -36,11 +36,10 @@ int main()
 	Stub_Engine::activeConsole = &console;
 	glfwSetKeyCallback(&Stub_Engine::handleKeyEvent);
 
-	renderer.addBMPTexture("default", "resources/ship.BMP");
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
 
 	entities.push_back(Entity(&renderer.getModel("ship"), glm::vec3(0,0,-100)));
-	entities.push_back(Entity(&renderer.getModel("cube_tex"), glm::vec3(-2,2,-10)));
+	entities.push_back(Entity(&renderer.getModel("cube_tex"), glm::vec3(-2,2,-20)));
 
 	checkGLErrors("Preloop");
 	bool running = true;

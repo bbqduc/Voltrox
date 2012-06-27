@@ -40,7 +40,7 @@ void Renderer::initGL(int resX, int resY)
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	#endif
 
-	if(!glfwOpenWindow(resX,resY,0,0,0,0,0,0, GLFW_WINDOW))
+	if(!glfwOpenWindow(resX,resY,8,8,8,8,24,0, GLFW_WINDOW))
 	{
 		glfwTerminate();
 		throw TrolloException("Couldn't open a window!\n");
@@ -69,6 +69,7 @@ void Renderer::initGL(int resX, int resY)
 	std::cout << "OpenGL version " << glGetString(GL_VERSION) << " GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
 	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -96,11 +97,14 @@ void Renderer::renderEntities()
 		glBindTexture(GL_TEXTURE_2D, i->model->texture);
 		glBindVertexArray(i->model->vao);
 		glBindBuffer(GL_ARRAY_BUFFER, i->model->vertexBuffer);
+#ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i->model->indexBuffer);
+#endif
 		glDrawElements(GL_TRIANGLES, i->model->numFaces*3, GL_UNSIGNED_INT, 0);
 	}
 	glUseProgram(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	checkGLErrors("Renderer::renderEntities()");
 }
 

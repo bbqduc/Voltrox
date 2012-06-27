@@ -9,6 +9,8 @@ GLuint TextureManager::addFromBMP(const std::string& id, const std::string& text
 	unsigned char* data;
 
 	FILE* file = fopen(texturePath.c_str(), "rb");
+	if(!file)
+		throw TrolloException(("Texture file " + texturePath + " doesn't exist\n").c_str());
 	fread(header, 1, 54, file);
 	dataPos = *(int*)&(header[0x0A]);
 	imageSize = *(int*)&(header[0x22]);

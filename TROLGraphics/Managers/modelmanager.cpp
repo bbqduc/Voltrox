@@ -11,8 +11,8 @@ void ModelManager::init(GLuint defaultTexture)
 void ModelManager::addTriangle()
 {
 	GLfloat vbuffer[3][3] = {
-									{-1.0f, -1.0f, 0.0f},
 									{0.0f, 1.0f, 0.0f},
+									{-1.0f, -1.0f, 0.0f},
 									{1.0f, -1.0f, 0.0f}
 									};
 
@@ -20,7 +20,7 @@ void ModelManager::addTriangle()
 	// By default, CCW polygons are front-facing!
 	glm::uvec3 polygons2; // 2 Triangles for each face
 	// Back
-	polygons2 = glm::uvec3(0,2,1);
+	polygons2 = glm::uvec3(0,1,2);
 
 	uint8_t attribNums[4] = {3,0,0,0};
 	addFromPointer("triangle", &vbuffer[0][0], &polygons2[0], 3, 1, attribNums);	
@@ -55,8 +55,8 @@ void ModelManager::addTexturedCube(GLuint defaultTexture)
 									{-1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
 									{1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
 									{1.0f, -1.0f, 1.0f, 0.0f, 1.0f},
-									};
 
+									};
 
 	// By default, CCW polygons are front-facing!
 	glm::uvec3 polygons2[12]; // 2 Triangles for each face
@@ -97,7 +97,7 @@ void ModelManager::addFromPointer(const char* id, GLfloat* vertexData, GLuint* p
 	memcpy(m.vertexData, vertexData, m.numVertices*m.vertexBytes);
 	memcpy(m.indices, polygons, m.numFaces*sizeof(glm::uvec3));
 	m.texture = texture;
-
+	
 	initBuffers(m);
 }
 
@@ -126,6 +126,8 @@ void ModelManager::initBuffers(Model& m)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m.numFaces*sizeof(glm::uvec3), m.indices, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint texture)
