@@ -3,7 +3,8 @@
 
 void ModelManager::init(GLuint defaultTexture)
 {
-	addTexturedCube(defaultTexture);
+	addFromTROLLO("cube_tex", "resources/cube.trollo", defaultTexture);
+//	addTexturedCube(defaultTexture);
 	addTexturedQuad(defaultTexture);
 	addTriangle();
 }
@@ -162,5 +163,6 @@ void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint textur
 	m.texture = texture;
 
 	std::cout << "Read model '" << id << "' with " << m.numVertices << " vertices and " << m.numFaces << " faces.\n";
+
 	initBuffers(m);
 }

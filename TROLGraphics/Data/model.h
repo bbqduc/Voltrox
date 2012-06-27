@@ -32,6 +32,8 @@ public:
 	GLfloat* vertexData;
 	glm::uvec3* indices;
 
+	void printVertexData();
+
 private:
 
 	void setAttribNumbers(AttribType a);

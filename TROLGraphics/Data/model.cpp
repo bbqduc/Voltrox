@@ -60,3 +60,25 @@ void Model::destroyBuffers()
 	if(indexBuffer != GL_INVALID_VALUE)
 		glDeleteBuffers(1, &indexBuffer);
 }
+
+void Model::printVertexData()
+{
+	for(int i = 0; i < numVertices; ++i)
+	{
+		for(int j = 0, l=0; j < 4; ++j)
+		{
+			for(int k = 0; k < attribNumbers[j]; ++k)
+			{
+				std::cout << vertexData[i*vertexBytes/sizeof(GLfloat) + l++] << ' ';
+			}
+			std::cout << " -- ";
+		}
+		std::cout << "\n";
+	}
+	for(int i = 0; i < numFaces; ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+			std::cout << indices[i][j] << ' ';
+		std::cout << '\n';
+	}
+}

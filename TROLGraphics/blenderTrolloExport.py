@@ -71,7 +71,7 @@ def write_obj(filepath, context):
     lfl.append(tmpfaces)
 
   out.write(pack('I', lvcnt))
-  out.write(pack('I', len(mesh.polygons)))
+  out.write(pack('I', len(lfl)))
 
   out.write(pack('I', 3)); # VERTICES
   out.write(pack('I', 3)); # NORMALS

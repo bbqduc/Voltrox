@@ -23,6 +23,7 @@ Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 	initGL(resX, resY);
 	initBasicShaders();
 	textureManager.addFromBMP("default", "resources/ship.bmp");
+	textureManager.addFromPNG("skybox", "resources/space.png");
 	textRenderer.initGraphics(shaderManager.getShader("text"));
 	textRenderer.loadFace("resources/FreeSans.ttf");
 	modelManager.init(textureManager.getTexture("default"));
@@ -105,6 +106,23 @@ void Renderer::renderEntities()
 	glUseProgram(0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	const Shader& pt = shaderManager.getShader(2);
+	const Model& skyBox = modelManager.getModel("cube_tex");
+	glUseProgram(pt.id);
+	glActiveTexture(GL_TEXTURE0);
+	glUniform1i(pt.uniformLocs[0], 0);
+	glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("skybox"));
+	glBindVertexArray(skyBox.vao);
+	glBindBuffer(GL_ARRAY_BUFFER, skyBox.vertexBuffer);
+#ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyBox.indexBuffer);
+#endif
+	glDrawElements(GL_TRIANGLES, skyBox.numFaces*3, GL_UNSIGNED_INT, 0);
+	glUseProgram(0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	checkGLErrors("Renderer::renderEntities()");
 }
 
@@ -116,6 +134,9 @@ void Renderer::initBasicShaders()
 
 	Shader& t = shaderManager.loadFromShaderDir("text", "text.vert", "text.frag", 0);
 	t.storeUniformLoc("sampler");
+
+	Shader& pt = shaderManager.loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0);
+	pt.storeUniformLoc("sampler");
 }
 
 // Returns the shader index in the shaders vector
