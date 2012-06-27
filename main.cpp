@@ -47,6 +47,8 @@ int main()
 	float time = -100.0f;
 	double prevTime = glfwGetTime();
 	float frame = 0;
+
+	char title[128];
 	while(running)
 	{
 		++frame;
@@ -54,11 +56,15 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		double t = glfwGetTime();
-		time += t-prevTime;
-		prevTime=t;
-		char a[64];
-		float c = frame / t;
-		sprintf(a, "FPS %f", c);
+		if(1.0f + prevTime <= t)
+		{
+			float spf = (t - prevTime)*1000 / frame;
+			sprintf(title, "ms per frame : %f", spf);
+			glfwSetWindowTitle(title);
+			prevTime = t;
+			frame = 0;
+		}
+		renderer.renderText(title, 0.0f, -0.85f);
 
 		renderer.renderEntities();
 		renderer.renderConsole(console);
