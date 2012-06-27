@@ -22,11 +22,48 @@
 
 struct Stub_Engine 
 {
+	static glm::vec3 camPos, camUp, camView;
+	static glm::quat camOri;
+	const static float mouseSens = 0.5f;
+
+	static int oldMouseX, oldMouseY;
+	static void handleMouseInput()
+	{
+		int x, y;
+		glfwGetMousePos(&x,&y);
+		float dx = (x - oldMouseX)*mouseSens;
+		float dy = (y - oldMouseY)*mouseSens;
+
+		glm::vec3 axis = glm::normalize(glm::cross(camUp, camView));
+		camView = glm::rotate(glm::rotate(camView, dx, glm::vec3(0.0f, 1.0f, 0.0f)), dy, axis);
+		oldMouseX = x;
+		oldMouseY = y;
+	}
+
+	static void moveCamera(int key, int action)
+	{
+//		if(action == GLFW_KEY_PRESSED)
+		{
+/*			if(key == GLFW_KEY_W)
+			if(key == GLFW_KEY_A)
+			if(key == GLFW_KEY_S)
+			if(key == GLFW_KEY_D)*/
+		}
+	}
+
+	static bool consoleActive = false;
 	static Console* activeConsole;
-	static void GLFWCALL handleKeyEvent(int key, int action) { activeConsole->handleKeyEvent(key, action); }
+	static void GLFWCALL handleKeyEvent(int key, int action) { 
+		if(consoleActive)
+			activeConsole->handleKeyEvent(key, action); 
+		else
+			moveCamera(key, action);
+	}
 };
 
 Console* Stub_Engine::activeConsole = 0;
+glm::vec3 Stub_Engine::camUp = glm::vec3(0,1,0);
+glm::vec3 Stub_Engine::camView = glm::vec3(0,0,-1);
 
 int main()
 {
@@ -60,12 +97,14 @@ int main()
 		float c = frame / t;
 		sprintf(a, "FPS %f", c);
 
-		renderer.renderEntities();
+		glm::mat4 cam = glm::lookAt(Stub_Engine::camPos, Stub_Engine::camPos+Stub_Engine::camView, Stub_Engine::camUp);
+		renderer.renderEntities(cam);
 		renderer.renderConsole(console);
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
+		Stub_Engine::handleMouseInput();
 		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 

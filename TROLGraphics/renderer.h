@@ -20,7 +20,7 @@ class Renderer
 
 public:
 	Renderer(const std::vector<Entity>& entities_, int resX_ = 1024, int resY_ = 768);
-	void renderEntities();
+	void renderEntities(const glm::mat4& cam);
 	void renderConsole(Console&);
 	void renderText(const char* text, float x, float y, float scaleX = 1.0f, float scaleY = 1.0f);
 	void addBMPTexture(const char* id, const char* path) { textureManager.addFromBMP(id, path); }
