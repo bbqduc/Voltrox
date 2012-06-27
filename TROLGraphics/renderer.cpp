@@ -83,7 +83,7 @@ void Renderer::initGL(int resX, int resY)
 	checkGLErrors("post_init");
 }
 
-void Renderer::renderEntities(const glm::mat4& cam)
+void Renderer::renderEntities(const glm::mat4& cam, const glm::vec3& vEye)
 {
 
 
@@ -109,11 +109,14 @@ void Renderer::renderEntities(const glm::mat4& cam)
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glm::mat4 f = glm::frustum(1.0f,-1.0f,1.0f,-1.0f,1.0f,1000.0f) * cam;
+	//glCullFace(GL_FRONT);
+	glDisable(GL_CULL_FACE);
+	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),vEye, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));// = cam * glm::scale(glm::mat4(), glm::vec3(10.0f));
 	const Model& skyBox = modelManager.getModel("cube_tex");
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
-	glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(cam));
+	glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(f));
 	glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("skybox"));
 	glBindVertexArray(skyBox.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, skyBox.vertexBuffer);
@@ -124,6 +127,8 @@ void Renderer::renderEntities(const glm::mat4& cam)
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 	checkGLErrors("Renderer::renderEntities()");
 }
 

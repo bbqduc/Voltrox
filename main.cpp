@@ -22,37 +22,57 @@
 
 struct Stub_Engine 
 {
-	static glm::vec3 camPos, camUp, camView;
+	static bool consoleActive;
+	static Console* activeConsole;
+	static glm::vec3 camPos, camUp, camView, camMove;
+	static float angleY, angleX;
 	static glm::quat camOri;
-	const static float mouseSens = 0.5f;
+	const static float mouseSens;
 
-	static int oldMouseX, oldMouseY;
+//	static int oldMouseX, oldMouseY;
 	static void handleMouseInput()
 	{
 		int x, y;
 		glfwGetMousePos(&x,&y);
-		float dx = (x - oldMouseX)*mouseSens;
-		float dy = (y - oldMouseY)*mouseSens;
+		/*float dx = (x - oldMouseX)*mouseSens;
+		float dy = (y - oldMouseY)*mouseSens;*/
+		glfwSetMousePos(1024/2,768/2);
+		angleY += mouseSens * (1024/2 - x);
+		angleX += mouseSens * (768/2 - y);
+		camView = glm::vec3(cos(angleX) * sin(angleY),
+								sin(angleX),
+								cos(angleX) * cos(angleY));
+		glm::vec3 right = glm::vec3(sin(angleY - 3.14f/2.0f),
+											0,
+											cos(angleY - 3.14f/2.0f));
+		camUp = glm::cross( right, camView );
 
-		glm::vec3 axis = glm::normalize(glm::cross(camUp, camView));
-		camView = glm::rotate(glm::rotate(camView, dx, glm::vec3(0.0f, 1.0f, 0.0f)), dy, axis);
-		oldMouseX = x;
-		oldMouseY = y;
+/*		oldMouseX = 0;//x;*/
+//		oldMouseY = 0;//y;
 	}
 
 	static void moveCamera(int key, int action)
 	{
-//		if(action == GLFW_KEY_PRESSED)
+		if(action == GLFW_PRESS)
 		{
-/*			if(key == GLFW_KEY_W)
-			if(key == GLFW_KEY_A)
-			if(key == GLFW_KEY_S)
+			if(key == 'W')
+				camMove = camView;
+			if(key == 'S')
+				camMove = -1.0f * camView;
+/*			if(key == GLFW_KEY_S)
+			if(key == GLFW_KEY_D)*/
+		}
+		if(action == GLFW_RELEASE)
+		{
+			if(key == 'W')
+				camMove = glm::vec3();
+			if(key == 'S')
+				camMove = glm::vec3();
+/*			if(key == GLFW_KEY_S)
 			if(key == GLFW_KEY_D)*/
 		}
 	}
 
-	static bool consoleActive = false;
-	static Console* activeConsole;
 	static void GLFWCALL handleKeyEvent(int key, int action) { 
 		if(consoleActive)
 			activeConsole->handleKeyEvent(key, action); 
@@ -61,9 +81,16 @@ struct Stub_Engine
 	}
 };
 
+bool Stub_Engine::consoleActive = false;
 Console* Stub_Engine::activeConsole = 0;
+const float Stub_Engine::mouseSens = 0.0005f;
+float Stub_Engine::angleY = 3.14f;
+float Stub_Engine::angleX = 0.0f;
+
 glm::vec3 Stub_Engine::camUp = glm::vec3(0,1,0);
 glm::vec3 Stub_Engine::camView = glm::vec3(0,0,-1);
+glm::vec3 Stub_Engine::camPos = glm::vec3();
+glm::vec3 Stub_Engine::camMove = glm::vec3();
 
 int main()
 {
@@ -104,13 +131,14 @@ int main()
 		renderer.renderText(title, 0.0f, -0.85f);
 
 		glm::mat4 cam = glm::lookAt(Stub_Engine::camPos, Stub_Engine::camPos+Stub_Engine::camView, Stub_Engine::camUp);
-		renderer.renderEntities(cam);
+		renderer.renderEntities(cam, Stub_Engine::camView);
 		renderer.renderConsole(console);
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
 		Stub_Engine::handleMouseInput();
+		Stub_Engine::camPos += Stub_Engine::camMove;
 		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 
