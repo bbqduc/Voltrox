@@ -178,5 +178,11 @@
     <ClInclude Include="TROLGraphics\Data\model.h">
       <Filter>Header Files\TROLGraphics\Data</Filter>
     </ClInclude>
+    <ClInclude Include="TROLLogic\engine.h">
+      <Filter>Header Files\TROLLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\camera.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
