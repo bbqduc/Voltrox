@@ -1,27 +1,18 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 class Camera
 {
-	glm::vec3 pos, up, view;
-	float angleY, angleX;
+	friend class Renderer;
+	glm::vec3 pos, up, view, right;
 	glm::quat orientation;
 
 	public:
+	void handleMouseInput(float x, float y);
+	void handleKeyInput();
 
-	void handleMouseInput(float x, float y)
-	{
-		angleY += mouseSens * (1024/2 - x);
-		angleX += mouseSens * (768/2 - y);
-		camView = glm::vec3(cos(angleX) * sin(angleY),
-			sin(angleX),
-			cos(angleX) * cos(angleY));
-		glm::vec3 right = glm::vec3(sin(angleY - 3.14f/2.0f),
-			0,
-			cos(angleY - 3.14f/2.0f));
-		camUp = glm::cross( right, camView );
-
-	}
+	Camera() : pos(0,0,0), up(0,1,0), view(0,0,-1), right(1,0,0) {}
 
 };

@@ -15,10 +15,10 @@
 
 Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 	:entities(entities_),
-//	renderThread(this->render),
 	perspectiveProjection(glm::perspective(45.0f, (float)resX_/resY_, 1.0f, 1000.0f)),
 	resX(resX_),
-	resY(resY_)
+	resY(resY_),
+	camera()
 {
 	initGL(resX, resY);
 	initBasicShaders();
@@ -84,18 +84,18 @@ void Renderer::initGL(int resX, int resY)
 	checkGLErrors("post_init");
 }
 
-void Renderer::renderEntities(const glm::mat4& cam, const glm::vec3& vEye)
+void Renderer::renderEntities()
 {
-
-
 	const Shader& s = shaderManager.getShader(ShaderManager::MVP_TEXTURED);
 	glUseProgram(s.id);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
 	float time = glfwGetTime();
+
+	glm::mat4 cam = glm::lookAt(camera.pos, camera.pos + camera.view, camera.up);
+
 	for(auto i = entities.begin(); i != entities.end(); ++i)
 	{
-//		p * cam * rot * trans ?;
 		glm::mat4 rot = glm::mat4_cast(i->orientation);
 		glm::mat4 MVP = perspectiveProjection * glm::translate(cam, i->position) * rot;
 		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
@@ -109,8 +109,9 @@ void Renderer::renderEntities(const glm::mat4& cam, const glm::vec3& vEye)
 	}
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
 
-	//glCullFace(GL_FRONT);
+/*	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);
 	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),vEye, glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));// = cam * glm::scale(glm::mat4(), glm::vec3(10.0f));
@@ -130,7 +131,7 @@ void Renderer::renderEntities(const glm::mat4& cam, const glm::vec3& vEye)
 
 	glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
-	checkGLErrors("Renderer::renderEntities()");
+	checkGLErrors("Renderer::renderEntities()");*/
 }
 
 void Renderer::initBasicShaders()

@@ -14,13 +14,14 @@
 #include "Managers/shadermanager.h"
 
 #include "../TROLConsole/console.h"
+#include "camera.h"
 
 class Renderer
 {
 
 public:
 	Renderer(const std::vector<Entity>& entities_, int resX_ = 1024, int resY_ = 768);
-	void renderEntities(const glm::mat4& cam, const glm::vec3& eyePos);
+	void renderEntities();
 	void renderConsole(Console&);
 	void renderText(const char* text, float x, float y, float scaleX = 1.0f, float scaleY = 1.0f);
 	void addBMPTexture(const char* id, const char* path) { textureManager.addFromBMP(id, path); }
@@ -34,11 +35,14 @@ public:
 	Shader& addShader(const char* id, const char* vPath, const char* fPath, const char* gPath = 0);
 	Shader& getShader(const char* id) { return shaderManager.getShader(id); }
 
+	Camera& getCamera() { return camera; }
+
 private:
 	TextRenderer textRenderer;
 	TextureManager textureManager;
 	ModelManager modelManager;
 	ShaderManager shaderManager;
+	Camera camera;
 
 	const std::vector<Entity>& entities;
 

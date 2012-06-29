@@ -19,19 +19,17 @@
 #include "TROLGraphics/glutils.h"
 
 #include "TROLConsole/console.h"
+#include "TROLLogic/engine.h"
 
 int main()
 {
-	std::vector<Entity> entities;
-	Renderer renderer(entities);
-	Console console;
-	Stub_Engine::activeConsole = &console;
-	glfwSetKeyCallback(&Stub_Engine::handleKeyEvent);
+	Engine engine;
+	Renderer renderer(engine.getEntities());
+	engine.camera = &renderer.getCamera();
 
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
-
-	entities.push_back(Entity(&renderer.getModel("ship"), glm::vec3(0,0,-100)));
-	entities.push_back(Entity(&renderer.getModel("cube_tex"), glm::vec3(-2,2,-20)));
+	engine.addEntity(Entity(&renderer.getModel("ship"), glm::vec3(0,0,-100)));
+	engine.addEntity(Entity(&renderer.getModel("cube_tex"), glm::vec3(-2,2,-20)));
 
 	checkGLErrors("Preloop");
 	bool running = true;
@@ -58,23 +56,21 @@ int main()
 		}
 		renderer.renderText(title, 0.0f, -0.85f);
 
-		glm::mat4 cam = glm::lookAt(Stub_Engine::camPos, Stub_Engine::camPos+Stub_Engine::camView, Stub_Engine::camUp);
-		renderer.renderEntities(cam, Stub_Engine::camView);
-		renderer.renderConsole(console);
+		engine.tick();
+		renderer.renderEntities();
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
-		Stub_Engine::handleMouseInput();
-		Stub_Engine::camPos += Stub_Engine::camMove;
+		engine.tick();
 		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 
-		for(auto i = entities.begin(); i != entities.end(); ++i)
+/*		for(auto i = entities.begin(); i != entities.end(); ++i)
 		{
 			glm::quat r(glm::vec3(0.1f,0.1f,0.1f));
 			i->orientation = i->orientation * r;
-		}
+		}*/
 	}
 	glUseProgram(0);
 	glfwTerminate();
