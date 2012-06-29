@@ -54,10 +54,10 @@ int main()
 			prevTime = t;
 			frame = 0;
 		}
-		renderer.renderText(title, 0.0f, -0.85f);
 
 		engine.tick();
 		renderer.renderEntities();
+		renderer.renderText(title, 0.0f, -0.85f);
 
 		checkGLErrors("loop");
 

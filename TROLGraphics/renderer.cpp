@@ -113,7 +113,7 @@ void Renderer::renderEntities()
 	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);
 	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),camera.view, camera.up);
-	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));// = cam * glm::scale(glm::mat4(), glm::vec3(10.0f));
+	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));
 	const Model& skyBox = modelManager.getModel("cube_tex");
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
