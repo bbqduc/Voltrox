@@ -13,7 +13,7 @@ class Engine
 	Camera* camera;
 	void tick();
 
-	void addEntity(Entity& entity) { entities.push_back(entity); }
+	void addEntity(Entity entity) { entities.push_back(entity); }
 	void setActive(Entity& entity) { activeInputEntity = &entity; }
 	const std::vector<Entity>& getEntities() const {return entities;}
 };
