@@ -10,14 +10,8 @@ class Camera
 
 	public:
 
-	void handleMouseInput()
+	void handleMouseInput(float x, float y)
 	{
-		int x, y;
-		glfwGetMousePos(&x,&y);
-		//TROLO
-		/*float dx = (x - oldMouseX)*mouseSens;
-		float dy = (y - oldMouseY)*mouseSens;*/
-		glfwSetMousePos(1024/2,768/2);
 		angleY += mouseSens * (1024/2 - x);
 		angleX += mouseSens * (768/2 - y);
 		camView = glm::vec3(cos(angleX) * sin(angleY),
@@ -28,8 +22,6 @@ class Camera
 			cos(angleY - 3.14f/2.0f));
 		camUp = glm::cross( right, camView );
 
-		/*		oldMouseX = 0;//x;*/
-		//		oldMouseY = 0;//y;
 	}
-	
+
 };
