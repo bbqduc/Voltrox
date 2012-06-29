@@ -9,6 +9,7 @@ class Camera
 	glm::vec3 pos, up, view, right;
 	glm::quat orientation;
 
+	void updateVectors();
 	public:
 	void handleMouseInput(float x, float y);
 	void handleKeyInput();

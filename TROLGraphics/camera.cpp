@@ -12,9 +12,7 @@ void Camera::handleMouseInput(float x, float y)
 	orientation = glm::rotate(orientation, angleY, glm::vec3(0.0f, 1.0f, 0.0f));
 	orientation = glm::rotate(orientation, angleX, glm::vec3(1.0f, 0.0f, 0.0f));
 
-	view = glm::rotate(orientation, glm::vec3(0.0f,0.0f,-1.0f));
-	up = glm::rotate(orientation, glm::vec3(0.0f, 1.0f, 0.0f));
-	right = glm::rotate(orientation, glm::vec3(1.0f, 0.0f, 0.0f));
+	updateVectors();
 }
 
 void Camera::handleKeyInput()
@@ -28,7 +26,20 @@ void Camera::handleKeyInput()
 		if(InputHandler::isKeyDown('D'))
 			pos += right * 0.1f;
 		if(InputHandler::isKeyDown('Q'))
+		{
 			orientation = glm::rotate(orientation, 1.0f, glm::vec3(0.0f,0.0f,1.0f));
+			updateVectors();
+		}
 		if(InputHandler::isKeyDown('E'))
+		{
 			orientation = glm::rotate(orientation, -1.0f, glm::vec3(0.0f,0.0f,1.0f));
+			updateVectors();
+		}
+}
+
+void Camera::updateVectors()
+{
+	view = glm::rotate(orientation, glm::vec3(0.0f,0.0f,-1.0f));
+	up = glm::rotate(orientation, glm::vec3(0.0f, 1.0f, 0.0f));
+	right = glm::rotate(orientation, glm::vec3(1.0f, 0.0f, 0.0f));
 }
