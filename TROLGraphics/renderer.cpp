@@ -109,11 +109,10 @@ void Renderer::renderEntities()
 	}
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glUseProgram(0);
 
-/*	//glCullFace(GL_FRONT);
+	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);
-	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),vEye, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),camera.view, glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));// = cam * glm::scale(glm::mat4(), glm::vec3(10.0f));
 	const Model& skyBox = modelManager.getModel("cube_tex");
 	glActiveTexture(GL_TEXTURE0);
@@ -131,7 +130,7 @@ void Renderer::renderEntities()
 
 	glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
-	checkGLErrors("Renderer::renderEntities()");*/
+	checkGLErrors("Renderer::renderEntities()");
 }
 
 void Renderer::initBasicShaders()
