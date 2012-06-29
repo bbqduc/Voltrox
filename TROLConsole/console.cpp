@@ -13,7 +13,7 @@ void Console::handleKeyEvent(int key, int action)
 		else if(key == GLFW_KEY_LEFT)
 			cursorPosition = cursorPosition ? cursorPosition-1 : cursorPosition;
 		else if(key == GLFW_KEY_RIGHT)
-			cursorPosition = cursorPosition+1 == backlog[0].length() ? cursorPosition+1 : cursorPosition;
+			cursorPosition = cursorPosition == backlog[0].length() ? cursorPosition : cursorPosition+1;
 		else if(key == GLFW_KEY_ENTER)
 		{
 			performCommand(backlog[0].c_str());
