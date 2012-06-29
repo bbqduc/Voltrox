@@ -17,5 +17,6 @@ $(OBJ) : $(SRC) $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c -MMD $< -o $@ $(INCLUDE) $(LIBS)
 clean:
 	-rm $(EXENAME)
-	-rm *.d *.o
+	-rm $(shell find TROL* -iname '*.o')
+	-rm $(shell find TROL* -iname '*.d')
 .PHONY: all clean
