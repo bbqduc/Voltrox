@@ -67,7 +67,8 @@ void Renderer::initGL(int resX, int resY)
 
 	checkGLErrors("init");
 
-	std::cout << "OpenGL version " << glGetString(GL_VERSION) << " GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
+	std::cout << "OpenGL version " << glGetString(GL_VERSION) << "\nGLSL : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
+	std::cout << "Vendor : " << glGetString(GL_VENDOR) << "\nRenderer : " << glGetString(GL_RENDERER) << "\n\n";
 
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
