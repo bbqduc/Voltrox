@@ -63,4 +63,5 @@ packages/
 *.d
 *.o
 .*.swp
+.*.swo
 main

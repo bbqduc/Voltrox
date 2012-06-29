@@ -15,10 +15,10 @@
 
 Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
 	:entities(entities_),
-//	renderThread(this->render),
 	perspectiveProjection(glm::perspective(45.0f, (float)resX_/resY_, 1.0f, 1000.0f)),
 	resX(resX_),
-	resY(resY_)
+	resY(resY_),
+	camera()
 {
 	initGL(resX, resY);
 	initBasicShaders();
@@ -91,10 +91,13 @@ void Renderer::renderEntities()
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
 	float time = glfwGetTime();
+
+	glm::mat4 cam = glm::lookAt(camera.pos, camera.pos + camera.view, camera.up);
+
 	for(auto i = entities.begin(); i != entities.end(); ++i)
 	{
 		glm::mat4 rot = glm::mat4_cast(i->orientation);
-		glm::mat4 MVP = glm::translate(perspectiveProjection, i->position) * rot;
+		glm::mat4 MVP = perspectiveProjection * glm::translate(cam, i->position) * rot;
 		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 		glBindTexture(GL_TEXTURE_2D, i->model->texture);
 		glBindVertexArray(i->model->vao);
@@ -104,15 +107,18 @@ void Renderer::renderEntities()
 #endif
 		glDrawElements(GL_TRIANGLES, i->model->numFaces*3, GL_UNSIGNED_INT, 0);
 	}
-	glUseProgram(0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
 
-	const Shader& pt = shaderManager.getShader(2);
+/*	//glCullFace(GL_FRONT);
+	glDisable(GL_CULL_FACE);
+	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),vEye, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));// = cam * glm::scale(glm::mat4(), glm::vec3(10.0f));
 	const Model& skyBox = modelManager.getModel("cube_tex");
-	glUseProgram(pt.id);
 	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(pt.uniformLocs[0], 0);
+	glUniform1i(s.uniformLocs[1], 0);
+	glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(f));
 	glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("skybox"));
 	glBindVertexArray(skyBox.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, skyBox.vertexBuffer);
@@ -120,11 +126,12 @@ void Renderer::renderEntities()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyBox.indexBuffer);
 #endif
 	glDrawElements(GL_TRIANGLES, skyBox.numFaces*3, GL_UNSIGNED_INT, 0);
-	glUseProgram(0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	checkGLErrors("Renderer::renderEntities()");
+	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	checkGLErrors("Renderer::renderEntities()");*/
 }
 
 void Renderer::initBasicShaders()

@@ -143,6 +143,12 @@
     <ClCompile Include="TROLConsole\console.cpp">
       <Filter>Source Files\TROLConsole</Filter>
     </ClCompile>
+    <ClCompile Include="TROLLogic\engine.cpp">
+      <Filter>Source Files\TrolLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\camera.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLGraphics\textrenderer.h">

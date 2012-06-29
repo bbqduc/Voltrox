@@ -164,5 +164,7 @@ void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint textur
 
 	std::cout << "Read model '" << id << "' with " << m.numVertices << " vertices and " << m.numFaces << " faces.\n";
 
+	m.printVertexData();
+
 	initBuffers(m);
 }

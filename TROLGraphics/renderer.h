@@ -14,6 +14,7 @@
 #include "Managers/shadermanager.h"
 
 #include "../TROLConsole/console.h"
+#include "camera.h"
 
 class Renderer
 {
@@ -34,11 +35,14 @@ public:
 	Shader& addShader(const char* id, const char* vPath, const char* fPath, const char* gPath = 0);
 	Shader& getShader(const char* id) { return shaderManager.getShader(id); }
 
+	Camera& getCamera() { return camera; }
+
 private:
 	TextRenderer textRenderer;
 	TextureManager textureManager;
 	ModelManager modelManager;
 	ShaderManager shaderManager;
+	Camera camera;
 
 	const std::vector<Entity>& entities;
 

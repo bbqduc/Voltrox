@@ -102,6 +102,7 @@
     <ClCompile Include="ext\gl3w.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TROLConsole\console.cpp" />
+    <ClCompile Include="TROLGraphics\camera.cpp" />
     <ClCompile Include="TROLGraphics\Data\model.cpp" />
     <ClCompile Include="TROLGraphics\glutils.cpp" />
     <ClCompile Include="TROLGraphics\Managers\modelmanager.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="TROLGraphics\shader.cpp" />
     <ClCompile Include="TROLGraphics\textrenderer.cpp" />
     <ClCompile Include="TROLGraphics\Voxel\shapes.cpp" />
+    <ClCompile Include="TROLLogic\engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLConsole\console.h" />
