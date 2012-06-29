@@ -14,6 +14,7 @@ class Camera
 	{
 		int x, y;
 		glfwGetMousePos(&x,&y);
+		//TROLO
 		/*float dx = (x - oldMouseX)*mouseSens;
 		float dy = (y - oldMouseY)*mouseSens;*/
 		glfwSetMousePos(1024/2,768/2);
