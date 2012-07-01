@@ -52,7 +52,7 @@ void Engine::tick()
 
 		addEntity(modelManager->getModel("cube_tex"), pos, ori);
 		entities[entities.size()-1].physicsBody->activate();
-		entities[entities.size()-1].physicsBody->applyImpulse(view*100, btVector3());
+		entities[entities.size()-1].physicsBody->applyImpulse(view*100, btVector3(0,0,0));
 	}
 
 	if(gravityOn && InputHandler::isKeyDown('G'))
