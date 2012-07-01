@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #include <map>
 #include <string>
 
@@ -16,12 +15,14 @@
 #include "../TROLConsole/console.h"
 #include "camera.h"
 
+#include <glm/glm.hpp>
+
 class Renderer
 {
 
 public:
-	Renderer(const std::vector<Entity>& entities_, int resX_ = 1024, int resY_ = 768);
-	void renderEntities();
+	Renderer(int resX_ = 1024, int resY_ = 768);
+	void renderEntities(const btAlignedObjectArray<Entity>& entities);
 	void renderConsole(Console&);
 	void renderText(const char* text, float x, float y, float scaleX = 1.0f, float scaleY = 1.0f);
 	void addBMPTexture(const char* id, const char* path) { textureManager.addFromBMP(id, path); }
@@ -44,9 +45,8 @@ private:
 	ShaderManager shaderManager;
 	Camera camera;
 
-	const std::vector<Entity>& entities;
+	glm::mat4 perspective;
 
-	glm::mat4 perspectiveProjection;
 	int resX, resY;
 
 	void initGL(int resX, int resY);

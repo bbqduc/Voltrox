@@ -1,6 +1,7 @@
 #include "textrenderer.h"
 #include "glutils.h"
 #include <iostream>
+#include <btBulletDynamicsCommon.h>
 
 #define MAXWIDTH 1024
 
@@ -138,7 +139,7 @@ void TextRenderer::renderText(const char *text, float x, float y, float sx, floa
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	glm::vec4* coords = new glm::vec4[6*strlen(text)];
+	btVector4* coords = new btVector4[6*strlen(text)];
 
 	int i = 0;
 
@@ -156,16 +157,16 @@ void TextRenderer::renderText(const char *text, float x, float y, float sx, floa
 		if(!w || !h) // Skip glyphs with no pixels
 			continue;
 
-		coords[i++] = glm::vec4(x2+w,		-y2,		c[*p].tx + c[*p].bw / width,		c[*p].ty);
-		coords[i++] = glm::vec4(x2,		-y2,		c[*p].tx,								c[*p].ty);
-		coords[i++] = glm::vec4(x2,		-y2-h,	c[*p].tx,								c[*p].ty + c[*p].bh / height);
-		coords[i++] = glm::vec4(x2+w,		-y2,		c[*p].tx + c[*p].bw / width,		c[*p].ty);
-		coords[i++] = glm::vec4(x2,		-y2-h,	c[*p].tx,								c[*p].ty + c[*p].bh / height);
-		coords[i++] = glm::vec4(x2+w,		-y2-h,	c[*p].tx + c[*p].bw / width,		c[*p].ty + c[*p].bh / height);
+		coords[i++] = btVector4(x2+w,		-y2,		c[*p].tx + c[*p].bw / width,		c[*p].ty);
+		coords[i++] = btVector4(x2,		-y2,		c[*p].tx,								c[*p].ty);
+		coords[i++] = btVector4(x2,		-y2-h,	c[*p].tx,								c[*p].ty + c[*p].bh / height);
+		coords[i++] = btVector4(x2+w,		-y2,		c[*p].tx + c[*p].bw / width,		c[*p].ty);
+		coords[i++] = btVector4(x2,		-y2-h,	c[*p].tx,								c[*p].ty + c[*p].bh / height);
+		coords[i++] = btVector4(x2+w,		-y2-h,	c[*p].tx + c[*p].bw / width,		c[*p].ty + c[*p].bh / height);
 
 	}
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4)*6*strlen(text), coords, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(btVector4)*6*strlen(text), coords, GL_DYNAMIC_DRAW);
 	glDrawArrays(GL_TRIANGLES, 0, i);
 
 	glBindVertexArray(0);

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <GL/glfw.h>
 #include <cassert>

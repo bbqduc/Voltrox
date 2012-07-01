@@ -31,7 +31,6 @@ private:
 	std::map<std::string, Model> models;
 	friend class Renderer;
 	void init(GLuint);
-	void addTexturedCube(GLuint);
 	void addTexturedQuad(GLuint);
 	void addTriangle();
 };

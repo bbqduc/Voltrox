@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\btParticlesDemoDynamicsWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\ParticlesDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\shaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\MiniCL\MiniCLTaskWrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\SharedOpenCL\btOpenCLUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\btParticlesDynamicsWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\btParticlesSharedDefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\btParticlesSharedTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\ParticlesDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\shaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\SharedOpenCL\btOpenCLUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\SharedOpenCL\btOpenCLInclude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{203A0942-C55C-4D48-A780-9C1E164987F7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{309972B8-9C72-43B6-B003-76D6C01FEA22}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Voltrox\ext\bullet-2.80-rev2531\Demos\ParticlesOpenCL\ParticlesOCL.cl" />
+  </ItemGroup>
+</Project>

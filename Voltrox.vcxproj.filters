@@ -149,6 +149,9 @@
     <ClCompile Include="TROLGraphics\camera.cpp">
       <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
+    <ClCompile Include="TROLLogic\entity.cpp">
+      <Filter>Source Files\TrolLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLGraphics\textrenderer.h">

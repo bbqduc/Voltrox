@@ -1,8 +1,5 @@
 #include "renderer.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #ifdef TROL_USE_OLD_OPENGL
 #include <GL/glew.h>
 #else
@@ -13,9 +10,12 @@
 #include <exception>
 #include "glutils.h"
 
-Renderer::Renderer(const std::vector<Entity>& entities_, int resX_, int resY_)
-	:entities(entities_),
-	perspectiveProjection(glm::perspective(45.0f, (float)resX_/resY_, 1.0f, 1000.0f)),
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+Renderer::Renderer(int resX_, int resY_)
+	:
+	perspective(glm::perspective(45.0f, (float)resX_/resY_, 1.0f, 1000.0f)),
 	resX(resX_),
 	resY(resY_),
 	camera()
@@ -81,10 +81,12 @@ void Renderer::initGL(int resX, int resY)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glfwSetMousePos(resX / 2, resY / 2);
+
 	checkGLErrors("post_init");
 }
 
-void Renderer::renderEntities()
+void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 {
 	const Shader& s = shaderManager.getShader(ShaderManager::MVP_TEXTURED);
 	glUseProgram(s.id);
@@ -92,29 +94,37 @@ void Renderer::renderEntities()
 	glUniform1i(s.uniformLocs[1], 0);
 	float time = glfwGetTime();
 
-	glm::mat4 cam = glm::lookAt(camera.pos, camera.pos + camera.view, camera.up);
+	glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
+	glm::mat4 m;
 
-	for(auto i = entities.begin(); i != entities.end(); ++i)
+	btTransform trans;
+	for(int i = 0; i < entities.size(); ++i)
 	{
-		glm::mat4 rot = glm::mat4_cast(i->orientation);
-		glm::mat4 MVP = perspectiveProjection * glm::translate(cam, i->position) * rot;
+		const Entity& e = entities[i];
+
+		e.motionState->getWorldTransform(trans);
+		trans.getOpenGLMatrix(&m[0][0]);
+				
+		glm::mat4 MVP = perspective * cam * m;
 		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
-		glBindTexture(GL_TEXTURE_2D, i->model->texture);
-		glBindVertexArray(i->model->vao);
-		glBindBuffer(GL_ARRAY_BUFFER, i->model->vertexBuffer);
+
+		glBindTexture(GL_TEXTURE_2D, e.model->texture);
+		glBindVertexArray(e.model->vao);
+		glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i->model->indexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
 #endif
-		glDrawElements(GL_TRIANGLES, i->model->numFaces*3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
 	}
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);
-	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),camera.view, camera.up);
-	glm::mat4 f = perspectiveProjection * c * glm::scale(glm::mat4(), glm::vec3(500.0f));
+  	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),camera.view, camera.up);
+	glm::mat4 f = perspective * c * glm::scale(glm::mat4(), glm::vec3(500.0f));
 	const Model& skyBox = modelManager.getModel("cube_tex");
+
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
 	glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(f));

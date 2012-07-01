@@ -1,6 +1,9 @@
 #include "modelmanager.h"
 #include "../glutils.h"
 
+#include <iostream>
+#include <fstream>
+
 void ModelManager::init(GLuint defaultTexture)
 {
 	addFromTROLLO("cube_tex", "resources/cube.trollo", defaultTexture);
@@ -19,9 +22,8 @@ void ModelManager::addTriangle()
 
 
 	// By default, CCW polygons are front-facing!
-	glm::uvec3 polygons2; // 2 Triangles for each face
+	GLuint polygons2[3] = {0,1,2}; // 2 Triangles for each face
 	// Back
-	polygons2 = glm::uvec3(0,1,2);
 
 	uint8_t attribNums[4] = {3,0,0,0};
 	addFromPointer("triangle", &vbuffer[0][0], &polygons2[0], 3, 1, attribNums);	
@@ -36,52 +38,11 @@ void ModelManager::addTexturedQuad(GLuint defaultTexture)
 									{1.0f, 1.0f, 0.0f, 1.0f, 1.0f},
 									{1.0f, -1.0f, 0.0f, 1.0f, 0.0f}
 									};
-	glm::uvec3 polygons2[2];
-	polygons2[0] = glm::uvec3(0,2,1);
-	polygons2[1] = glm::uvec3(0,3,2);
+	GLuint polygons2[2][3] = { {0,2,1},
+										{0,3,2} };
 
 	uint8_t attribNums[4] = {3,0,2,0};
 	addFromPointer("quad_tex", &vbuffer[0][0], &polygons2[0][0], 4, 2, attribNums, defaultTexture);	
-}
-
-void ModelManager::addTexturedCube(GLuint defaultTexture)
-{
-	GLfloat vbuffer[8][5] = {
-									{-1.0f, -1.0f, -1.0f, 0.0f, 1.0f},
-									{-1.0f, 1.0f, -1.0f, 1.0f, 1.0f},
-									{1.0f, 1.0f, -1.0f, 1.0f, 0.0f},
-									{1.0f, -1.0f, -1.0f, 0.0f, 0.0f},
-
-									{-1.0f, -1.0f, 1.0f, 0.0f, 0.0f},
-									{-1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-									{1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
-									{1.0f, -1.0f, 1.0f, 0.0f, 1.0f},
-
-									};
-
-	// By default, CCW polygons are front-facing!
-	glm::uvec3 polygons2[12]; // 2 Triangles for each face
-	// Back
-	polygons2[0] = glm::uvec3(0,1,2);
-	polygons2[1] = glm::uvec3(2,3,0);
-	// Right
-	polygons2[2] = glm::uvec3(7,3,6);
-	polygons2[3] = glm::uvec3(3,2,6);
-	// Front
-	polygons2[4] = glm::uvec3(4,6,5);
-	polygons2[5] = glm::uvec3(4,7,6);
-	// Left
-	polygons2[6] = glm::uvec3(0,5,1);
-	polygons2[7] = glm::uvec3(0,4,5);
-	// Top
-	polygons2[8] = glm::uvec3(5,6,1);
-	polygons2[9] = glm::uvec3(6,2,1);
-	// Bottom
-	polygons2[10] = glm::uvec3(7,4,0);
-	polygons2[11] = glm::uvec3(0,3,7);
-
-	uint8_t attribNums[4] = {3,0,2,0};
-	addFromPointer("cube_tex", &vbuffer[0][0], &polygons2[0][0], 8, 12, attribNums, defaultTexture);	
 }
 
 void ModelManager::addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums, GLuint texture)
@@ -93,10 +54,10 @@ void ModelManager::addFromPointer(const char* id, GLfloat* vertexData, GLuint* p
 	m.numVertices = numVertices;
 	m.numFaces = numFaces;
 	m.vertexData = (GLfloat*)new uint8_t[m.numVertices*m.vertexBytes];
-	m.indices = new glm::uvec3[m.numFaces];
+	m.indices = new GLuint[3*m.numFaces];
 
 	memcpy(m.vertexData, vertexData, m.numVertices*m.vertexBytes);
-	memcpy(m.indices, polygons, m.numFaces*sizeof(glm::uvec3));
+	memcpy(m.indices, polygons, m.numFaces*3*sizeof(GLuint));
 	m.texture = texture;
 	
 	initBuffers(m);
@@ -124,11 +85,13 @@ void ModelManager::initBuffers(Model& m)
 
 	glGenBuffers(1, &m.indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m.numFaces*sizeof(glm::uvec3), m.indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m.numFaces*3*sizeof(GLuint), m.indices, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	m.createCollisionShape();
 }
 
 void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint texture)
@@ -156,10 +119,10 @@ void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint textur
 	m.vertexBytes *= sizeof(GLfloat);
 
 	m.vertexData = (GLfloat*)new uint8_t[m.numVertices*m.vertexBytes];
-	m.indices = new glm::uvec3[m.numFaces];
+	m.indices = new GLuint[3*m.numFaces];
 
 	infile.read((char*)m.vertexData, m.vertexBytes*m.numVertices);
-	infile.read((char*)m.indices, sizeof(glm::uvec3)*m.numFaces);
+	infile.read((char*)m.indices, 3*sizeof(GLuint)*m.numFaces);
 	m.texture = texture;
 
 	std::cout << "Read model '" << id << "' with " << m.numVertices << " vertices and " << m.numFaces << " faces.\n";

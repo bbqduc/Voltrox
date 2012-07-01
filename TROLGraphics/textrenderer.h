@@ -13,7 +13,6 @@
 #include FT_FREETYPE_H
 
 #include "shader.h"
-#include <glm/glm.hpp>
 
 class TextRenderer
 {

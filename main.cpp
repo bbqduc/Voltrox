@@ -11,9 +11,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include "TROLLogic/Data/entity.h"
 #include "TROLGraphics/renderer.h"
 #include "TROLGraphics/glutils.h"
@@ -24,12 +21,15 @@
 int main()
 {
 	Engine engine;
-	Renderer renderer(engine.getEntities());
+	Renderer renderer;
 	engine.camera = &renderer.getCamera();
 
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
-	engine.addEntity(Entity(&renderer.getModel("ship"), glm::vec3(0,0,-100)));
-	engine.addEntity(Entity(&renderer.getModel("cube_tex"), glm::vec3(-2,2,-20)));
+	btVector3 pos(0,50,-100);
+	engine.addEntity(renderer.getModel("ship"), pos);
+//	pos = btVector3(-2,2,-20);
+//	engine.addEntity(renderer.getModel("cube_tex"), pos);
+	engine.addPhysics();
 
 	checkGLErrors("Preloop");
 	bool running = true;
@@ -56,7 +56,7 @@ int main()
 		}
 
 		engine.tick();
-		renderer.renderEntities();
+		renderer.renderEntities(engine.getEntities());
 		renderer.renderText(title, 0.0f, -0.85f);
 
 		checkGLErrors("loop");

@@ -8,12 +8,10 @@
 
 #include <string>
 #include <stdint.h>
-#include <glm/glm.hpp>
 #include <cstdlib>
 #include <cstring>
-#include <fstream>
-#include <iostream>
 #include <map>
+#include <btBulletCollisionCommon.h>
 
 class ModelManager;
 
@@ -27,10 +25,11 @@ public:
 
 	uint8_t attribNumbers[4]; // This is to avoid templatizing or virtualizing this class
 	uint8_t vertexBytes;
-	
+	btCollisionShape* collisionShape; 
+
 	int numVertices, numFaces;
 	GLfloat* vertexData;
-	glm::uvec3* indices;
+	GLuint* indices;
 
 	void printVertexData();
 
@@ -42,6 +41,13 @@ private:
 
 	Model();
 
-	void initBuffers();
 	void destroyBuffers();
+
+	void createCollisionShape()
+	{
+		btTriangleIndexVertexArray* va = new btTriangleIndexVertexArray(numFaces, (int*)indices, sizeof(GLuint)*3, numVertices, vertexData, vertexBytes); // TODO : indices to int*
+		collisionShape = new btConvexTriangleMeshShape(va, true);
+	}
+
 };
+
