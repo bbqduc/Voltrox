@@ -67,3 +67,17 @@ void Engine::tick()
 		}
 	}
 }
+
+Engine::~Engine()
+{
+	for(int i = 0; i < entities.size(); ++i)
+	{
+		dynamicsWorld->removeRigidBody(entities[i].physicsBody);
+		entities[i].destroy();
+	}
+	delete dynamicsWorld;
+	delete solver;
+	delete broadphase;
+	delete collisionConfiguration;
+	delete dispatcher;
+}
