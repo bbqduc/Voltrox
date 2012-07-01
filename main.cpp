@@ -18,8 +18,12 @@
 #include "TROLConsole/console.h"
 #include "TROLLogic/engine.h"
 
+#include <ctime>
+#include <cstdlib>
+
 int main()
 {
+	srand(time(0));
 	Engine engine;
 	Renderer renderer;
 	engine.camera = &renderer.getCamera();
@@ -27,6 +31,13 @@ int main()
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
 	btVector3 pos(0,50,-100);
 	engine.addEntity(renderer.getModel("ship"), pos);
+	for(int i = 0; i < 100; ++i)
+	{
+		pos.setX(-50.0f + (rand()%100));
+		pos.setZ(-100.0f + (rand()%100) - 50);
+		pos.setY(60.0f + (rand()%100) - 50);
+		engine.addEntity(renderer.getModel("ship"), pos);
+	}
 //	pos = btVector3(-2,2,-20);
 //	engine.addEntity(renderer.getModel("cube_tex"), pos);
 	engine.addPhysics();

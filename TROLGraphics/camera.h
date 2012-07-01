@@ -16,6 +16,10 @@ public:
 	void handleMouseInput(float x, float y);
 	void handleKeyInput();
 
-	Camera() : pos(0,0,0), up(0,1,0), view(0,0,-1), right(1,0,0) {}
+	Camera() : pos(0,150,20), up(0,1,0), view(0,0,-1), right(1,0,0) 
+	{
+		orientation = glm::rotate(orientation, -45.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+		updateVectors();
+	}
 
 };

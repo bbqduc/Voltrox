@@ -1,5 +1,6 @@
 #include "engine.h"
 #include "inputhandler.h"
+#include <iostream>
 
 Engine::Engine()
 	:broadphase(new btDbvtBroadphase()),
@@ -28,5 +29,10 @@ void Engine::tick()
 	glfwSetMousePos(1024/2, 768/2);
 	camera->handleKeyInput();
 
-	entities[0].handleKeyInput();
+	if(InputHandler::isKeyDown(GLFW_KEY_SPACE))
+		for(int i = 0; i < entities.size(); ++i)
+		{
+			entities[i].physicsBody->activate();
+			entities[i].physicsBody->applyForce(btVector3(0,20,0), btVector3(0,0,0));
+		}
 }
