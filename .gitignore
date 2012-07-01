@@ -64,3 +64,5 @@ packages/
 .*.swp
 .*.swo
 main
+
+ext/

@@ -1,4 +1,0 @@
-/home/joylinen/Voltrox/ext/lpng1511/CMakeFiles/png15.dir
-/home/joylinen/Voltrox/ext/lpng1511/CMakeFiles/png15_static.dir
-/home/joylinen/Voltrox/ext/lpng1511/CMakeFiles/pngtest.dir
-/home/joylinen/Voltrox/ext/lpng1511/CMakeFiles/pngvalid.dir
