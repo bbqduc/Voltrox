@@ -37,6 +37,7 @@ public:
 	Shader& getShader(const char* id) { return shaderManager.getShader(id); }
 
 	Camera& getCamera() { return camera; }
+	ModelManager& getModelManager() { return modelManager; }
 
 private:
 	TextRenderer textRenderer;

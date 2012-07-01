@@ -27,20 +27,27 @@ int main()
 	Engine engine;
 	Renderer renderer;
 	engine.camera = &renderer.getCamera();
+	engine.modelManager = &renderer.getModelManager();
 
 	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
 	btVector3 pos(0,50,-100);
 	engine.addEntity(renderer.getModel("ship"), pos);
+
+	btQuaternion q;
 	for(int i = 0; i < 100; ++i)
 	{
+		q.setX((rand()%50) - 100);
+		q.setY((rand()%50) - 100);
+		q.setZ((rand()%50) - 100);
+		q.setW((rand()%50) - 100);
+
 		pos.setX(-50.0f + (rand()%100));
 		pos.setZ(-100.0f + (rand()%100) - 50);
 		pos.setY(60.0f + (rand()%100) - 50);
-		engine.addEntity(renderer.getModel("ship"), pos);
+		engine.addEntity(renderer.getModel("ship"), pos, q);
 	}
 //	pos = btVector3(-2,2,-20);
 //	engine.addEntity(renderer.getModel("cube_tex"), pos);
-	engine.addPhysics();
 
 	checkGLErrors("Preloop");
 	bool running = true;

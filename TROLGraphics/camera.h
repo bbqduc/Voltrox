@@ -5,7 +5,7 @@
 
 class Camera
 {
-
+	friend class Engine;
 	friend class Renderer;
 
 	glm::vec3 pos, up, view, right;

@@ -2,6 +2,8 @@
 #include "inputhandler.h"
 #include <iostream>
 
+#include "../TROLGraphics/Managers/modelmanager.h"
+
 Engine::Engine()
 	:broadphase(new btDbvtBroadphase()),
 	collisionConfiguration(new btDefaultCollisionConfiguration()),
@@ -21,6 +23,8 @@ Engine::Engine()
 
 void Engine::tick()
 {
+	static bool mouseDown = false;
+
 	dynamicsWorld->stepSimulation(1/60.0f, 10);
 	int x, y;
 	InputHandler::getMousePos(&x,&y);
@@ -35,4 +39,18 @@ void Engine::tick()
 			entities[i].physicsBody->activate();
 			entities[i].physicsBody->applyForce(btVector3(0,20,0), btVector3(0,0,0));
 		}
+
+	if(glfwGetMouseButton(GLFW_MOUSE_BUTTON_1) != GLFW_PRESS)
+		mouseDown = false;
+	if(!mouseDown && glfwGetMouseButton(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
+	{
+		mouseDown = true;
+		btVector3 pos(camera->pos.x, camera->pos.y, camera->pos.z);
+		btQuaternion ori(camera->orientation.x, camera->orientation.y, camera->orientation.z, camera->orientation.w);
+		btVector3 view(camera->view.x, camera->view.y, camera->view.z);
+
+		addEntity(modelManager->getModel("cube_tex"), pos, ori);
+		entities[entities.size()-1].physicsBody->activate();
+		entities[entities.size()-1].physicsBody->applyImpulse(view*100, btVector3());
+	}
 }

@@ -22,17 +22,16 @@ public:
 	Engine();
 
 	Camera* camera;
+	ModelManager* modelManager;
+
 	void tick();
 
 	void addEntity(const Model& model, const btVector3& position = Entity::identityVec3, const btQuaternion& orientation = Entity::identityQuat) 
 	{ 
 		entities.push_back(Entity(&model, position, orientation)); 
+		dynamicsWorld->addRigidBody(entities[entities.size()-1].physicsBody);
 	}
-	void addPhysics()
-	{
-		for(int i = 0; i < entities.size(); ++i)
-			dynamicsWorld->addRigidBody(entities[i].physicsBody);
-	}
+
 	void setActive(Entity& entity) { activeInputEntity = &entity; }
 	const btAlignedObjectArray<Entity>& getEntities() const {return entities;}
 
