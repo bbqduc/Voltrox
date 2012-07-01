@@ -24,6 +24,7 @@ Engine::Engine()
 void Engine::tick()
 {
 	static bool mouseDown = false;
+	static bool gravityOn = true;
 
 	dynamicsWorld->stepSimulation(1/60.0f, 10);
 	int x, y;
@@ -52,5 +53,17 @@ void Engine::tick()
 		addEntity(modelManager->getModel("cube_tex"), pos, ori);
 		entities[entities.size()-1].physicsBody->activate();
 		entities[entities.size()-1].physicsBody->applyImpulse(view*100, btVector3());
+	}
+
+	if(gravityOn && InputHandler::isKeyDown('G'))
+	{
+		gravityOn = false;
+		dynamicsWorld->setGravity(btVector3(0,0,0));
+
+		for(int i = 0; i < entities.size(); ++i)
+		{
+			entities[i].physicsBody->activate();
+			entities[i].physicsBody->setGravity(dynamicsWorld->getGravity());
+		}
 	}
 }
