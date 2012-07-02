@@ -47,7 +47,7 @@ GLint readShaderSource(const char* path, GLchar** target)
 	return size;
 }
 
-Shader& ShaderManager::loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath)
+ShaderHandle ShaderManager::loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath)
 {
 	return loadFromPath(id, (ShaderManager::shaderDir + vPath).c_str(),
 		(ShaderManager::shaderDir + fPath).c_str(),
@@ -55,7 +55,7 @@ Shader& ShaderManager::loadFromShaderDir(const char* id, const char* vPath, cons
 }
 
 
-Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath)
+ShaderHandle ShaderManager::loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath)
 {
 	GLchar* vertexSource = 0, *fragmentSource = 0, *geometrySource = 0;
 	GLint vSize = 0, fSize = 0, gSize = 0;
@@ -67,7 +67,11 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 
 	Shader s;
 
-	if(!vSize || !fSize) throw TrolloException("Empty or nonexisting shader file\n");
+	if(!vSize || !fSize) 
+	{
+		free(vertexSource); free(fragmentSource); free(geometrySource);
+		return TROLLO_INVALID_SHADER;
+	}
 	v = glCreateShader(GL_VERTEX_SHADER);
 	f = glCreateShader(GL_FRAGMENT_SHADER);
 	if(gSize) g = glCreateShader(GL_GEOMETRY_SHADER);
@@ -88,9 +92,10 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 		glGetShaderiv(v, GL_COMPILE_STATUS, &compiled);
 		if (!compiled)
 		{
+		free(vertexSource); free(fragmentSource); free(geometrySource);
 			printf("Vertex shader %s not compiled.\n", vPath);
 			printShaderInfoLog(v);
-			throw TrolloException("Shader didn't compile.\n");
+			return TROLLO_INVALID_SHADER;
 		}
 		printf("Vertex shader %s compiled succesfully.\n", vPath);
 	}
@@ -101,9 +106,10 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 		glGetShaderiv(f, GL_COMPILE_STATUS, &compiled);
 		if (!compiled)
 		{
+		free(vertexSource); free(fragmentSource); free(geometrySource);
 			printf("Fragment shader %s not compiled.\n", fPath);
 			printShaderInfoLog(f);
-			throw TrolloException("Shader didn't compile.\n");
+			return TROLLO_INVALID_SHADER;
 		}
 		printf("Fragment shader %s compiled succesfully.\n", fPath);
 	}
@@ -114,9 +120,10 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 		glGetShaderiv(g, GL_COMPILE_STATUS, &compiled);
 		if (!compiled)
 		{
+		free(vertexSource); free(fragmentSource); free(geometrySource);
 			printShaderInfoLog(g);
 			printf("Geometry shader %s not compiled.\n", gPath);
-			throw TrolloException("Shader didn't compile.\n");
+			return TROLLO_INVALID_SHADER;
 		}
 		printf("Geometry shader %s compiled succesfully.\n", gPath);
 	}
@@ -138,7 +145,7 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 	glGetProgramiv(s.id, GL_LINK_STATUS, &compiled);
 	free(vertexSource); free(fragmentSource); free(geometrySource);
 	if (!compiled)
-		throw TrolloException("Shader not linked!\n");
+		return TROLLO_INVALID_SHADER;
 
 	if(vSize) printShaderInfoLog(v);
 	if(fSize) printShaderInfoLog(f);
@@ -146,8 +153,8 @@ Shader& ShaderManager::loadFromPath(const char* id, const char* vPath, const cha
 
 
 	shaders.push_back(s);
-	shadersString[id] = numShaders++;
+	shadersString[id] = numShaders;
 	checkGLErrors("ShaderManager::loadFromFile");
 
-	return shaders.back();
+	return numShaders++;
 }

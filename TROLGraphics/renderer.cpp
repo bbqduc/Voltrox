@@ -29,10 +29,10 @@ Renderer::Renderer(int resX_, int resY_)
 	modelManager.init(textureManager.getTexture("default"));
 }
 
-void Renderer::initGL(int resX, int resY)
+TROLLOERROR Renderer::initGL(int resX, int resY)
 {
 	if( !glfwInit()) 	
-		throw TrolloException("GLFW init failed!\n");
+		return TROLLO_INIT_FAILURE;
 
 	#ifndef TROL_USE_OLD_OPENGL // Request core profile if possible
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
@@ -44,24 +44,24 @@ void Renderer::initGL(int resX, int resY)
 	if(!glfwOpenWindow(resX,resY,8,8,8,8,24,0, GLFW_WINDOW))
 	{
 		glfwTerminate();
-		throw TrolloException("Couldn't open a window!\n");
+		return TROLLO_INIT_FAILURE;
 	}
 #ifdef TROL_USE_OLD_OPENGL
 	if(glewInit() != GLEW_OK)
 	{
 		glfwTerminate();
-		throw TrolloException("GLEW init failed!\n");
+		return TROLLO_INIT_FAILURE;
 	}
 #else
 	if(gl3wInit()) 
 	{
 		glfwTerminate();
-		throw TrolloException("GL3W init failed!\n");
+		return TROLLO_INIT_FAILURE;
 	}
 	if(!gl3wIsSupported(3,3))
 	{
 		glfwTerminate();
-		throw TrolloException("OPENGL 3.3 not supported! (Recompile with -DTROL_USE_OLD_OPENGL)\n");
+		return TROLLO_INIT_FAILURE;
 	}
 #endif
 
@@ -88,7 +88,7 @@ void Renderer::initGL(int resX, int resY)
 
 void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 {
-	const Shader& s = shaderManager.getShader(ShaderManager::MVP_TEXTURED);
+	const Shader& s = shaderManager.getShader(MVP_TEXTURED);
 	glUseProgram(s.id);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(s.uniformLocs[1], 0);
@@ -145,19 +145,19 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 
 void Renderer::initBasicShaders()
 {
-	Shader& s = shaderManager.loadFromShaderDir("mvp_tex", "plainMVP.vert", "plainTextured.frag", 0);
-	s.storeUniformLoc("MVP");
-	s.storeUniformLoc("sampler");
+	MVP_TEXTURED = shaderManager.loadFromShaderDir("mvp_tex", "plainMVP.vert", "plainTextured.frag", 0);
+	shaderManager.storeUniformLoc(MVP_TEXTURED, "MVP");
+	shaderManager.storeUniformLoc(MVP_TEXTURED, "sampler");
 
-	Shader& t = shaderManager.loadFromShaderDir("text", "text.vert", "text.frag", 0);
-	t.storeUniformLoc("sampler");
+	ShaderHandle t = shaderManager.loadFromShaderDir("text", "text.vert", "text.frag", 0);
+	shaderManager.storeUniformLoc(t, "sampler");
 
-	Shader& pt = shaderManager.loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0);
-	pt.storeUniformLoc("sampler");
+	ShaderHandle pt = shaderManager.loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0);
+	shaderManager.storeUniformLoc(pt, "sampler");
 }
 
 // Returns the shader index in the shaders vector
-Shader& Renderer::addShader(const char* id, const char* vPath, const char* fPath, const char* gPath)
+ShaderHandle Renderer::addShader(const char* id, const char* vPath, const char* fPath, const char* gPath)
 {
 	return shaderManager.loadFromShaderDir(id, vPath, fPath, gPath);
 }

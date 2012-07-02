@@ -9,27 +9,32 @@
 #include <GL/glfw.h>
 #include <GL/gl.h>
 
+#include <cassert>
 #include <vector>
 #include <string>
 #include <map>
 #include "../shader.h"
 #include "../glutils.h"
 
+typedef int ShaderHandle;
+
 class ShaderManager
 {
 public:
-	enum SHADER { MVP_TEXTURED=0 };
+	static const ShaderHandle TROLLO_INVALID_SHADER = -1;
+	static const std::string shaderDir;
 
 	ShaderManager() : numShaders(0) {}
 
-	Shader& loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath);
-	Shader& loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath);
-	Shader& getShader(const char* id) { auto a = shadersString.find(id); if(a == shadersString.end()) throw TrolloException("Requested NULL shader!\n"); else return shaders[a->second];}
-	Shader& getShader(int i) { return shaders[i]; }
+	ShaderHandle loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath);
+	ShaderHandle loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath);
+	Shader& getShader(const char* id) { auto a = shadersString.find(id); assert(a != shadersString.end()); return shaders[a->second];}
+	Shader& getShader(ShaderHandle i) { assert(isValidHandle(i)); return shaders[i]; }
+	uint8_t storeUniformLoc(ShaderHandle h, const char* uniformName) { assert(isValidHandle(h)); return shaders[h].storeUniformLoc(uniformName); }
 
-	static const std::string shaderDir;
 private:
+	bool isValidHandle(ShaderHandle i) { return i != TROLLO_INVALID_SHADER && i >= 0 && i <= shaders.size(); }
 	int numShaders;
-	std::map<std::string, int> shadersString; // For access by shader name (contains index to vector)
+	std::map<std::string, ShaderHandle> shadersString; // For access by shader name (contains index to vector)
 	std::vector<Shader> shaders; // For access by shader index
 };

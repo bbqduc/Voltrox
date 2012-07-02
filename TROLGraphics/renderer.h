@@ -33,7 +33,7 @@ public:
 	void addModelTROLLO(const char* id, const char* path, const char* textureID=0) { GLuint t = textureID ? textureManager.getTexture(textureID) : GL_INVALID_VALUE; modelManager.addFromTROLLO(id, path, t); }
 	void addModelFromData(const char* id, const GLfloat* data, uint8_t* attribNums, const char* textureID=0);
 
-	Shader& addShader(const char* id, const char* vPath, const char* fPath, const char* gPath = 0);
+	ShaderHandle addShader(const char* id, const char* vPath, const char* fPath, const char* gPath = 0);
 	Shader& getShader(const char* id) { return shaderManager.getShader(id); }
 
 	Camera& getCamera() { return camera; }
@@ -49,7 +49,8 @@ private:
 	glm::mat4 perspective;
 
 	int resX, resY;
+	ShaderHandle MVP_TEXTURED;
 
-	void initGL(int resX, int resY);
+	TROLLOERROR initGL(int resX, int resY);
 	void initBasicShaders();
 };

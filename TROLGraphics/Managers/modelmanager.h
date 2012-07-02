@@ -15,13 +15,14 @@
 #include <stdint.h>
 
 #include "../Data/model.h"
+#include "../glutils.h"
 
 class Renderer;
 
 class ModelManager
 {
 public:
-	void addFromTROLLO(const char* id, const char* path, GLuint texture = GL_INVALID_VALUE);
+	TROLLOERROR addFromTROLLO(const char* id, const char* path, GLuint texture = GL_INVALID_VALUE);
 	void addFromPointer(const char* id, GLfloat* vertexData, GLuint* polygons, int numVertices, int numFaces, const uint8_t* attribNums, GLuint texture = GL_INVALID_VALUE);
 	const Model& getModel(const std::string& s) { return models[s]; }
 	void setModelTexture(const char* mid, GLuint tid) { models[mid].texture = tid; }

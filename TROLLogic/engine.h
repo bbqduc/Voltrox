@@ -5,6 +5,8 @@
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
+#include <vector>
+
 class Engine 
 {
 	btAlignedObjectArray<Entity> entities;
