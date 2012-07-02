@@ -4,12 +4,12 @@ layout(location=0) in vec3 in_Position;
 layout(location=1) in vec3 in_Normal;
 layout(location=2) in vec2 in_Texcoord;
 
-out vec3 ex_Normal;
-smooth out vec2 ex_Texcoord;
+smooth out vec2 geom_Texcoord;
+out vec3 geom_Normal;
 
 void main()
 {
 	gl_Position = vec4(in_Position, 1.0);
-	ex_Normal = in_Normal;
-	ex_Texcoord = in_Texcoord;
+	geom_Texcoord = in_Texcoord;
+	geom_Normal = in_Normal;
 }

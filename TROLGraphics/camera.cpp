@@ -18,13 +18,13 @@ void Camera::handleMouseInput(float x, float y)
 void Camera::handleKeyInput()
 {
 		if(InputHandler::isKeyDown('W'))
-			pos += view * 0.1f;
+			pos += view * 5.0f;
 		if(InputHandler::isKeyDown('S'))
-			pos -= view * 0.1f;
+			pos -= view * 5.0f;
 		if(InputHandler::isKeyDown('A'))
-			pos -= right * 0.1f;
+			pos -= right * 5.0f;
 		if(InputHandler::isKeyDown('D'))
-			pos += right * 0.1f;
+			pos += right * 5.0f;
 		if(InputHandler::isKeyDown('Q'))
 		{
 			orientation = glm::rotate(orientation, 1.0f, glm::vec3(0.0f,0.0f,1.0f));

@@ -86,6 +86,8 @@
     <None Include="shaders_330\demo.frag" />
     <None Include="shaders_330\disco.frag" />
     <None Include="shaders_330\distanceblur.frag" />
+    <None Include="shaders_330\meshexploder.geom" />
+    <None Include="shaders_330\meshexploder.vert" />
     <None Include="shaders_330\moonriver.frag" />
     <None Include="shaders_330\music.frag" />
     <None Include="shaders_330\plain.frag" />

@@ -22,7 +22,7 @@ public:
 	static const ShaderHandle TROLLO_INVALID_SHADER = -1;
 	static const std::string shaderDir;
 
-	enum BASIC_SHADERS { MVP_TEXTURED, TEXT, PLAIN_TEXTURED };
+	enum BASIC_SHADERS { MVP_TEXTURED, TEXT, PLAIN_TEXTURED, MESH_EXPLODER };
 
 	void init();
 	void initBasicShaders();
