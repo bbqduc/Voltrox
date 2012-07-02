@@ -1,15 +1,25 @@
 #include "textrenderer.h"
-#include "glutils.h"
+#include "../root.h"
 #include <iostream>
 #include <btBulletDynamicsCommon.h>
+#include "glutils.h"
 
 #define MAXWIDTH 1024
 
-TextRenderer::TextRenderer()
-	:numFaces(0)
+TROLLOERROR TextRenderer::init()
 {
+	numFaces = 0;
 	if(FT_Init_FreeType(&ft))
+	{
 		std::cerr << "Could not init freetype library!\n";
+		return TROLLO_INIT_FAILURE;
+	}
+
+	initGraphics();
+	loadFace("resources/FreeSans.ttf");
+																					
+	return TROLLO_OK;
+
 }
 
 void TextRenderer::initAtlas()
@@ -109,9 +119,8 @@ bool TextRenderer::loadFace(const char* path, int height)
 	return ret;
 }
 
-bool TextRenderer::initGraphics(Shader& shader)
+void TextRenderer::initGraphics()
 {
-	textShader = &shader;
 	glGenTextures(1, &tex);
 	glGenBuffers(1, &vbo);
 	glGenVertexArrays(1, &vao);
@@ -123,18 +132,20 @@ bool TextRenderer::initGraphics(Shader& shader)
 	glBindVertexArray(0);
 
 	checkGLErrors("TextureManager::initGraphics");
-	return true;
 }
 
 void TextRenderer::renderText(const char *text, float x, float y, float sx, float sy)
 {
+	sx /= Root::getSingleton().renderer.getResX();
+	sy /= Root::getSingleton().renderer.getResY();
+	Shader& textShader = Root::getSingleton().shaderManager.getShader(ShaderManager::TEXT);
 	const unsigned char* p;
 
-	glUseProgram(textShader->id);
+	glUseProgram(textShader.id);
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, tex);
-	glUniform1i(textShader->uniformLocs[0], 1);
+	glUniform1i(textShader.uniformLocs[0], 1);
 
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);

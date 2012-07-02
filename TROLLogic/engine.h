@@ -13,26 +13,24 @@ class Engine
 	Entity* activeInputEntity; /// TODO : UNSAFE
 
 	/// PHYSICS
-	btDbvtBroadphase* broadphase;
-	btDefaultCollisionConfiguration* collisionConfiguration;
-	btCollisionDispatcher* dispatcher;
-	btSequentialImpulseConstraintSolver* solver;
-	btDiscreteDynamicsWorld* dynamicsWorld;
+	btDbvtBroadphase broadphase;
+	btDefaultCollisionConfiguration collisionConfiguration;
+	btSequentialImpulseConstraintSolver solver;
+	btCollisionDispatcher dispatcher;
+	btDiscreteDynamicsWorld dynamicsWorld;
 
 
 public:
 	Engine();
 	~Engine();
 
-	Camera* camera;
-	ModelManager* modelManager;
-
+	void destroy();
 	void tick();
 
 	void addEntity(const Model& model, const btVector3& position = Entity::identityVec3, const btQuaternion& orientation = Entity::identityQuat) 
 	{ 
 		entities.push_back(Entity(&model, position, orientation)); 
-		dynamicsWorld->addRigidBody(entities[entities.size()-1].physicsBody);
+		dynamicsWorld.addRigidBody(entities[entities.size()-1].physicsBody);
 	}
 
 	void setActive(Entity& entity) { activeInputEntity = &entity; }

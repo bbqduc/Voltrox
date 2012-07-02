@@ -16,15 +16,16 @@
 #include "../shader.h"
 #include "../glutils.h"
 
-typedef int ShaderHandle;
-
 class ShaderManager
 {
 public:
 	static const ShaderHandle TROLLO_INVALID_SHADER = -1;
 	static const std::string shaderDir;
 
-	ShaderManager() : numShaders(0) {}
+	enum BASIC_SHADERS { MVP_TEXTURED, TEXT, PLAIN_TEXTURED };
+
+	void init();
+	void initBasicShaders();
 
 	ShaderHandle loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath);
 	ShaderHandle loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath);

@@ -8,6 +8,8 @@
 
 struct InputHandler
 {
+	void init() {}
+
 	static bool isKeyDown(int key) 
 	{ 
 		//assert(_glfwInitialized && _glfwWin.opened); 

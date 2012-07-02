@@ -7,7 +7,6 @@
 void ModelManager::init(GLuint defaultTexture)
 {
 	addFromTROLLO("cube_tex", "resources/cube.trollo", defaultTexture);
-//	addTexturedCube(defaultTexture);
 	addTexturedQuad(defaultTexture);
 	addTriangle();
 }

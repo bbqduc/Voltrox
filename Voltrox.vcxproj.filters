@@ -152,6 +152,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files\Voxel</Filter>
     </ClCompile>
+    <ClCompile Include="root.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLGraphics\textrenderer.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="TROLGraphics\camera.h">
       <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="root.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

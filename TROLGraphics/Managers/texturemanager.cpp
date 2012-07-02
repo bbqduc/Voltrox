@@ -1,5 +1,11 @@
 #include "texturemanager.h"
 
+void TextureManager::init()
+{
+	addFromBMP("default", "resources/ship.bmp");
+	addFromPNG("skybox", "resources/space.png");
+}
+
 GLuint TextureManager::addFromBMP(const std::string& id, const std::string& texturePath)
 {
 	unsigned char header[54];

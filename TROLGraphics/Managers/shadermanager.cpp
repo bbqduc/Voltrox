@@ -8,6 +8,25 @@ const std::string ShaderManager::shaderDir="shaders_120/";
 const std::string ShaderManager::shaderDir="shaders_330/";
 #endif
 
+void ShaderManager::init()
+{
+	numShaders = 0;
+	initBasicShaders();
+}
+
+void ShaderManager::initBasicShaders()
+{
+	loadFromShaderDir("mvp_tex", "plainMVP.vert", "plainTextured.frag", 0);
+	storeUniformLoc(MVP_TEXTURED, "MVP");
+	storeUniformLoc(MVP_TEXTURED, "sampler");
+
+	loadFromShaderDir("text", "text.vert", "text.frag", 0);
+	storeUniformLoc(TEXT, "sampler");
+
+	loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0);
+	storeUniformLoc(PLAIN_TEXTURED, "sampler");
+}
+
 void printShaderInfoLog(GLint shader)
 {
 	int infoLogLen = 0;

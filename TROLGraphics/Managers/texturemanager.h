@@ -19,7 +19,7 @@
 class TextureManager
 {
 public:
-	TextureManager() {};
+	void init();
 	GLuint getTexture(const std::string& s) { return textures[s]; }
 	GLuint addFromPNG(const std::string&, const std::string&);
 	GLuint addFromBMP(const std::string&, const std::string&);

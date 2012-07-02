@@ -15,6 +15,8 @@
 
 #define MAX_UNIFORMS 16
 
+typedef int ShaderHandle;
+
 struct Shader
 {
 	GLuint id;

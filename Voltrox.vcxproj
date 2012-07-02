@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="ext\gl3w.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="root.cpp" />
     <ClCompile Include="TROLConsole\console.cpp" />
     <ClCompile Include="TROLGraphics\camera.cpp" />
     <ClCompile Include="TROLGraphics\Data\model.cpp" />
@@ -118,6 +119,7 @@
     <ClCompile Include="TROLLogic\entity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="root.h" />
     <ClInclude Include="TROLConsole\console.h" />
     <ClInclude Include="TROLGraphics\camera.h" />
     <ClInclude Include="TROLGraphics\Data\model.h" />
