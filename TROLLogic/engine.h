@@ -20,6 +20,7 @@ class Engine
 
 public:
 	Engine();
+	~Engine();
 
 	Camera* camera;
 	ModelManager* modelManager;

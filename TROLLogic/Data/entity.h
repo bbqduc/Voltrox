@@ -33,13 +33,17 @@ struct Entity
 		physicsBody = new btRigidBody(rigidBodyCI);
 	}
 
+	void destroy()
+	{
+		delete physicsBody;
+		delete motionState;
+		physicsBody = 0; 
+		motionState = 0;
+		model = 0;
+	}
 	void handleKeyInput()
 	{
 		if(InputHandler::isKeyDown(GLFW_KEY_SPACE))
 			physicsBody->applyForce(btVector3(0,50,0), btVector3(0,0,0));
-/*		if(keysDown['W'])
-			position += direction * 0.1f;
-		if(keysDown['S'])
-			position += direction - 0.1f;*/
 	}
 };

@@ -30,6 +30,7 @@ public:
 	int numVertices, numFaces;
 	GLfloat* vertexData;
 	GLuint* indices;
+	btTriangleIndexVertexArray* btVertexData;
 
 	void printVertexData();
 
@@ -45,8 +46,8 @@ private:
 
 	void createCollisionShape()
 	{
-		btTriangleIndexVertexArray* va = new btTriangleIndexVertexArray(numFaces, (int*)indices, sizeof(GLuint)*3, numVertices, vertexData, vertexBytes); // TODO : indices to int*
-		collisionShape = new btConvexTriangleMeshShape(va, true);
+		btVertexData = new btTriangleIndexVertexArray(numFaces, (int*)indices, sizeof(GLuint)*3, numVertices, vertexData, vertexBytes); // TODO : indices to int*
+		collisionShape = new btConvexTriangleMeshShape(btVertexData, true);
 	}
 
 };

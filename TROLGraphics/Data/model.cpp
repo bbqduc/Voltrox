@@ -56,7 +56,8 @@ void Model::destroyBuffers()
 	for(int i = 0; i < 4; ++i) attribNumbers[i] = 0;
 	delete[] vertexData; vertexData = 0;
 	delete[] indices; indices = 0;
-	delete[] collisionShape; collisionShape = 0;
+	delete collisionShape; collisionShape = 0;
+	delete btVertexData; btVertexData = 0;
 	if(vao != GL_INVALID_VALUE)
 		glDeleteVertexArrays(1, &vao);
 	if(vertexBuffer != GL_INVALID_VALUE)

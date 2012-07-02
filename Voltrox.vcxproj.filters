@@ -107,9 +107,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TROLGraphics\renderer.cpp">
       <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
@@ -151,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="TROLLogic\entity.cpp">
       <Filter>Source Files\TrolLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Voxel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

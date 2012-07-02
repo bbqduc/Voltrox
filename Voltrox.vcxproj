@@ -39,12 +39,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Voltrox\ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
+    <IncludePath>ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
     <LibraryPath>ext/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Voltrox\ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
+    <IncludePath>ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
     <LibraryPath>ext/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -58,7 +58,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;polyvoxcore_d.lib;glfw_d.lib;zlibd.lib;libpng15d.lib;freetype2410_D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;polyvoxcore_d.lib;glfw_d.lib;zlibd.lib;libpng15d.lib;freetype2410_D.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;BulletDynamics_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,7 +76,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw.lib;polyvoxcore.lib;zlib.lib;libpng15.lib;freetype2410.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glfw.lib;polyvoxcore.lib;zlib.lib;libpng15.lib;freetype2410.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -129,17 +129,6 @@
     <ClInclude Include="TROLGraphics\Voxel\shapes.h" />
     <ClInclude Include="TROLLogic\Data\entity.h" />
     <ClInclude Include="TROLLogic\engine.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="ext\bullet-2.80-rev2531\src\BulletCollision\BulletCollision.vcxproj">
-      <Project>{57efc6e6-5972-4e3f-b780-dd7e52184c25}</Project>
-    </ProjectReference>
-    <ProjectReference Include="ext\bullet-2.80-rev2531\src\BulletDynamics\BulletDynamics.vcxproj">
-      <Project>{948a39e2-b689-491e-b071-82548fc6fdf5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="ext\bullet-2.80-rev2531\src\LinearMath\LinearMath.vcxproj">
-      <Project>{bc8782f4-05a2-4f35-affd-395ad51eb820}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
