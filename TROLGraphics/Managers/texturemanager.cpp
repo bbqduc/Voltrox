@@ -6,6 +6,13 @@ void TextureManager::init()
 	addFromPNG("skybox", "resources/space.png");
 }
 
+void TextureManager::destroy()
+{
+	for(auto i = textures.begin(); i != textures.end(); ++i)
+		glDeleteTextures(1, &i->second);
+	textures.clear();
+}
+
 GLuint TextureManager::addFromBMP(const std::string& id, const std::string& texturePath)
 {
 	unsigned char header[54];

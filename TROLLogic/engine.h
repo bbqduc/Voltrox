@@ -20,8 +20,9 @@ class Engine
 	btDiscreteDynamicsWorld dynamicsWorld;
 
 
-public:
+	friend class Root;
 	Engine();
+public:
 	~Engine();
 
 	void destroy();

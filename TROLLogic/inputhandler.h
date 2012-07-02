@@ -9,6 +9,7 @@
 struct InputHandler
 {
 	void init() {}
+	void destroy() {}
 
 	static bool isKeyDown(int key) 
 	{ 

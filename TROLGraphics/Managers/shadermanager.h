@@ -34,6 +34,10 @@ public:
 	uint8_t storeUniformLoc(ShaderHandle h, const char* uniformName) { assert(isValidHandle(h)); return shaders[h].storeUniformLoc(uniformName); }
 
 private:
+	friend class Root;
+	ShaderManager() {}
+	void destroy() { for(ShaderHandle i = 0; i < numShaders; ++i) glDeleteShader(shaders[i].id); numShaders = 0; shadersString.clear(); shaders.clear(); }
+
 	bool isValidHandle(ShaderHandle i) { return i != TROLLO_INVALID_SHADER && i >= 0 && i <= shaders.size(); }
 	int numShaders;
 	std::map<std::string, ShaderHandle> shadersString; // For access by shader name (contains index to vector)

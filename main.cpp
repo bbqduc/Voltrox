@@ -77,7 +77,9 @@ int main()
 
 	}
 	glUseProgram(0);
-	glfwTerminate();
+
+	Root::destroySingleton();
+
 	return 0;
 
 }

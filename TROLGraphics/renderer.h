@@ -23,7 +23,6 @@ class Renderer
 public:
 	void renderEntities(const btAlignedObjectArray<Entity>& entities);
 	void renderConsole(Console&);
-	void init(int resX, int resY);
 //	void renderText(const char* text, float x, float y, float scaleX = 1.0f, float scaleY = 1.0f);
 
 /*	void setModelTexture(const char* mid, const char* tid) { modelManager.setModelTexture(mid, textureManager.getTexture(tid)); }
@@ -35,8 +34,12 @@ public:
 	int getResX() { return resX; }
 
 private:
-	Camera camera;
+	friend class Root;
+	Renderer() {}
+	void init(int resX, int resY);
+	void destroy() { glfwTerminate(); }
 
+	Camera camera;
 	glm::mat4 perspective;
 
 	int resX, resY;

@@ -22,7 +22,12 @@ TROLLOERROR TextRenderer::init()
 
 }
 
-void TextRenderer::initAtlas()
+void TextRenderer::destroy()
+{
+	FT_Done_FreeType(ft);
+}
+
+void TextRenderer::initAtlas(FT_Face& face)
 {
 	FT_GlyphSlot g = face->glyph;
 	int roww = 0;
@@ -109,11 +114,13 @@ void TextRenderer::initAtlas()
 
 bool TextRenderer::loadFace(const char* path, int height)
 {
+	FT_Face face;
 	bool ret = !FT_New_Face(ft, path, numFaces++, &face);
 	if(ret)
 	{
 		FT_Set_Pixel_Sizes(face, numFaces-1, height);
-		initAtlas();
+		initAtlas(face);
+		FT_Done_Face(face);
 	}
 
 	return ret;
