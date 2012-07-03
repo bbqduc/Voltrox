@@ -1,5 +1,18 @@
 #include "texturemanager.h"
 
+void TextureManager::init()
+{
+	addFromBMP("default", "resources/ship.bmp");
+	addFromPNG("skybox", "resources/space.png");
+}
+
+void TextureManager::destroy()
+{
+	for(auto i = textures.begin(); i != textures.end(); ++i)
+		glDeleteTextures(1, &i->second);
+	textures.clear();
+}
+
 GLuint TextureManager::addFromBMP(const std::string& id, const std::string& texturePath)
 {
 	unsigned char header[54];
@@ -10,7 +23,7 @@ GLuint TextureManager::addFromBMP(const std::string& id, const std::string& text
 
 	FILE* file = fopen(texturePath.c_str(), "rb");
 	if(!file)
-		throw TrolloException(("Texture file " + texturePath + " doesn't exist\n").c_str());
+		return GL_INVALID_VALUE;
 	fread(header, 1, 54, file);
 	dataPos = *(int*)&(header[0x0A]);
 	imageSize = *(int*)&(header[0x22]);
@@ -40,25 +53,25 @@ GLuint TextureManager::addFromPNG(const std::string& id, const std::string& text
 {
 	FILE *fp = fopen(texturePath.c_str(), "rb");
 	if(!fp)
-		throw TrolloException("Could not open PNG file.\n");
+		return GL_INVALID_VALUE;
 	png_byte header[8];
 	fread(header, 1, 8, fp);
 	if(png_sig_cmp(header, 0, 8))
 	{
 		fclose(fp);
-		throw TrolloException("File is not a valid PNG.\n");
+		return GL_INVALID_VALUE;
 	}
 
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if(!png_ptr)
-		throw TrolloException("Error from libpng.\n");
+		return GL_INVALID_VALUE;
 
 	png_infop info_ptr = png_create_info_struct(png_ptr);
 	png_infop end_info = png_create_info_struct(png_ptr);
 	if(!info_ptr || !end_info || setjmp(png_jmpbuf(png_ptr))) {
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 		fclose(fp);
-		throw TrolloException("Error from libpng.\n");
+		return GL_INVALID_VALUE;
 	}
 	png_init_io(png_ptr, fp);
 	png_set_sig_bytes(png_ptr, 8);
@@ -81,7 +94,7 @@ GLuint TextureManager::addFromPNG(const std::string& id, const std::string& text
 		png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
 		delete[] image_data;
 		fclose(fp);
-		throw TrolloException("Error from libpng.\n");
+		return GL_INVALID_VALUE;
 	}
 
 	for(int i = 0; i < height; ++i)
@@ -100,7 +113,7 @@ GLuint TextureManager::addFromPNG(const std::string& id, const std::string& text
         default:
             png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
             fclose(fp);
-				throw TrolloException("Unsupported PNG color type!\n");
+				return GL_INVALID_VALUE;
    }
 
 	glGenTextures(1, &textures[id]);

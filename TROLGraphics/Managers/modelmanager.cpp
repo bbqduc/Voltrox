@@ -7,7 +7,6 @@
 void ModelManager::init(GLuint defaultTexture)
 {
 	addFromTROLLO("cube_tex", "resources/cube.trollo", defaultTexture);
-//	addTexturedCube(defaultTexture);
 	addTexturedQuad(defaultTexture);
 	addTriangle();
 }
@@ -94,15 +93,15 @@ void ModelManager::initBuffers(Model& m)
 	m.createCollisionShape();
 }
 
-void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint texture)
+TROLLOERROR ModelManager::addFromTROLLO(const char* id, const char* path, GLuint texture)
 {
 	std::ifstream infile(path, std::ios_base::binary | std::ios_base::in);
 	if(!infile)
-		throw TrolloException("Could not open TROLLO model file.\n");
+		return TROLLO_FILE_NOT_FOUND;
 	int magic; infile.read((char*)&magic, sizeof(int));
 	int mode; infile.read((char*)&mode, sizeof(int));
 	if(magic != 1337 || mode != 1)
-		throw TrolloException("Model file does not have a TROLLO header.\n");
+		return TROLLO_INVALID_FILE_FORMAT;
 
 	Model& m = models[id];
 	
@@ -130,4 +129,6 @@ void ModelManager::addFromTROLLO(const char* id, const char* path, GLuint textur
 //	m.printVertexData();
 
 	initBuffers(m);
+
+	return TROLLO_OK;
 }

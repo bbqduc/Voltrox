@@ -11,12 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "TROLLogic/Data/entity.h"
-#include "TROLGraphics/renderer.h"
-#include "TROLGraphics/glutils.h"
-
-#include "TROLConsole/console.h"
-#include "TROLLogic/engine.h"
+#include "root.h"
 
 #include <ctime>
 #include <cstdlib>
@@ -24,14 +19,13 @@
 int main()
 {
 	srand(time(0));
-	Engine engine;
-	Renderer renderer;
-	engine.camera = &renderer.getCamera();
-	engine.modelManager = &renderer.getModelManager();
 
-	renderer.addModelTROLLO("ship", "resources/ship.trollo", "default");
+	Root::initSingleton(1024, 768);
+	Root& root = Root::getSingleton();
+
+	root.modelManager.addFromTROLLO("ship", "resources/ship.trollo", root.textureManager.getTexture("default"));
 	btVector3 pos(0,50,-100);
-	engine.addEntity(renderer.getModel("ship"), pos);
+	root.engine->addEntity(root.modelManager.getModel("ship"), pos);
 
 	btQuaternion q;
 	for(int i = 0; i < 100; ++i)
@@ -44,10 +38,8 @@ int main()
 		pos.setX(-50.0f + (rand()%100));
 		pos.setZ(-100.0f + (rand()%100) - 50);
 		pos.setY(60.0f + (rand()%100) - 50);
-		engine.addEntity(renderer.getModel("ship"), pos, q);
+		root.engine->addEntity(root.modelManager.getModel("ship"), pos, q);
 	}
-//	pos = btVector3(-2,2,-20);
-//	engine.addEntity(renderer.getModel("cube_tex"), pos);
 
 	checkGLErrors("Preloop");
 	bool running = true;
@@ -73,25 +65,21 @@ int main()
 			frame = 0;
 		}
 
-		engine.tick();
-		renderer.renderEntities(engine.getEntities());
-		renderer.renderText(title, 0.0f, -0.85f);
+		root.engine->tick();
+		root.renderer.renderEntities(root.engine->getEntities());
+		root.textRenderer.renderText(title, 0.0f, -0.85f);
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
-		engine.tick();
 		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 
-/*		for(auto i = entities.begin(); i != entities.end(); ++i)
-		{
-			glm::quat r(glm::vec3(0.1f,0.1f,0.1f));
-			i->orientation = i->orientation * r;
-		}*/
 	}
 	glUseProgram(0);
-	glfwTerminate();
+
+	Root::destroySingleton();
+
 	return 0;
 
 }

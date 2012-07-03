@@ -54,6 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,6 +71,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="ext\gl3w.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="root.cpp" />
     <ClCompile Include="TROLConsole\console.cpp" />
     <ClCompile Include="TROLGraphics\camera.cpp" />
     <ClCompile Include="TROLGraphics\Data\model.cpp" />
@@ -116,6 +119,7 @@
     <ClCompile Include="TROLLogic\entity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="root.h" />
     <ClInclude Include="TROLConsole\console.h" />
     <ClInclude Include="TROLGraphics\camera.h" />
     <ClInclude Include="TROLGraphics\Data\model.h" />

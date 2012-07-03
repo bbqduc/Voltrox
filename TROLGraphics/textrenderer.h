@@ -13,26 +13,28 @@
 #include FT_FREETYPE_H
 
 #include "shader.h"
+#include "glutils.h"
 
 class TextRenderer
 {
 	public:
-	TextRenderer();
-	bool initGraphics(Shader&);
+	TROLLOERROR init();
+	void destroy();
 
 	bool loadFace(const char* path, int height = 48);
-	void renderText(const char* text, float x, float y, float sx, float sy);
+	void renderText(const char* text, float x, float y, float sx=1.0f, float sy=1.0f);
 
 	private:
+	friend class Root;
+	TextRenderer() {}
 
-	void initAtlas();
+	void initAtlas(FT_Face&);
+	void initGraphics();
 
 	GLuint tex, vbo, vao;
 	int width,height; // width and height of texture
-	Shader* textShader;
 
 	FT_Library ft;
-	FT_Face face; // Just one for now
 	int numFaces;
 
 	struct {

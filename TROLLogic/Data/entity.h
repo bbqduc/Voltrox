@@ -11,10 +11,10 @@ struct Entity
 	static const btQuaternion identityQuat;
 	static const btVector3 identityVec3;
 
-	const Model* model;
 	btVector3 position;
 	btQuaternion orientation;
 
+	const Model* model;
 	btDefaultMotionState* motionState;
 	btRigidBody* physicsBody;
 
