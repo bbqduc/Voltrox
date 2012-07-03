@@ -138,8 +138,6 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		glUniform3f(s.uniformLocs[2], 0.0f, 0.0f, -6.0f);
 		glUniform1f(s.uniformLocs[3], timee);
 
-	checkGLErrors("TROL3");
-
 		glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
 		glm::mat4 m;
 
@@ -153,27 +151,19 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
-	checkGLErrors("TROL2");
 
 			glBindTexture(GL_TEXTURE_2D, e.model->texture);
-	checkGLErrors("TROL2.1");
 			glBindVertexArray(e.model->vao);
-	checkGLErrors("TROL2.2");
 			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-	checkGLErrors("TROL2.3");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
-			std::cout << e.model->indexBuffer << '\n';
-	checkGLErrors("TROL2.4");
 #endif
 			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
-	checkGLErrors("TROL2.5");
 		}
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glEnable(GL_CULL_FACE);
-	checkGLErrors("TROL1");
 	}
 		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
 		glUseProgram(s.id);
