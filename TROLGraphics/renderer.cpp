@@ -77,6 +77,7 @@ TROLLOERROR Renderer::initGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glfwSetMousePos(resX / 2, resY / 2);
+	glfwDisable(GLFW_MOUSE_CURSOR);
 
 	checkGLErrors("post_init");
 
