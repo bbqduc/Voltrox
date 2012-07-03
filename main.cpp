@@ -20,15 +20,21 @@ int main()
 {
 	srand(time(0));
 
-	Root::initSingleton(1024, 768);
+	TROLLOERROR e;
+	if(e = Root::initSingleton(1024, 768))
+	{
+		std::cerr << TROLLOErrorString(e) << '\n';
+		Root::destroySingleton();
+		return -1;
+	}
 	Root& root = Root::getSingleton();
 
 	root.modelManager.addFromTROLLO("ship", "resources/ship.trollo", root.textureManager.getTexture("default"));
 	btVector3 pos(0,50,-100);
-	root.engine->addEntity(root.modelManager.getModel("ship"), pos);
+	root.engine->addEntity(root.modelManager.getModel("cube_tex"), pos);
 
 	btQuaternion q;
-	for(int i = 0; i < 100; ++i)
+	for(int i = 0; i < 0; ++i)
 	{
 		q.setX((rand()%50) - 100);
 		q.setY((rand()%50) - 100);

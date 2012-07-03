@@ -8,30 +8,34 @@ const std::string ShaderManager::shaderDir="shaders_120/";
 const std::string ShaderManager::shaderDir="shaders_330/";
 #endif
 
-void ShaderManager::init()
+TROLLOERROR ShaderManager::init()
 {
 	numShaders = 0;
-	initBasicShaders();
+	return initBasicShaders();
 }
 
-void ShaderManager::initBasicShaders()
+TROLLOERROR ShaderManager::initBasicShaders()
 {
-	loadFromShaderDir("mvp_tex", "plainMVP.vert", "plainTextured.frag", 0);
+	if(loadFromShaderDir("mvp_tex", "plainMVP.vert", "plainTextured.frag", 0) == TROLLO_INVALID_SHADER)
+		return TROLLO_INIT_FAILURE;
 	storeUniformLoc(MVP_TEXTURED, "MVP");
 	storeUniformLoc(MVP_TEXTURED, "sampler");
 
 	loadFromShaderDir("text", "text.vert", "text.frag", 0);
 	storeUniformLoc(TEXT, "sampler");
 
-	loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0);
+	if(loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0) == TROLLO_INVALID_SHADER)
+		return TROLLO_INIT_FAILURE;
 	storeUniformLoc(PLAIN_TEXTURED, "sampler");
 
-	loadFromShaderDir("mesh_exploder", "meshexploder.vert", "plainTextured.frag", "meshexploder.geom");
+	if(loadFromShaderDir("mesh_exploder", "meshexploder.vert", "plainTextured.frag", "meshexploder.geom") == TROLLO_INVALID_SHADER)
+		return TROLLO_INIT_FAILURE;
 	storeUniformLoc(MESH_EXPLODER, "MVP");
 	storeUniformLoc(MESH_EXPLODER, "sampler");
 	storeUniformLoc(MESH_EXPLODER, "localExplosionCenter");
 	storeUniformLoc(MESH_EXPLODER, "timeSinceExplosion");
 
+	return TROLLO_OK;
 }
 
 void printShaderInfoLog(GLint shader)
@@ -192,6 +196,7 @@ ShaderHandle ShaderManager::loadFromPath(const char* id, const char* vPath, cons
 		printProgramInfoLog(s.id);
 		return TROLLO_INVALID_SHADER;
 	}
+
 
 	if(vSize) printShaderInfoLog(v);
 	if(fSize) printShaderInfoLog(f);

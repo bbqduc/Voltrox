@@ -36,10 +36,10 @@ mat4 rotationMatrix(vec3 axis, float angle)
 	return rotmat;
 }
 
-mat4 translationMatrix(vec4 vector)
+mat4 translationMatrix(vec3 vector)
 {
 	mat4 m = mat4(1.0f);
-	m[3] = vec4(vector.xyz, 1.0f);
+	m[3] = vec4(vector, 1.0f);
 
 	return m;
 }
@@ -53,19 +53,28 @@ void main()
 	vec4 p2 = gl_in[1].gl_Position;
 	vec4 p3 = gl_in[2].gl_Position;
 
-	vec4 center = (p1+p2+p3) / 3.0f;
-	vec4 d = center - vec4(localExplosionCenter, 1.0);
+	vec3 center = (p1.xyz + p2.xyz+ p3.xyz);
+	center /= 3.0f;
+
+	p1 = vec4(center, 1.0);
+	p2 = vec4(faceNormal, 1.0) + p1;
+	p3 = p2 + p1 + vec4(0,0.5,0,1);
+	vec3 d = center - localExplosionCenter;
 	float force = 1.0f / length(d);
 	d *= timeSinceExplosion * force;
-	mat4 rotmat = rotationMatrix(faceNormal, timeSinceExplosion*force);
+	mat4 rotmat = rotationMatrix(vec3(1.0,0.0,0.0), timeSinceExplosion);
 
-	gl_Position = MVP * translationMatrix(d) * translationMatrix(center) * rotmat * translationMatrix(-center) * p1;
+	// Don't know why translationMatrix(center) and -center don't work here on linux
+	// On windows it was fine
+	mat4 transform = MVP * translationMatrix(d);// * rotmat; //translationMatrix(d) * translationMatrix(p1.xyz) * rotmat * translationMatrix(-p1.xyz);
+
+	gl_Position = transform * p1;
 	ex_Texcoord = geom_Texcoord[0];
 	EmitVertex();
-	gl_Position = MVP * translationMatrix(d) * translationMatrix(center) * rotmat * translationMatrix(-center) * p2;
+	gl_Position = transform * p2;
 	ex_Texcoord = geom_Texcoord[1];
 	EmitVertex();
-	gl_Position = MVP * translationMatrix(d) * translationMatrix(center) * rotmat * translationMatrix(-center) * p3;
+	gl_Position = transform * p3;
 	ex_Texcoord = geom_Texcoord[2];
 	EmitVertex();
 

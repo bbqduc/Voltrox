@@ -15,12 +15,12 @@
 
 bool Renderer::explodeAll=false;
 
-void Renderer::init(int resX_, int resY_)
+TROLLOERROR Renderer::init(int resX_, int resY_)
 {
 	resX = resX_;
 	resY = resY_;
 	perspective = glm::perspective(45.0f, (float)resX/resY, 1.0f, 1000.0f);
-	initGL();
+	return initGL();
 }
 
 TROLLOERROR Renderer::initGL()
@@ -41,8 +41,9 @@ TROLLOERROR Renderer::initGL()
 		return TROLLO_INIT_FAILURE;
 	}
 #ifdef TROL_USE_OLD_OPENGL
-	if(glewInit() != GLEW_OK)
+	if(glewInit() != GLEW_OK || !glewIsSupported("GL_ARB_geometry_shader4"))
 	{
+		std::cerr << "GEOMETRY SHADER NOT SUPPORTED\n";
 		glfwTerminate();
 		return TROLLO_INIT_FAILURE;
 	}
@@ -78,6 +79,8 @@ TROLLOERROR Renderer::initGL()
 	glfwSetMousePos(resX / 2, resY / 2);
 
 	checkGLErrors("post_init");
+
+	return TROLLO_OK;
 }
 
 void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
@@ -119,6 +122,7 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 	}
 	else
 	{
+	checkGLErrors("TROL4");
 		glDisable(GL_CULL_FACE);
 		static float timee = 0.0f;
 		timee += 0.1f;
@@ -134,6 +138,7 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		glUniform3f(s.uniformLocs[2], 0.0f, 0.0f, -6.0f);
 		glUniform1f(s.uniformLocs[3], timee);
 
+	checkGLErrors("TROL3");
 
 		glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
 		glm::mat4 m;
@@ -148,19 +153,27 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
+	checkGLErrors("TROL2");
 
 			glBindTexture(GL_TEXTURE_2D, e.model->texture);
+	checkGLErrors("TROL2.1");
 			glBindVertexArray(e.model->vao);
+	checkGLErrors("TROL2.2");
 			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
+	checkGLErrors("TROL2.3");
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+			std::cout << e.model->indexBuffer << '\n';
+	checkGLErrors("TROL2.4");
 #endif
 			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+	checkGLErrors("TROL2.5");
 		}
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glEnable(GL_CULL_FACE);
+	checkGLErrors("TROL1");
 	}
 		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
 		glUseProgram(s.id);

@@ -25,7 +25,7 @@ public:
 private:
 	friend class Root;
 	TextureManager() {}
-	void init();
+	TROLLOERROR init();
 	void destroy();
 
 	std::map<std::string, GLuint> textures;
