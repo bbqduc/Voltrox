@@ -120,7 +120,7 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	}
-	else
+	if(explodeAll)
 	{
 	checkGLErrors("TROL4");
 		glDisable(GL_CULL_FACE);
@@ -165,9 +165,9 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 
 		glEnable(GL_CULL_FACE);
 	}
-		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
-		glUseProgram(s.id);
-		glUniform1i(s.uniformLocs[1], 0);
+	const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
+	glUseProgram(s.id);
+	glUniform1i(s.uniformLocs[1], 0);
 
 	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);

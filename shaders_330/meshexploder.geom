@@ -6,34 +6,18 @@ uniform vec3 localExplosionCenter;
 
 layout(triangles) in;
 layout(triangle_strip, max_vertices=3) out;
+//layout(line_strip, max_vertices=3) out;
 
 smooth in vec2 geom_Texcoord[];
 in vec3 geom_Normal[];
 
 smooth out vec2 ex_Texcoord;
 
-mat4 rotationMatrix(vec3 axis, float angle)
+vec3 rotateVec(vec4 q, vec3 v)
 {
-	float c = cos(angle);
-	float s = sin(angle);
-	float u = 1.0 - c;
-
-	mat4 rotmat;
-
-	rotmat[0][0] = axis.x*axis.x*u + c;		
-	rotmat[1][0] = axis.y*axis.x*u - (axis.z*s);
-	rotmat[2][0] = axis.z*axis.x*u + (axis.y*s);
-
-	rotmat[0][1] = axis.x*axis.y*u + (axis.z*s);
-	rotmat[1][1] = axis.y*axis.y*u + c;		
-	rotmat[2][1] = axis.z*axis.y*u - (axis.x*s);
-
-	rotmat[0][2] = axis.x*axis.z*u - (axis.y*s);
-	rotmat[1][2] = axis.x*axis.z*u - (axis.y*s);
-	rotmat[2][2] = axis.z*axis.z*u + c;			
-	rotmat[3][3] = 1.0f;
-
-	return rotmat;
+	return v + 2.0*cross(cross(v, q.xyz)+q.w*v, q.xyz);
+//	vec3 temp = cross(q.xyz, v) + q.w * v;
+//	return (cross(temp, -q.xyz) + dot(q.xyz,v) * q.xyz + q.w * temp);
 }
 
 mat4 translationMatrix(vec3 vector)
@@ -44,11 +28,16 @@ mat4 translationMatrix(vec3 vector)
 	return m;
 }
 
+vec4 rotateq(vec3 axis, float angle)
+{
+	float c = cos(angle/2);
+	float s = sin(angle/2);
+	return vec4(c, s*axis.x, s*axis.y, s*axis.z);
+}
+
 void main()
 {
 	vec3 faceNormal = (geom_Normal[0] + geom_Normal[1] + geom_Normal[2]) / 3.0f;
-
-
 	vec4 p1 = gl_in[0].gl_Position;
 	vec4 p2 = gl_in[1].gl_Position;
 	vec4 p3 = gl_in[2].gl_Position;
@@ -57,21 +46,19 @@ void main()
 	center /= 3.0f;
 
 	vec3 d = center - localExplosionCenter;
-	float force = 1.0f / length(d);
-	d *= timeSinceExplosion * force;
-	mat4 rotmat = rotationMatrix(vec3(1.0,0.0,0.0), timeSinceExplosion);
+	float force = timeSinceExplosion / length(d);
+	d *= force;
+//	vec4 q = normalize(vec4(force,1.0f/force,-force,force*force));
+	
+	vec4 q = rotateq(faceNormal, force);
 
-	// Don't know why translationMatrix(center) and -center don't work here on linux
-	// On windows it was fine
-	mat4 transform = MVP * translationMatrix(d);// * rotmat; //translationMatrix(d) * translationMatrix(p1.xyz) * rotmat * translationMatrix(-p1.xyz);
-
-	gl_Position = transform * p1;
+	gl_Position = MVP * vec4(d + center + rotateVec(q, p1.xyz-center), 1.0);
 	ex_Texcoord = geom_Texcoord[0];
 	EmitVertex();
-	gl_Position = transform * p2;
+	gl_Position = MVP * vec4(d + center + rotateVec(q, p2.xyz-center), 1.0);
 	ex_Texcoord = geom_Texcoord[1];
 	EmitVertex();
-	gl_Position = transform * p3;
+	gl_Position = MVP * vec4(d + center + rotateVec(q, p3.xyz-center), 1.0);
 	ex_Texcoord = geom_Texcoord[2];
 	EmitVertex();
 
