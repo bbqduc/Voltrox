@@ -13,6 +13,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+bool Renderer::explodeAll=false;
+
 void Renderer::init(int resX_, int resY_)
 {
 	resX = resX_;
@@ -26,12 +28,12 @@ TROLLOERROR Renderer::initGL()
 	if( !glfwInit()) 	
 		return TROLLO_INIT_FAILURE;
 
-	#ifndef TROL_USE_OLD_OPENGL // Request core profile if possible
+#ifndef TROL_USE_OLD_OPENGL // Request core profile if possible
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	#endif
+#endif
 
 	if(!glfwOpenWindow(resX,resY,8,8,8,8,24,0, GLFW_WINDOW))
 	{
@@ -80,40 +82,93 @@ TROLLOERROR Renderer::initGL()
 
 void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 {
-	const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
-	glUseProgram(s.id);
-	glActiveTexture(GL_TEXTURE0);
-	glUniform1i(s.uniformLocs[1], 0);
-	float time = glfwGetTime();
 
-	glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
-	glm::mat4 m;
-
-	btTransform trans;
-	for(int i = 0; i < entities.size(); ++i)
+	if(!explodeAll)
 	{
-		const Entity& e = entities[i];
+		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
+		glUseProgram(s.id);
+		glActiveTexture(GL_TEXTURE0);
+		glUniform1i(s.uniformLocs[1], 0);
+		float time = glfwGetTime();
 
-		e.motionState->getWorldTransform(trans);
-		trans.getOpenGLMatrix(&m[0][0]);
-				
-		glm::mat4 MVP = perspective * cam * m;
-		glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
+		glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
+		glm::mat4 m;
 
-		glBindTexture(GL_TEXTURE_2D, e.model->texture);
-		glBindVertexArray(e.model->vao);
-		glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
+		btTransform trans;
+		for(int i = 0; i < entities.size(); ++i)
+		{
+			const Entity& e = entities[i];
+
+			e.motionState->getWorldTransform(trans);
+			trans.getOpenGLMatrix(&m[0][0]);
+
+			glm::mat4 MVP = perspective * cam * m;
+			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
+
+			glBindTexture(GL_TEXTURE_2D, e.model->texture);
+			glBindVertexArray(e.model->vao);
+			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
 #endif
-		glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+		}
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	}
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	else
+	{
+		glDisable(GL_CULL_FACE);
+		static float timee = 0.0f;
+		timee += 0.1f;
+		if(timee > 30.0f)
+		{
+			timee = 0.0f;
+			explodeAll = false;
+		}
+		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MESH_EXPLODER);
+		glUseProgram(s.id);
+		glActiveTexture(GL_TEXTURE0);
+		glUniform1i(s.uniformLocs[1], 0);
+		glUniform3f(s.uniformLocs[2], 0.0f, 0.0f, -6.0f);
+		glUniform1f(s.uniformLocs[3], timee);
+
+
+		glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
+		glm::mat4 m;
+
+		btTransform trans;
+		for(int i = 0; i < entities.size(); ++i)
+		{
+			const Entity& e = entities[i];
+
+			e.motionState->getWorldTransform(trans);
+			trans.getOpenGLMatrix(&m[0][0]);
+
+			glm::mat4 MVP = perspective * cam * m;
+			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
+
+			glBindTexture(GL_TEXTURE_2D, e.model->texture);
+			glBindVertexArray(e.model->vao);
+			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
+#ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+#endif
+			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+		}
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glEnable(GL_CULL_FACE);
+	}
+		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
+		glUseProgram(s.id);
+		glUniform1i(s.uniformLocs[1], 0);
 
 	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);
-  	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),camera.view, camera.up);
+	glm::mat4 c = glm::lookAt(glm::vec3(0.0f),camera.view, camera.up);
 	glm::mat4 f = perspective * c * glm::scale(glm::mat4(), glm::vec3(500.0f));
 	const Model& skyBox = Root::getSingleton().modelManager.getModel("cube_tex");
 
@@ -124,7 +179,7 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 	glBindVertexArray(skyBox.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, skyBox.vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyBox.indexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyBox.indexBuffer);
 #endif
 	glDrawElements(GL_TRIANGLES, skyBox.numFaces*3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -138,5 +193,5 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 
 void Renderer::renderConsole(Console& c)
 {
-//	renderText(c.getCurrentText(), 0.5, 0.5, 1.0, 1.0);
+	//	renderText(c.getCurrentText(), 0.5, 0.5, 1.0, 1.0);
 }

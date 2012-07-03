@@ -21,6 +21,9 @@ class Renderer
 {
 
 public:
+
+	static bool explodeAll;
+
 	void renderEntities(const btAlignedObjectArray<Entity>& entities);
 	void renderConsole(Console&);
 //	void renderText(const char* text, float x, float y, float scaleX = 1.0f, float scaleY = 1.0f);

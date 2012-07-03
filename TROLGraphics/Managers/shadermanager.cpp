@@ -25,6 +25,13 @@ void ShaderManager::initBasicShaders()
 
 	loadFromShaderDir("plain_tex", "plain.vert", "plainTextured.frag", 0);
 	storeUniformLoc(PLAIN_TEXTURED, "sampler");
+
+	loadFromShaderDir("mesh_exploder", "meshexploder.vert", "plainTextured.frag", "meshexploder.geom");
+	storeUniformLoc(MESH_EXPLODER, "MVP");
+	storeUniformLoc(MESH_EXPLODER, "sampler");
+	storeUniformLoc(MESH_EXPLODER, "localExplosionCenter");
+	storeUniformLoc(MESH_EXPLODER, "timeSinceExplosion");
+
 }
 
 void printShaderInfoLog(GLint shader)
@@ -46,6 +53,24 @@ void printShaderInfoLog(GLint shader)
 	checkGLErrors("printShaderInfoLog");
 }
 
+void printProgramInfoLog(GLint program)
+{
+	int infoLogLen = 0;
+	int charsWritten = 0;
+	GLchar *infoLog;
+
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLen);
+
+	if (infoLogLen > 1)
+	{
+		infoLog = (GLchar*)malloc(sizeof(GLchar)*infoLogLen);
+												  
+		glGetProgramInfoLog(program,infoLogLen, &charsWritten, infoLog);
+		printf("InfoLog:\n%s\n", infoLog);
+		free(infoLog);
+	}
+	checkGLErrors("printProgramInfoLog");
+}
 
 GLint readShaderSource(const char* path, GLchar** target)
 {
@@ -159,12 +184,14 @@ ShaderHandle ShaderManager::loadFromPath(const char* id, const char* vPath, cons
 #endif
 
 	glLinkProgram(s.id);
-	glUseProgram(s.id);
 
 	glGetProgramiv(s.id, GL_LINK_STATUS, &compiled);
 	free(vertexSource); free(fragmentSource); free(geometrySource);
 	if (!compiled)
+	{
+		printProgramInfoLog(s.id);
 		return TROLLO_INVALID_SHADER;
+	}
 
 	if(vSize) printShaderInfoLog(v);
 	if(fSize) printShaderInfoLog(f);

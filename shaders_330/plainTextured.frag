@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec2 ex_Texcoord;
+smooth in vec2 ex_Texcoord;
 
 uniform sampler2D sampler;
 

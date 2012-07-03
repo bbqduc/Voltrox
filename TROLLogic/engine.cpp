@@ -28,7 +28,10 @@ void Engine::tick()
 	static bool gravityOn = true;
 	Camera& camera = Root::getSingleton().renderer.getCamera();
 
-	dynamicsWorld.stepSimulation(1/60.0f, 10);
+	if(!Renderer::explodeAll)
+		dynamicsWorld.stepSimulation(1/60.0f, 10);
+	if(InputHandler::isKeyDown('X'))
+		Renderer::explodeAll = true;
 	int x, y;
 	Root::getSingleton().inputHandler.getMousePos(&x,&y);
 	float fx = x / 1024.0f-0.5f, fy = y / 768.0f-0.5f;
@@ -56,6 +59,7 @@ void Engine::tick()
 		entities[entities.size()-1].physicsBody->activate();
 		entities[entities.size()-1].physicsBody->applyImpulse(view*100, btVector3(0,0,0));
 	}
+
 
 	if(gravityOn && InputHandler::isKeyDown('G'))
 	{
