@@ -31,10 +31,10 @@ int main()
 
 	root.modelManager.addFromTROLLO("ship", "resources/ship.trollo", root.textureManager.getTexture("default"));
 	btVector3 pos(0,50,-100);
-	root.engine->addEntity(root.modelManager.getModel("cube_tex"), pos);
+	root.engine->addEntity(root.modelManager.getModel("ship"), pos);
 
 	btQuaternion q;
-	for(int i = 0; i < 0; ++i)
+	for(int i = 0; i < 100; ++i)
 	{
 		q.setX((rand()%50) - 100);
 		q.setY((rand()%50) - 100);

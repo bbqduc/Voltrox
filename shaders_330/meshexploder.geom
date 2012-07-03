@@ -56,9 +56,6 @@ void main()
 	vec3 center = (p1.xyz + p2.xyz+ p3.xyz);
 	center /= 3.0f;
 
-	p1 = vec4(center, 1.0);
-	p2 = vec4(faceNormal, 1.0) + p1;
-	p3 = p2 + p1 + vec4(0,0.5,0,1);
 	vec3 d = center - localExplosionCenter;
 	float force = 1.0f / length(d);
 	d *= timeSinceExplosion * force;
