@@ -25,13 +25,15 @@ public:
 
 	uint8_t attribNumbers[4]; // This is to avoid templatizing or virtualizing this class
 	uint8_t vertexBytes;
-	btCollisionShape* collisionShape; 
 
 	int numVertices, numFaces;
 	GLfloat* vertexData;
 	GLuint* indices;
-	btTriangleIndexVertexArray* btVertexData;
 
+	btTriangleIndexVertexArray btVertexData;
+	btConvexTriangleMeshShape collisionShape; 
+
+	btVector3 getInertia(btScalar mass) { btVector3 ret(0.0f,0.0f,0.0f); collisionShape.calculateLocalInertia(mass, ret); return ret; }
 	void printVertexData();
 
 private:
@@ -46,8 +48,8 @@ private:
 
 	void createCollisionShape()
 	{
-		btVertexData = new btTriangleIndexVertexArray(numFaces, (int*)indices, sizeof(GLuint)*3, numVertices, vertexData, vertexBytes); // TODO : indices to int*
-		collisionShape = new btConvexTriangleMeshShape(btVertexData, true);
+		btVertexData = btTriangleIndexVertexArray(numFaces, (int*)indices, sizeof(GLuint)*3, numVertices, vertexData, vertexBytes);
+		collisionShape = btConvexTriangleMeshShape(&btVertexData, true);
 	}
 
 };

@@ -18,8 +18,6 @@
 class TextRenderer
 {
 	public:
-	TROLLOERROR init();
-	void destroy();
 
 	bool loadFace(const char* path, int height = 48);
 	void renderText(const char* text, float x, float y, float sx=1.0f, float sy=1.0f);
@@ -27,6 +25,8 @@ class TextRenderer
 	private:
 	friend class Root;
 	TextRenderer() {}
+	TROLLOERROR init();
+	void destroy();
 
 	void initAtlas(FT_Face&);
 	void initGraphics();

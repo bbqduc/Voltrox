@@ -15,12 +15,12 @@
 
 bool Renderer::explodeAll=false;
 
-void Renderer::init(int resX_, int resY_)
+TROLLOERROR Renderer::init(int resX_, int resY_)
 {
 	resX = resX_;
 	resY = resY_;
 	perspective = glm::perspective(45.0f, (float)resX/resY, 1.0f, 1000.0f);
-	initGL();
+	return initGL();
 }
 
 TROLLOERROR Renderer::initGL()
@@ -41,8 +41,9 @@ TROLLOERROR Renderer::initGL()
 		return TROLLO_INIT_FAILURE;
 	}
 #ifdef TROL_USE_OLD_OPENGL
-	if(glewInit() != GLEW_OK)
+	if(glewInit() != GLEW_OK || !glewIsSupported("GL_ARB_geometry_shader4"))
 	{
+		std::cerr << "GEOMETRY SHADER NOT SUPPORTED\n";
 		glfwTerminate();
 		return TROLLO_INIT_FAILURE;
 	}
@@ -76,11 +77,14 @@ TROLLOERROR Renderer::initGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glfwSetMousePos(resX / 2, resY / 2);
+	glfwDisable(GLFW_MOUSE_CURSOR);
 
 	checkGLErrors("post_init");
+
+	return TROLLO_OK;
 }
 
-void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
+void Renderer::renderEntities(const std::vector<Entity*>& entities)
 {
 
 	if(!explodeAll)
@@ -97,28 +101,29 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		btTransform trans;
 		for(int i = 0; i < entities.size(); ++i)
 		{
-			const Entity& e = entities[i];
+			const Entity& e = *entities[i];
 
-			e.motionState->getWorldTransform(trans);
+			e.motionState.getWorldTransform(trans);
 			trans.getOpenGLMatrix(&m[0][0]);
 
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 
-			glBindTexture(GL_TEXTURE_2D, e.model->texture);
-			glBindVertexArray(e.model->vao);
-			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
+			glBindTexture(GL_TEXTURE_2D, e.model.texture);
+			glBindVertexArray(e.model.vao);
+			glBindBuffer(GL_ARRAY_BUFFER, e.model.vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model.indexBuffer);
 #endif
-			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, e.model.numFaces*3, GL_UNSIGNED_INT, 0);
 		}
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	}
-	else
+	if(explodeAll)
 	{
+	checkGLErrors("TROL4");
 		glDisable(GL_CULL_FACE);
 		static float timee = 0.0f;
 		timee += 0.1f;
@@ -134,37 +139,36 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		glUniform3f(s.uniformLocs[2], 0.0f, 0.0f, -6.0f);
 		glUniform1f(s.uniformLocs[3], timee);
 
-
 		glm::mat4 cam(glm::lookAt(camera.pos, camera.pos + camera.view, camera.up));
 		glm::mat4 m;
 
 		btTransform trans;
 		for(int i = 0; i < entities.size(); ++i)
 		{
-			const Entity& e = entities[i];
+			const Entity& e = *entities[i];
 
-			e.motionState->getWorldTransform(trans);
+			e.motionState.getWorldTransform(trans);
 			trans.getOpenGLMatrix(&m[0][0]);
 
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 
-			glBindTexture(GL_TEXTURE_2D, e.model->texture);
-			glBindVertexArray(e.model->vao);
-			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
+			glBindTexture(GL_TEXTURE_2D, e.model.texture);
+			glBindVertexArray(e.model.vao);
+			glBindBuffer(GL_ARRAY_BUFFER, e.model.vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model.indexBuffer);
 #endif
-			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, e.model.numFaces*3, GL_UNSIGNED_INT, 0);
 		}
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glEnable(GL_CULL_FACE);
 	}
-		const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
-		glUseProgram(s.id);
-		glUniform1i(s.uniformLocs[1], 0);
+	const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
+	glUseProgram(s.id);
+	glUniform1i(s.uniformLocs[1], 0);
 
 	//glCullFace(GL_FRONT);
 	glDisable(GL_CULL_FACE);

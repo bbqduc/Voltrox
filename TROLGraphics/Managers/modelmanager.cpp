@@ -4,11 +4,14 @@
 #include <iostream>
 #include <fstream>
 
-void ModelManager::init(GLuint defaultTexture)
+TROLLOERROR ModelManager::init(GLuint defaultTexture)
 {
-	addFromTROLLO("cube_tex", "resources/cube.trollo", defaultTexture);
+	if(addFromTROLLO("cube_tex", "resources/cube.trollo", defaultTexture))
+		return TROLLO_INIT_FAILURE;
 	addTexturedQuad(defaultTexture);
 	addTriangle();
+
+	return TROLLO_OK;
 }
 
 void ModelManager::addTriangle()

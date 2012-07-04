@@ -24,9 +24,6 @@ public:
 
 	enum BASIC_SHADERS { MVP_TEXTURED, TEXT, PLAIN_TEXTURED, MESH_EXPLODER };
 
-	void init();
-	void initBasicShaders();
-
 	ShaderHandle loadFromPath(const char* id, const char* vPath, const char* fPath, const char* gPath);
 	ShaderHandle loadFromShaderDir(const char* id, const char* vPath, const char* fPath, const char* gPath);
 	Shader& getShader(const char* id) { auto a = shadersString.find(id); assert(a != shadersString.end()); return shaders[a->second];}
@@ -36,6 +33,8 @@ public:
 private:
 	friend class Root;
 	ShaderManager() {}
+	TROLLOERROR init();
+	TROLLOERROR initBasicShaders();
 	void destroy() { for(ShaderHandle i = 0; i < numShaders; ++i) glDeleteShader(shaders[i].id); numShaders = 0; shadersString.clear(); shaders.clear(); }
 
 	bool isValidHandle(ShaderHandle i) { return i != TROLLO_INVALID_SHADER && i >= 0 && i <= shaders.size(); }

@@ -7,6 +7,7 @@
 #include "TROLGraphics/Managers/shadermanager.h"
 #include "TROLLogic/engine.h"
 #include "TROLLogic/inputhandler.h"
+#include "TROLLogic/entitystorage.h"
 #include "TROLGraphics/glutils.h"
 
 
@@ -16,6 +17,7 @@ struct Root
 {
 	Engine* engine; // Has to be pointer because it contains bullet objects without a default ctor
 	InputHandler inputHandler;
+	EntityStorage entityStorage;
 
 	Renderer renderer;
 	ModelManager modelManager;
@@ -23,7 +25,7 @@ struct Root
 	ShaderManager shaderManager;
 	TextRenderer textRenderer;
 
-	static TROLLOERROR initSingleton(int resX, int resY) { assert(!initialized); return singleton.init(resX, resY); initialized = true; };
+	static TROLLOERROR initSingleton(int resX, int resY) { assert(!initialized); initialized=true; return singleton.init(resX, resY); };
 	static void destroySingleton() { singleton.destroy(); }
 	static Root& getSingleton() { return singleton; }
 

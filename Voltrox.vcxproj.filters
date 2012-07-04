@@ -52,6 +52,9 @@
     <Filter Include="Source Files\TROLGraphics\Managers">
       <UniqueIdentifier>{9db47af1-1482-4f29-be01-e3294b2d3833}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\TROLUtil">
+      <UniqueIdentifier>{8531343c-37c0-428a-b771-a8294abf7f7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders_330\demo.frag">
@@ -111,6 +114,9 @@
     <None Include="shaders_330\meshexploder.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="TROLUtil\memorypool.inl">
+      <Filter>Header Files\TROLUtil</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TROLGraphics\renderer.cpp">
@@ -161,6 +167,9 @@
     <ClCompile Include="root.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TROLLogic\inputhandler.cpp">
+      <Filter>Source Files\TrolLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLGraphics\textrenderer.h">
@@ -204,6 +213,12 @@
     </ClInclude>
     <ClInclude Include="root.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLUtil\memorypool.h">
+      <Filter>Header Files\TROLUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLLogic\entitystorage.h">
+      <Filter>Header Files\TROLLogic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

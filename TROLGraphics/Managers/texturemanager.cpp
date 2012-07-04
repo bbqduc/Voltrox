@@ -1,9 +1,12 @@
 #include "texturemanager.h"
 
-void TextureManager::init()
+TROLLOERROR TextureManager::init()
 {
-	addFromBMP("default", "resources/ship.bmp");
-	addFromPNG("skybox", "resources/space.png");
+	if(addFromBMP("default", "resources/ship.bmp") == GL_INVALID_VALUE)
+		return TROLLO_INIT_FAILURE;
+	if(addFromPNG("skybox", "resources/space.png") == GL_INVALID_VALUE)
+		return TROLLO_INIT_FAILURE;
+	return TROLLO_OK;
 }
 
 void TextureManager::destroy()
@@ -104,17 +107,17 @@ GLuint TextureManager::addFromPNG(const std::string& id, const std::string& text
 
 	bool hasAlpha;
 	switch (info_ptr->color_type) {
-        case PNG_COLOR_TYPE_RGBA:
-            hasAlpha = true;
-            break;
-        case PNG_COLOR_TYPE_RGB:
-            hasAlpha = false;
-            break;
-        default:
-            png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-            fclose(fp);
-				return GL_INVALID_VALUE;
-   }
+		case PNG_COLOR_TYPE_RGBA:
+			hasAlpha = true;
+			break;
+		case PNG_COLOR_TYPE_RGB:
+			hasAlpha = false;
+			break;
+		default:
+			png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+			fclose(fp);
+			return GL_INVALID_VALUE;
+	}
 
 	glGenTextures(1, &textures[id]);
 	glBindTexture(GL_TEXTURE_2D, textures[id]);

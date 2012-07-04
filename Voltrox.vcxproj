@@ -101,6 +101,7 @@
     <None Include="shaders_330\text.vert" />
     <None Include="shaders_330\timemover.vert" />
     <None Include="shaders_330\tunnel.frag" />
+    <None Include="TROLUtil\memorypool.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\gl3w.c" />
@@ -119,6 +120,7 @@
     <ClCompile Include="TROLGraphics\Voxel\shapes.cpp" />
     <ClCompile Include="TROLLogic\engine.cpp" />
     <ClCompile Include="TROLLogic\entity.cpp" />
+    <ClCompile Include="TROLLogic\inputhandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="root.h" />
@@ -135,6 +137,8 @@
     <ClInclude Include="TROLGraphics\Voxel\shapes.h" />
     <ClInclude Include="TROLLogic\Data\entity.h" />
     <ClInclude Include="TROLLogic\engine.h" />
+    <ClInclude Include="TROLLogic\entitystorage.h" />
+    <ClInclude Include="TROLUtil\memorypool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
