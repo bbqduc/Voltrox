@@ -24,15 +24,15 @@
 	dynamicsWorld.addRigidBody(groundRigidBody);
 }
 
-void Engine::updateGravity(btVector3 g)
+void Engine::updateGravity(btVector3& g)
 {
 	gravity = g;
 	dynamicsWorld.setGravity(gravity);
 
 	for(int i = 0; i < simulEntities.size(); ++i)
 	{
-		simulEntities[i]->physicsBody.activate();
-		simulEntities[i]->physicsBody.setGravity(dynamicsWorld.getGravity());
+		simulEntities[i]->physicsBody->activate();
+		simulEntities[i]->physicsBody->setGravity(dynamicsWorld.getGravity());
 	}
 }
 
@@ -45,8 +45,8 @@ void Engine::fireCube()
 
 	Entity* e = Root::getSingleton().entityStorage.addEntity(Root::getSingleton().modelManager.getModel("cube_tex"), pos, ori);
 	addEntity(*e);
-	e->physicsBody.activate();
-	e->physicsBody.applyImpulse(view*100, btVector3(0,0,0));
+	e->physicsBody->activate();
+	e->physicsBody->applyImpulse(view*100, btVector3(0,0,0));
 }
 
 void Engine::tick()
@@ -65,8 +65,8 @@ void Engine::tick()
 	if(i.isKeyDown(GLFW_KEY_SPACE))
 		for(int i = 0; i < simulEntities.size(); ++i)
 		{
-			simulEntities[i]->physicsBody.activate();
-			simulEntities[i]->physicsBody.applyForce(btVector3(0,20,0), btVector3(0,0,0));
+			simulEntities[i]->physicsBody->activate();
+			simulEntities[i]->physicsBody->applyForce(btVector3(0,20,0), btVector3(0,0,0));
 		}
 
 	if(glfwGetMouseButton(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS && fireCooldown <= 0.0f)
@@ -86,7 +86,7 @@ void Engine::tick()
 void Engine::destroy()
 {
 	for(int i = 0; i < simulEntities.size(); ++i)
-		dynamicsWorld.removeRigidBody(&simulEntities[i]->physicsBody);
+		dynamicsWorld.removeRigidBody(simulEntities[i]->physicsBody);
 }
 
 Engine::~Engine()

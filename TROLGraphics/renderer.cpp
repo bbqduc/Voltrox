@@ -109,13 +109,13 @@ void Renderer::renderEntities(const std::vector<Entity*>& entities)
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 
-			glBindTexture(GL_TEXTURE_2D, e.model->texture);
-			glBindVertexArray(e.model->vao);
-			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
+			glBindTexture(GL_TEXTURE_2D, e.model.texture);
+			glBindVertexArray(e.model.vao);
+			glBindBuffer(GL_ARRAY_BUFFER, e.model.vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model.indexBuffer);
 #endif
-			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, e.model.numFaces*3, GL_UNSIGNED_INT, 0);
 		}
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -153,13 +153,13 @@ void Renderer::renderEntities(const std::vector<Entity*>& entities)
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 
-			glBindTexture(GL_TEXTURE_2D, e.model->texture);
-			glBindVertexArray(e.model->vao);
-			glBindBuffer(GL_ARRAY_BUFFER, e.model->vertexBuffer);
+			glBindTexture(GL_TEXTURE_2D, e.model.texture);
+			glBindVertexArray(e.model.vao);
+			glBindBuffer(GL_ARRAY_BUFFER, e.model.vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // TROLOLOO COMPATIBILITY IS FUN
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model->indexBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, e.model.indexBuffer);
 #endif
-			glDrawElements(GL_TRIANGLES, e.model->numFaces*3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, e.model.numFaces*3, GL_UNSIGNED_INT, 0);
 		}
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

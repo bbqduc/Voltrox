@@ -18,7 +18,7 @@ public:
 	void addEntity(Entity& e)
 	{ 
 		simulEntities.push_back(&e);
-		dynamicsWorld.addRigidBody(&e.physicsBody);
+		dynamicsWorld.addRigidBody(e.physicsBody);
 	}
 
 	const std::vector<Entity*>& getEntities() const {return simulEntities;}
@@ -26,7 +26,7 @@ private:
 	friend class Root;
 	Engine();
 
-	void updateGravity(btVector3 g);
+	void updateGravity(btVector3& g);
 	void fireCube();
 
 	/// PHYSICS
