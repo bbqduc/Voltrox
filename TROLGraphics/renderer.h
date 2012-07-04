@@ -24,7 +24,7 @@ public:
 
 	static bool explodeAll;
 
-	void renderEntities(const btAlignedObjectArray<Entity>& entities);
+	void renderEntities(const std::vector<Entity*>& entities);
 	void renderConsole(Console&);
 
 	Camera& getCamera() { return camera; }

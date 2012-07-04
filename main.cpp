@@ -31,7 +31,9 @@ int main()
 
 	root.modelManager.addFromTROLLO("ship", "resources/ship.trollo", root.textureManager.getTexture("default"));
 	btVector3 pos(0,50,-100);
-	root.engine->addEntity(root.modelManager.getModel("ship"), pos);
+
+	Entity* et = root.entityStorage.addEntity(root.modelManager.getModel("ship"), pos);
+	root.engine->addEntity(*et);
 
 	btQuaternion q;
 	for(int i = 0; i < 100; ++i)
@@ -44,7 +46,8 @@ int main()
 		pos.setX(-50.0f + (rand()%100));
 		pos.setZ(-100.0f + (rand()%100) - 50);
 		pos.setY(60.0f + (rand()%100) - 50);
-		root.engine->addEntity(root.modelManager.getModel("ship"), pos, q);
+		et = root.entityStorage.addEntity(root.modelManager.getModel("ship"), pos, q);
+		root.engine->addEntity(*et);
 	}
 
 	checkGLErrors("Preloop");

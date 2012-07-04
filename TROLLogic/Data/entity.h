@@ -11,39 +11,19 @@ struct Entity
 	static const btQuaternion identityQuat;
 	static const btVector3 identityVec3;
 
-	btVector3 position;
-	btQuaternion orientation;
+	Model* model;
+	btDefaultMotionState motionState;
+	btRigidBody physicsBody;
 
-	const Model* model;
-	btDefaultMotionState* motionState;
-	btRigidBody* physicsBody;
 
-	Entity():model(0), motionState(0), physicsBody(0)  {}
-	Entity(const Model* model_, const btVector3& position_ = Entity::identityVec3, const btQuaternion& orientation_ = Entity::identityQuat)
-		:model(model_),
-		position(position_),
-		orientation(orientation_),
-		motionState(new btDefaultMotionState(btTransform(orientation, position))),
-		physicsBody(0)
-	{
-		btScalar mass = 1.0f;
-		btVector3 inertia(0,0,0);
-		model->collisionShape->calculateLocalInertia(mass, inertia);
-		btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, model->collisionShape, inertia);
-		physicsBody = new btRigidBody(rigidBodyCI);
-	}
+	private:
+	Entity(const Entity&);
+	Entity& operator=(const Entity&);
 
-	void destroy()
-	{
-		delete physicsBody;
-		delete motionState;
-		physicsBody = 0; 
-		motionState = 0;
-		model = 0;
-	}
-	void handleKeyInput()
-	{
-		if(InputHandler::isKeyDown(GLFW_KEY_SPACE))
-			physicsBody->applyForce(btVector3(0,50,0), btVector3(0,0,0));
-	}
+	friend class EntityStorage;
+	Entity(Model& model_, const btVector3& position = Entity::identityVec3, const btQuaternion& orientation = Entity::identityQuat, float mass=1.0f)
+		:model(&model_),
+		motionState(btTransform(orientation, position)),
+		physicsBody(btRigidBody::btRigidBodyConstructionInfo(mass, &motionState, &model->collisionShape, model->getInertia(mass)))
+	{}
 };

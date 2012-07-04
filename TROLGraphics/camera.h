@@ -13,7 +13,7 @@ class Camera
 
 	void updateVectors();
 public:
-	void handleMouseInput(float x, float y);
+	void handleMouseInput();
 	void handleKeyInput();
 
 	Camera() : pos(0,150,20), up(0,1,0), view(0,0,-1), right(1,0,0) 

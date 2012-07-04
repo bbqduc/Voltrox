@@ -84,7 +84,7 @@ TROLLOERROR Renderer::initGL()
 	return TROLLO_OK;
 }
 
-void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
+void Renderer::renderEntities(const std::vector<Entity*>& entities)
 {
 
 	if(!explodeAll)
@@ -101,9 +101,9 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		btTransform trans;
 		for(int i = 0; i < entities.size(); ++i)
 		{
-			const Entity& e = entities[i];
+			const Entity& e = *entities[i];
 
-			e.motionState->getWorldTransform(trans);
+			e.motionState.getWorldTransform(trans);
 			trans.getOpenGLMatrix(&m[0][0]);
 
 			glm::mat4 MVP = perspective * cam * m;
@@ -145,9 +145,9 @@ void Renderer::renderEntities(const btAlignedObjectArray<Entity>& entities)
 		btTransform trans;
 		for(int i = 0; i < entities.size(); ++i)
 		{
-			const Entity& e = entities[i];
+			const Entity& e = *entities[i];
 
-			e.motionState->getWorldTransform(trans);
+			e.motionState.getWorldTransform(trans);
 			trans.getOpenGLMatrix(&m[0][0]);
 
 			glm::mat4 MVP = perspective * cam * m;

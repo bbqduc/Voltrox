@@ -9,8 +9,25 @@
 
 class Engine 
 {
-	btAlignedObjectArray<Entity> entities;
-	Entity* activeInputEntity; /// TODO : UNSAFE
+public:
+	~Engine();
+
+	void destroy();
+	void tick();
+
+	void addEntity(Entity& e)
+	{ 
+		simulEntities.push_back(&e);
+		dynamicsWorld.addRigidBody(&e.physicsBody);
+	}
+
+	const std::vector<Entity*>& getEntities() const {return simulEntities;}
+private:
+	friend class Root;
+	Engine();
+
+	void updateGravity(btVector3 g);
+	void fireCube();
 
 	/// PHYSICS
 	btDbvtBroadphase broadphase;
@@ -19,22 +36,9 @@ class Engine
 	btCollisionDispatcher dispatcher;
 	btDiscreteDynamicsWorld dynamicsWorld;
 
+	std::vector<Entity*> simulEntities;
+	std::vector<Entity*> explodingEntities;
 
-	friend class Root;
-	Engine();
-public:
-	~Engine();
-
-	void destroy();
-	void tick();
-
-	void addEntity(const Model& model, const btVector3& position = Entity::identityVec3, const btQuaternion& orientation = Entity::identityQuat) 
-	{ 
-		entities.push_back(Entity(&model, position, orientation)); 
-		dynamicsWorld.addRigidBody(entities[entities.size()-1].physicsBody);
-	}
-
-	void setActive(Entity& entity) { activeInputEntity = &entity; }
-	const btAlignedObjectArray<Entity>& getEntities() const {return entities;}
-
+	float fireCooldown;
+	btVector3 gravity;
 };
