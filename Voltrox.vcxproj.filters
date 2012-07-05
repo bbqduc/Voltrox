@@ -179,9 +179,6 @@
     <ClCompile Include="TROLGraphics\meshexplode.cpp">
       <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
-    <ClCompile Include="TROLGraphics\skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TROLGraphics\rendermanager.cpp">
       <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
@@ -190,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\skybox.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="TROLUtil\sortedarray.h">
       <Filter>Header Files\TROLUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLLogic\explosioninfo.h">
+      <Filter>Source Files\TrolLogic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

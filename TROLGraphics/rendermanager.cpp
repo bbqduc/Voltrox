@@ -8,6 +8,7 @@
 #include <GL/gl.h>
 #include <iostream>
 #include "glutils.h"
+#include "skybox.h"
 
 TROLLOERROR RenderManager::init(int resX, int resY)
 {
@@ -15,15 +16,15 @@ TROLLOERROR RenderManager::init(int resX, int resY)
 	this->openglInfo.resY = resY;
 	this->openglInfo.perspective = glm::perspective(45.0f, (float)resX/(float)resY, 1.0f, 1000.0f);
 
-//	renderers.push_back(meshRenderer);
-//	subManagers.push_back(meshExplodeRenderer);
-//	subManagers.push_back(skyboxRenderer);
+	getNewRenderManager<SkyboxRenderer>();
 
 	return initGL();
 }
 
 void RenderManager::destroy()
 {
+	for(auto i = renderers.begin(); i != renderers.end(); ++i)
+		delete *i;
 }
 
 void RenderManager::renderAll()

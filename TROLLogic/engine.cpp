@@ -5,10 +5,11 @@
 
 #include "../TROLGraphics/Managers/modelmanager.h"
 #include "../TROLGraphics/meshrender.h"
+#include "../TROLGraphics/meshexplode.h"
 
 	Engine::Engine()
 :meshRenderer(Root::getSingleton().renderManager.getNewRenderManager<MeshRenderer>()),
-meshExplodeRenderer(0),
+meshExplodeRenderer(Root::getSingleton().renderManager.getNewRenderManager<MeshExplodeRenderer>()),
 broadphase(),
 	collisionConfiguration(),
 	solver(),
@@ -29,8 +30,8 @@ broadphase(),
 
 void Engine::addEntity(Entity& e)
 {
-	simulEntities.push_back(&e);
-	dynamicsWorld.addRigidBody(e.physicsBody);
+	simulEntities.insert(&e);
+	dynamicsWorld.addRigidBody(&e.physicsBody);
 	meshRenderer.registerEntity(e);
 }
 
@@ -41,8 +42,8 @@ void Engine::updateGravity(const btVector3& g)
 
 	for(int i = 0; i < simulEntities.size(); ++i)
 	{
-		simulEntities[i]->physicsBody->activate();
-		simulEntities[i]->physicsBody->setGravity(dynamicsWorld.getGravity());
+		simulEntities[i]->physicsBody.activate();
+		simulEntities[i]->physicsBody.setGravity(dynamicsWorld.getGravity());
 	}
 }
 
@@ -54,18 +55,35 @@ void Engine::fireCube()
 
 	Entity* e = Root::getSingleton().entityStorage.addEntity(Root::getSingleton().modelManager.getModel("cube_tex"), pos, ori);
 	addEntity(*e);
-	e->physicsBody->activate();
-	e->physicsBody->applyImpulse(view*100, btVector3(0,0,0));
+	e->physicsBody.activate();
+	e->physicsBody.applyImpulse(view*100, btVector3(0,0,0));
 }
 
 void Engine::tick()
 {
 	InputHandler& i = Root::getSingleton().inputHandler;
 
-	if(!Renderer::explodeAll)
-		dynamicsWorld.stepSimulation(1/60.0f, 10);
-	if(i.isKeyDown('X'))
-		Renderer::explodeAll = true;
+	if(i.isKeyDown('X') && explosions.size() == 0)
+	{
+		simulEntities[0]->physicsBody.setCollisionFlags(btRigidBody::CF_NO_CONTACT_RESPONSE); // TODO :
+		ExplosionInfo* e = new (explosionsPool.alloc()) ExplosionInfo(*simulEntities[0], btVector3(0,0,-6), 5.0f);
+		explosions.insert(e);
+		meshRenderer.unRegisterEntity(*simulEntities[0]);
+		meshExplodeRenderer.registerEntity(*e);
+	}
+
+	for(int i = 0; i < explosions.size(); ++i)
+		if(explosions[i]->timeElapsed > explosions[i]->TTL)
+		{
+			simulEntities.remove(simulEntities.search(&explosions[i]->entity));
+			meshExplodeRenderer.unRegisterEntity(*explosions[i]);
+			explosionsPool.dealloc(explosions[i]);
+			explosions.remove(explosions.search(explosions[i]));
+		}
+		else
+			explosions[i]->timeElapsed += 0.1f;
+
+	dynamicsWorld.stepSimulation(1/60.0f, 10);
 
 	camera.handleMouseInput();
 	camera.handleKeyInput();
@@ -73,8 +91,8 @@ void Engine::tick()
 	if(i.isKeyDown(GLFW_KEY_SPACE))
 		for(int i = 0; i < simulEntities.size(); ++i)
 		{
-			simulEntities[i]->physicsBody->activate();
-			simulEntities[i]->physicsBody->applyForce(btVector3(0,20,0), btVector3(0,0,0));
+			simulEntities[i]->physicsBody.activate();
+			simulEntities[i]->physicsBody.applyForce(btVector3(0,20,0), btVector3(0,0,0));
 		}
 
 	if(glfwGetMouseButton(GLFW_MOUSE_BUTTON_1) == GLFW_PRESS && fireCooldown <= 0.0f)
@@ -89,12 +107,13 @@ void Engine::tick()
 
 	if(fireCooldown > 0.0f)
 		fireCooldown -= 0.1f;
+
 }
 
 void Engine::destroy()
 {
 	for(int i = 0; i < simulEntities.size(); ++i)
-		dynamicsWorld.removeRigidBody(simulEntities[i]->physicsBody);
+		dynamicsWorld.removeRigidBody(&simulEntities[i]->physicsBody);
 }
 
 Engine::~Engine()

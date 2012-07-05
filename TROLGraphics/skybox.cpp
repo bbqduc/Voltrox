@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-void SkyboxRender::render()
+void SkyboxRenderer::render()
 {
 	const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MVP_TEXTURED);
 	const Camera& cam = Root::getSingleton().engine->getCamera();

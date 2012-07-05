@@ -1,9 +1,8 @@
 #pragma once
-#include "../TROLUtil/sortedarray.h"
+#include "irender.h"
 
-class SkyboxRender
+class SkyboxRenderer : public IRenderer
 {
 	public:
 		void render();
-	private:
 };

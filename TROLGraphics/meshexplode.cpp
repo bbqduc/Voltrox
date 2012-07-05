@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-void MeshExplodeRender::render()
+void MeshExplodeRenderer::render()
 {
 	const Shader& s = Root::getSingleton().shaderManager.getShader(ShaderManager::MESH_EXPLODER);
 	const Camera& c = Root::getSingleton().engine->getCamera();

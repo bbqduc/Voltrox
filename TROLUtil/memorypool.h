@@ -2,9 +2,10 @@
 
 #include <cassert>
 #include <stdint.h>
+#include <LinearMath/btScalar.h>
 
 template <typename T, int size=256>
-class __declspec(align(16)) MemoryPool
+class ATTRIBUTE_ALIGNED16(MemoryPool)
 {
 	public:
 		// Condition is necessary because the pointer to the next free position stored in a free position

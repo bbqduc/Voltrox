@@ -1,17 +1,11 @@
 #pragma once
+#include "irender.h"
 #include "../TROLUtil/sortedarray.h"
+#include "../TROLLogic/explosioninfo.h"
 #include <btBulletDynamicsCommon.h>
 
-class Entity;
 
-struct ExplosionInfo
-{
-	btVector3 localPosition;
-	Entity& entity;
-	float timeElapsed, TTL;
-};
-
-class MeshExplodeRender
+class MeshExplodeRenderer : public IRenderer
 {
 	public:
 		void render();

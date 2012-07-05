@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../TROLUtil/sortedarray.h"
+#include "../TROLUtil/memorypool.h"
+#include "explosioninfo.h"
 #include "Data/entity.h"
 #include "../TROLGraphics/camera.h"
 #include <btBulletDynamicsCommon.h>
@@ -20,7 +23,6 @@ public:
 
 	void addEntity(Entity& e);
 
-	const std::vector<Entity*>& getEntities() const {return simulEntities;}
 	const Camera& getCamera() { return camera; }
 private:
 	friend class Root;
@@ -32,7 +34,8 @@ private:
 	/// VISUALS
 	Camera camera;
 	MeshRenderer& meshRenderer;
-	MeshExplodeRenderer* meshExplodeRenderer;
+	MeshExplodeRenderer& meshExplodeRenderer;
+	MemoryPool<ExplosionInfo> explosionsPool;
 
 	/// PHYSICS
 	btDbvtBroadphase broadphase;
@@ -41,8 +44,8 @@ private:
 	btCollisionDispatcher dispatcher;
 	btDiscreteDynamicsWorld dynamicsWorld;
 
-	std::vector<Entity*> simulEntities;
-	std::vector<Entity*> explodingEntities;
+	SortedArray<Entity*> simulEntities;
+	SortedArray<ExplosionInfo*> explosions;
 
 	float fireCooldown;
 	btVector3 gravity;

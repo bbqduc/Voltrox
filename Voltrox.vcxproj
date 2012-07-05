@@ -150,6 +150,7 @@
     <ClInclude Include="TROLLogic\Data\entity.h" />
     <ClInclude Include="TROLLogic\engine.h" />
     <ClInclude Include="TROLLogic\entitystorage.h" />
+    <ClInclude Include="TROLLogic\explosioninfo.h" />
     <ClInclude Include="TROLUtil\error.h" />
     <ClInclude Include="TROLUtil\memorypool.h" />
     <ClInclude Include="TROLUtil\sortedarray.h" />
