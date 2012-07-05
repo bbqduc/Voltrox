@@ -28,6 +28,7 @@ void MeshExplodeRenderer::render()
 		glUniform3fv(s.uniformLocs[2], 1, &e.localPosition[0]);
 		// Time elapsed
 		glUniform1f(s.uniformLocs[3], e.timeElapsed);
+		glUniform1f(s.uniformLocs[4], 1.0f - e.timeElapsed / e.TTL);
 
 		e.entity.motionState.getWorldTransform(trans);
 		trans.getOpenGLMatrix(&m[0][0]);

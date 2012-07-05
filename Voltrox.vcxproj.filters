@@ -123,11 +123,11 @@
     <None Include="TROLUtil\sortedarray.inl">
       <Filter>Header Files\TROLUtil</Filter>
     </None>
+    <None Include="shaders_330\meshexploder.frag">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TROLGraphics\renderer.cpp">
-      <Filter>Source Files\TROLGraphics</Filter>
-    </ClCompile>
     <ClCompile Include="TROLGraphics\glutils.cpp">
       <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
@@ -199,9 +199,6 @@
     <ClInclude Include="TROLGraphics\shader.h">
       <Filter>Header Files\TROLGraphics</Filter>
     </ClInclude>
-    <ClInclude Include="TROLGraphics\renderer.h">
-      <Filter>Header Files\TROLGraphics</Filter>
-    </ClInclude>
     <ClInclude Include="TROLGraphics\glutils.h">
       <Filter>Header Files\TROLGraphics</Filter>
     </ClInclude>
@@ -240,9 +237,6 @@
     </ClInclude>
     <ClInclude Include="TROLLogic\entitystorage.h">
       <Filter>Header Files\TROLLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="TROLGraphics\rendererr.h">
-      <Filter>Header Files\TROLGraphics</Filter>
     </ClInclude>
     <ClInclude Include="TROLGraphics\meshrender.h">
       <Filter>Header Files\TROLGraphics</Filter>

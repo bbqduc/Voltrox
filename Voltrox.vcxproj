@@ -86,6 +86,7 @@
     <None Include="shaders_330\demo.frag" />
     <None Include="shaders_330\disco.frag" />
     <None Include="shaders_330\distanceblur.frag" />
+    <None Include="shaders_330\meshexploder.frag" />
     <None Include="shaders_330\meshexploder.geom" />
     <None Include="shaders_330\meshexploder.vert" />
     <None Include="shaders_330\moonriver.frag" />
@@ -117,7 +118,6 @@
     <ClCompile Include="TROLGraphics\Managers\texturemanager.cpp" />
     <ClCompile Include="TROLGraphics\meshexplode.cpp" />
     <ClCompile Include="TROLGraphics\meshrender.cpp" />
-    <ClCompile Include="TROLGraphics\renderer.cpp" />
     <ClCompile Include="TROLGraphics\rendermanager.cpp" />
     <ClCompile Include="TROLGraphics\shader.cpp" />
     <ClCompile Include="TROLGraphics\skybox.cpp" />
@@ -140,8 +140,6 @@
     <ClInclude Include="TROLGraphics\Managers\texturemanager.h" />
     <ClInclude Include="TROLGraphics\meshexplode.h" />
     <ClInclude Include="TROLGraphics\meshrender.h" />
-    <ClInclude Include="TROLGraphics\renderer.h" />
-    <ClInclude Include="TROLGraphics\rendererr.h" />
     <ClInclude Include="TROLGraphics\rendermanager.h" />
     <ClInclude Include="TROLGraphics\shader.h" />
     <ClInclude Include="TROLGraphics\skybox.h" />

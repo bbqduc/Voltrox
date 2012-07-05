@@ -27,12 +27,13 @@ TROLLOERROR ShaderManager::initBasicShaders()
 		return TROLLO_INIT_FAILURE;
 	storeUniformLoc(PLAIN_TEXTURED, "sampler");
 
-	if(loadFromShaderDir("mesh_exploder", "meshexploder.vert", "plainTextured.frag", "meshexploder.geom") == TROLLO_INVALID_SHADER)
+	if(loadFromShaderDir("mesh_exploder", "meshexploder.vert", "meshexploder.frag", "meshexploder.geom") == TROLLO_INVALID_SHADER)
 		return TROLLO_INIT_FAILURE;
 	storeUniformLoc(MESH_EXPLODER, "MVP");
 	storeUniformLoc(MESH_EXPLODER, "sampler");
 	storeUniformLoc(MESH_EXPLODER, "localExplosionCenter");
 	storeUniformLoc(MESH_EXPLODER, "timeSinceExplosion");
+	storeUniformLoc(MESH_EXPLODER, "alpha");
 
 	return TROLLO_OK;
 }

@@ -13,6 +13,8 @@
 class MeshRenderer;
 class MeshExplodeRenderer;
 
+static void myTickCallback(btDynamicsWorld* world, btScalar timeStep);
+
 class Engine 
 {
 public:
@@ -22,12 +24,15 @@ public:
 	void tick();
 
 	void addEntity(Entity& e);
+	void physicsCallback(btScalar timeStep);
 
 	const Camera& getCamera() { return camera; }
 private:
 	friend class Root;
 	Engine();
 
+	void explodeEntity(Entity&);
+	void removeExplosion(ExplosionInfo&);
 	void updateGravity(const btVector3& g);
 	void fireCube();
 

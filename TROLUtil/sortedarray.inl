@@ -1,3 +1,5 @@
+#include <iostream>
+
 template<typename T, int arrSize>
 void SortedArray<T, arrSize>::insert(T value)
 {
@@ -9,7 +11,7 @@ void SortedArray<T, arrSize>::insert(T value)
 		if(value < arr[t]) top = t;
 		else base = t+1;
 	}
-	assert(arr[base] != value);
+	assert(base == items || arr[base] != value);
 	memmove(&arr[base+1], &arr[base], sizeof(T)*(items-base));
 	arr[base] = value;
 	++items;

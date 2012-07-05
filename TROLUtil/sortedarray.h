@@ -4,7 +4,7 @@
 #include <cstring>
 #include <cstdlib>
 
-template <typename T, int arrSize=256>
+template <typename T, int arrSize=1024>
 class SortedArray
 {
 	public:

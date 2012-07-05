@@ -16,6 +16,7 @@ struct Entity
 	Model& model;
 	btDefaultMotionState motionState;
 	btRigidBody physicsBody;
+	bool collided, exploded;
 
 	private:
 	Entity(const Entity&);
@@ -26,7 +27,10 @@ struct Entity
 		:
 		model(model_),
 		motionState(btDefaultMotionState(btTransform(orientation, position))),
-		physicsBody(btRigidBody::btRigidBodyConstructionInfo(mass, &motionState, &model_.collisionShape, model_.getInertia(mass)))
+		physicsBody(btRigidBody::btRigidBodyConstructionInfo(mass, &motionState, &model_.collisionShape, model_.getInertia(mass))),
+		collided(false),
+		exploded(false)
 	{
+		physicsBody.setUserPointer(static_cast<void*>(this));
 	}
 };

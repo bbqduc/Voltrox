@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 
+#define MAX_ENTITIES 512
 #include "root.h"
 
 #include <ctime>
@@ -36,7 +37,7 @@ int main()
 	root.engine->addEntity(*et);
 
 	btQuaternion q;
-	for(int i = 0; i < 100; ++i)
+	for(int i = 0; i < 350; ++i)
 	{
 		q.setX((rand()%50) - 100);
 		q.setY((rand()%50) - 100);

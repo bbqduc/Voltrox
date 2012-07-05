@@ -3,14 +3,15 @@ void* MemoryPool<T,size>::alloc()
 {
 	assert(nextFreeSlot);
 	void* t = nextFreeSlot;
-	nextFreeSlot = *(T**)(nextFreeSlot);
+	nextFreeSlot = *(void**)(nextFreeSlot);
+	assert(t >= &pool[0] && t <= &pool[(size-1)*sizeof(T)]);
 	return t;
 }
 
 	template<typename T, int size>
 void MemoryPool<T,size>::dealloc(void* h)
 {
-	assert(h >= &pool[0] && h <= &pool[size-1]);
+	assert(h >= &pool[0] && h <= &pool[(size-1)*sizeof(T)]);
 	((T*)h)->~T();
 	*(void**)(h) = nextFreeSlot;
 	nextFreeSlot = h;

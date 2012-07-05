@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <LinearMath/btScalar.h>
 
-template <typename T, int size=256>
+template <typename T, int size=1024>
 class ATTRIBUTE_ALIGNED16(MemoryPool)
 {
 	public:
