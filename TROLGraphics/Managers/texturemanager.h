@@ -15,6 +15,7 @@
 #include <GL/gl.h>
 
 #include "../glutils.h"
+#include "../../TROLUtil/error.h"
 
 class TextureManager
 {

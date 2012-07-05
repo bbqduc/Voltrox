@@ -2,7 +2,6 @@
 #include "../root.h"
 #include <iostream>
 #include <btBulletDynamicsCommon.h>
-#include "glutils.h"
 
 #define MAXWIDTH 1024
 
@@ -143,8 +142,8 @@ void TextRenderer::initGraphics()
 
 void TextRenderer::renderText(const char *text, float x, float y, float sx, float sy)
 {
-	sx /= Root::getSingleton().renderer.getResX();
-	sy /= Root::getSingleton().renderer.getResY();
+	sx /= Root::getSingleton().renderManager.getResX();
+	sy /= Root::getSingleton().renderManager.getResY();
 	Shader& textShader = Root::getSingleton().shaderManager.getShader(ShaderManager::TEXT);
 	const unsigned char* p;
 

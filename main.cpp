@@ -75,7 +75,8 @@ int main()
 		}
 
 		root.engine->tick();
-		root.renderer.renderEntities(root.engine->getEntities());
+//		root.renderer.renderEntities(root.engine->getEntities());
+		root.renderManager.renderAll();
 		root.textRenderer.renderText(title, 0.0f, -0.85f);
 
 		checkGLErrors("loop");

@@ -4,9 +4,12 @@
 #include "../root.h"
 
 #include "../TROLGraphics/Managers/modelmanager.h"
+#include "../TROLGraphics/meshrender.h"
 
 	Engine::Engine()
-:broadphase(),
+:meshRenderer(Root::getSingleton().renderManager.getNewRenderManager<MeshRenderer>()),
+meshExplodeRenderer(0),
+broadphase(),
 	collisionConfiguration(),
 	solver(),
 	dispatcher(&collisionConfiguration),
@@ -24,6 +27,13 @@
 	dynamicsWorld.addRigidBody(groundRigidBody);
 }
 
+void Engine::addEntity(Entity& e)
+{
+	simulEntities.push_back(&e);
+	dynamicsWorld.addRigidBody(e.physicsBody);
+	meshRenderer.registerEntity(e);
+}
+
 void Engine::updateGravity(const btVector3& g)
 {
 	gravity = g;
@@ -38,7 +48,6 @@ void Engine::updateGravity(const btVector3& g)
 
 void Engine::fireCube()
 {
-	Camera& camera = Root::getSingleton().renderer.getCamera();
 	btVector3 pos(camera.pos.x, camera.pos.y, camera.pos.z);
 	btQuaternion ori(camera.orientation.x, camera.orientation.y, camera.orientation.z, camera.orientation.w);
 	btVector3 view(camera.view.x, camera.view.y, camera.view.z);
@@ -58,7 +67,6 @@ void Engine::tick()
 	if(i.isKeyDown('X'))
 		Renderer::explodeAll = true;
 
-	Camera& camera = Root::getSingleton().renderer.getCamera();
 	camera.handleMouseInput();
 	camera.handleKeyInput();
 

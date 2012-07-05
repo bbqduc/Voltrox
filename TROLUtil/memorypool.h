@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 template <typename T, int size=256>
-class MemoryPool
+class __declspec(align(16)) MemoryPool
 {
 	public:
 		// Condition is necessary because the pointer to the next free position stored in a free position

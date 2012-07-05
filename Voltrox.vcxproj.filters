@@ -55,6 +55,9 @@
     <Filter Include="Header Files\TROLUtil">
       <UniqueIdentifier>{8531343c-37c0-428a-b771-a8294abf7f7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TROLUtil">
+      <UniqueIdentifier>{f93515d1-1d74-4de1-974a-129e2e083e48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders_330\demo.frag">
@@ -117,6 +120,9 @@
     <None Include="TROLUtil\memorypool.inl">
       <Filter>Header Files\TROLUtil</Filter>
     </None>
+    <None Include="TROLUtil\sortedarray.inl">
+      <Filter>Header Files\TROLUtil</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TROLGraphics\renderer.cpp">
@@ -161,14 +167,29 @@
     <ClCompile Include="TROLLogic\entity.cpp">
       <Filter>Source Files\TrolLogic</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files\Voxel</Filter>
-    </ClCompile>
     <ClCompile Include="root.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TROLLogic\inputhandler.cpp">
       <Filter>Source Files\TrolLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\meshrender.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\meshexplode.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLGraphics\rendermanager.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="TROLUtil\error.cpp">
+      <Filter>Source Files\TROLUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +240,30 @@
     </ClInclude>
     <ClInclude Include="TROLLogic\entitystorage.h">
       <Filter>Header Files\TROLLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\rendererr.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\meshrender.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\meshexplode.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\skybox.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\rendermanager.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\irender.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLUtil\error.h">
+      <Filter>Header Files\TROLUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLUtil\sortedarray.h">
+      <Filter>Header Files\TROLUtil</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

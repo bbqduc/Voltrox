@@ -9,4 +9,6 @@ int main()
 
 	for(int i = 0; i < 256; ++i)
 		assert(arr[i] == i+1);
+
+	std::cout << "ALL TEST PASSED FOR SORTEDARRAY\n";
 }

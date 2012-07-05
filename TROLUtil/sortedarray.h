@@ -1,20 +1,25 @@
+#pragma once
+
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
 
-template<typename T, int size_=256>
+template <typename T, int arrSize=256>
 class SortedArray
 {
 	public:
 		SortedArray():items(0){}
 		void remove(int index);
 		int search(T value);
-		int insert(T value);
+		void insert(T value);
 		int size() { return items; }
-		T operator[](int i) { return array[i]; }
+		T operator[](int i) { return arr[i]; }
 	private:
-		T array[size_];
+		T arr[arrSize];
 		int items;
+
+		SortedArray(const SortedArray&);
+		SortedArray& operator=(const SortedArray&);
 };
 
 #include "sortedarray.inl"

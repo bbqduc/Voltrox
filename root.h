@@ -9,6 +9,8 @@
 #include "TROLLogic/inputhandler.h"
 #include "TROLLogic/entitystorage.h"
 #include "TROLGraphics/glutils.h"
+#include "TROLUtil/error.h"
+#include "TROLGraphics/rendermanager.h"
 
 
 // Contains all singleton managers/things
@@ -19,7 +21,7 @@ struct Root
 	InputHandler inputHandler;
 	EntityStorage entityStorage;
 
-	Renderer renderer;
+	RenderManager renderManager;
 	ModelManager modelManager;
 	TextureManager textureManager;
 	ShaderManager shaderManager;

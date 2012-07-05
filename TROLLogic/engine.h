@@ -7,6 +7,9 @@
 
 #include <vector>
 
+class MeshRenderer;
+class MeshExplodeRenderer;
+
 class Engine 
 {
 public:
@@ -15,19 +18,21 @@ public:
 	void destroy();
 	void tick();
 
-	void addEntity(Entity& e)
-	{ 
-		simulEntities.push_back(&e);
-		dynamicsWorld.addRigidBody(e.physicsBody);
-	}
+	void addEntity(Entity& e);
 
 	const std::vector<Entity*>& getEntities() const {return simulEntities;}
+	const Camera& getCamera() { return camera; }
 private:
 	friend class Root;
 	Engine();
 
 	void updateGravity(const btVector3& g);
 	void fireCube();
+
+	/// VISUALS
+	Camera camera;
+	MeshRenderer& meshRenderer;
+	MeshExplodeRenderer* meshExplodeRenderer;
 
 	/// PHYSICS
 	btDbvtBroadphase broadphase;

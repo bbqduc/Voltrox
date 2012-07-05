@@ -1,17 +1,17 @@
-template<typename T, int size_>
-int SortedArray<T, size_>::insert(T value)
+template<typename T, int arrSize>
+void SortedArray<T, arrSize>::insert(T value)
 {
-	assert(items+1 <= size_);
+	assert(items+1 <= arrSize);
 	int base = 0, top = items;
 	while(base != top)
 	{
 		int t = (base + top) / 2;
-		if(value < array[t]) top = t;
+		if(value < arr[t]) top = t;
 		else base = t+1;
 	}
-	assert(array[base] != value);
-	memmove(&array[base+1], &array[base], sizeof(T)*(items-base));
-	array[base] = value;
+	assert(arr[base] != value);
+	memmove(&arr[base+1], &arr[base], sizeof(T)*(items-base));
+	arr[base] = value;
 	++items;
 }
 
@@ -23,10 +23,10 @@ int SortedArray<T, size>::search(T value)
 	while(base != top)
 	{
 		int t = (base + top) / 2;
-		if(value <= array[t]) top = t;
+		if(value <= arr[t]) top = t;
 		else base = t+1;
 	}
-	assert(array[base] == value);
+	assert(arr[base] == value);
 	return base;
 }
 
@@ -34,5 +34,5 @@ template<typename T, int size>
 void SortedArray<T, size>::remove(int i)
 {
 	assert(i >= 0 && i < items);
-	memmove(&array[i], &array[i+1], sizeof(T)*(--items -i));
+	memmove(&arr[i], &arr[i+1], sizeof(T)*(--items -i));
 }

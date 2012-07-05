@@ -14,6 +14,7 @@
 
 #include "shader.h"
 #include "glutils.h"
+#include "../TROLUtil/error.h"
 
 class TextRenderer
 {

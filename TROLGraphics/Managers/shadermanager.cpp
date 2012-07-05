@@ -1,5 +1,4 @@
 #include "shadermanager.h"
-#include "../glutils.h"
 #include <iostream>
 
 #ifdef TROL_USE_OLD_OPENGL

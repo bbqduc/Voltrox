@@ -5,14 +5,9 @@
 
 class Camera
 {
-	friend class Engine;
-	friend class Renderer;
-
+public:
 	glm::vec3 pos, up, view, right;
 	glm::quat orientation;
-
-	void updateVectors();
-public:
 	void handleMouseInput();
 	void handleKeyInput();
 
@@ -21,5 +16,7 @@ public:
 		orientation = glm::rotate(orientation, -45.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		updateVectors();
 	}
+private:
+	void updateVectors();
 
 };

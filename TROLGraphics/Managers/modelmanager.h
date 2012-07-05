@@ -16,6 +16,7 @@
 
 #include "../Data/model.h"
 #include "../glutils.h"
+#include "../../TROLUtil/error.h"
 
 class Renderer;
 

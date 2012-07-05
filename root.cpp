@@ -6,14 +6,14 @@ Root Root::singleton;
 // Initializes everything in the correct order
 TROLLOERROR Root::init(int resX, int resY)
 {
+	if(renderManager.init(resX, resY))
+	{
+		std::cerr << "Failed to init RenderManager\n";
+		return TROLLO_INIT_FAILURE;
+	}
 	engine = new Engine();
 	inputHandler.init();
 
-	if(renderer.init(resX, resY))
-	{
-		std::cerr << "Failed to init renderer\n";
-		return TROLLO_INIT_FAILURE;
-	}
 	if(textureManager.init())
 	{
 		std::cerr << "Failed to init TextureManager\n";
@@ -44,7 +44,7 @@ void Root::destroy()
 	shaderManager.destroy();
 	modelManager.destroy();
 	textureManager.destroy();
-	renderer.destroy();
+	renderManager.destroy();
 
 	inputHandler.destroy();
 	delete engine;
