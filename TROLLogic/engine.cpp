@@ -97,7 +97,8 @@ void Engine::explodeEntity(Entity& en)
 	en.exploded = true;
 	en.physicsBody.setCollisionFlags(btRigidBody::CF_NO_CONTACT_RESPONSE);
 	en.physicsBody.setAngularVelocity(btVector3(0,0,0));
-	ExplosionInfo* e = new (explosionsPool.alloc()) ExplosionInfo(en, btVector3(0,0,-6), 15.0f);
+	btVector3 t(0,0,-6);
+	ExplosionInfo* e = new (explosionsPool.alloc()) ExplosionInfo(en, t, 15.0f);
 	explosions.insert(e);
 	meshRenderer.unRegisterEntity(en);
 	meshExplodeRenderer.registerEntity(*e);

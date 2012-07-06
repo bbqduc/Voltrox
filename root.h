@@ -1,6 +1,5 @@
 #pragma once
 
-#include "TROLGraphics/renderer.h"
 #include "TROLGraphics/textrenderer.h"
 #include "TROLGraphics/Managers/modelmanager.h"
 #include "TROLGraphics/Managers/texturemanager.h"
