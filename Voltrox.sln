@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Voltrox", "Voltrox.vcxproj", "{A9095166-2AB6-4725-92F4-F8750EC40309}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlitetest", "sqlitetest\sqlitetest.vcxproj", "{295A9199-3441-4E20-BB4D-C8445C222855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,14 @@ Global
 		{A9095166-2AB6-4725-92F4-F8750EC40309}.Release|Win32.Build.0 = Release|Win32
 		{A9095166-2AB6-4725-92F4-F8750EC40309}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{A9095166-2AB6-4725-92F4-F8750EC40309}.RelWithDebInfo|Win32.Build.0 = Release|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.Debug|Win32.ActiveCfg = Debug|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.Debug|Win32.Build.0 = Debug|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.MinSizeRel|Win32.ActiveCfg = Release|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.MinSizeRel|Win32.Build.0 = Release|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.Release|Win32.ActiveCfg = Release|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.Release|Win32.Build.0 = Release|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
+		{295A9199-3441-4E20-BB4D-C8445C222855}.RelWithDebInfo|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -83,7 +83,7 @@ int main()
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
-		glfwSleep(0.01);
+//		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 
 	}

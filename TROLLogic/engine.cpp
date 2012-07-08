@@ -58,7 +58,7 @@ Engine::Engine()
 	dispatcher(&collisionConfiguration),
 	dynamicsWorld(&dispatcher, &broadphase, &solver, &collisionConfiguration),
 	fireCooldown(0.0f),
-	gravity(0,-10,0)
+	gravity(0,0,0)
 {
 	dynamicsWorld.setGravity(gravity);
 	dynamicsWorld.setInternalTickCallback(myTickCallback, static_cast<void*>(this));
@@ -124,6 +124,38 @@ void Engine::fireCube()
 	e->physicsBody.applyImpulse(view*100, btVector3(0,0,0));
 }
 
+response_t PhysicsSystem::handleMessage(Message msg)
+{
+	PhysicsComponent *c = getComponent(e, CT_PHYSICS); // TODO : what if add
+	switch(msg.type)
+	{
+		case ADD:
+			c = addComponent(msg.entity, CT_PHYSICS);
+			c->physicsBody = new (physicsPool.alloc()) btRigidBody(*static_cast<btRigidBody::btRigidBodyConstructionInfo*> msg.data);
+			dynamicsWorld.addRigidBody(c->physicsBody);
+			return MSG_DONE;
+		case REMOVE;
+			dynamicsWorld.removeRigidBody(c->physicsBody);
+			removeComponent(msg.entity, CT_PHYSICS);
+			return MSG_DONE;
+		case PHYS_THRUSTERS:
+			btVector3 v(0,*static_cast<float*>(msg.data),0);
+			c->physicsBody->applyForce(v, btVector3(0,0,0));
+			return MSG_DONE;
+		case PHYS_SET_COLLISION_FLAGS:
+			c->physicsBody->setCollisionFlags(*static_cast<btRigidBody::CollisionFlags*>(msg.data));
+			return MSG_DONE;
+		default:
+			return MSG_IGNORED;
+	}
+}
+
+void PhysicsSystem::tick()
+{
+	// TODO : COLLISION CALLBACK -> SEND EVENTS TO OTHER SYSTEMS
+	dynamicsWorld.stepSimulation(1/60.0f, 10);
+}
+
 void Engine::tick()
 {
 	InputHandler& i = Root::getSingleton().inputHandler;
@@ -165,7 +197,6 @@ void Engine::tick()
 
 		if(fireCooldown > 0.0f)
 			fireCooldown -= 0.1f;
-
 }
 
 void Engine::destroy()
