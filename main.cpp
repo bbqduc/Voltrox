@@ -37,7 +37,7 @@ int main()
 	root.engine->addEntity(*et);
 
 	btQuaternion q;
-	for(int i = 0; i < 350; ++i)
+	for(int i = 0; i < 750; ++i)
 	{
 		q.setX((rand()%50) - 100);
 		q.setY((rand()%50) - 100);
@@ -76,14 +76,12 @@ int main()
 		}
 
 		root.engine->tick();
-//		root.renderer.renderEntities(root.engine->getEntities());
 		root.renderManager.renderAll();
 		root.textRenderer.renderText(title, 0.0f, -0.85f);
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
-		glfwSleep(0.01);
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 
 	}

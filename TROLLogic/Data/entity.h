@@ -14,7 +14,6 @@ struct Entity
 	static const btVector3 identityVec3;
 
 	Model& model;
-	btDefaultMotionState motionState;
 	btRigidBody physicsBody;
 	bool collided, exploded;
 
@@ -26,11 +25,11 @@ struct Entity
 	Entity(Model& model_, const btVector3& position = Entity::identityVec3, const btQuaternion& orientation = Entity::identityQuat, float mass=1.0f)
 		:
 		model(model_),
-		motionState(btDefaultMotionState(btTransform(orientation, position))),
-		physicsBody(btRigidBody::btRigidBodyConstructionInfo(mass, &motionState, &model_.collisionShape, model_.getInertia(mass))),
+		physicsBody(btRigidBody::btRigidBodyConstructionInfo(mass, 0, &model_.collisionShape, model_.getInertia(mass))),
 		collided(false),
 		exploded(false)
 	{
 		physicsBody.setUserPointer(static_cast<void*>(this));
+		physicsBody.setWorldTransform(btTransform(orientation, position));
 	}
 };

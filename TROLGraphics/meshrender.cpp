@@ -19,7 +19,6 @@ void MeshRenderer::render()
 		// Camera setup
 		glm::mat4 cam(glm::lookAt(c.pos, c.pos + c.view, c.up));
 		glm::mat4 m;
-		btTransform trans;
 
 		// Draw entities
 		// One additional optimization would be to draw same models sequentially to skip some binds
@@ -27,7 +26,7 @@ void MeshRenderer::render()
 		{
 			const Entity& e = *entities[i];
 
-			e.motionState.getWorldTransform(trans);
+		   btTransform trans = e.physicsBody.getWorldTransform();
 			trans.getOpenGLMatrix(&m[0][0]);
 			glm::mat4 MVP = perspective * cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));

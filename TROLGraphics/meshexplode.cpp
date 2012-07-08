@@ -19,7 +19,6 @@ void MeshExplodeRenderer::render()
 	glm::mat4 cam(glm::lookAt(c.pos, c.pos + c.view, c.up));
 	glm::mat4 m;
 
-	btTransform trans;
 	for(int i = 0; i < explosions.size(); ++i)
 	{
 		const ExplosionInfo& e = *explosions[i];
@@ -30,7 +29,7 @@ void MeshExplodeRenderer::render()
 		glUniform1f(s.uniformLocs[3], e.timeElapsed);
 		glUniform1f(s.uniformLocs[4], 1.0f - e.timeElapsed / e.TTL);
 
-		e.entity.motionState.getWorldTransform(trans);
+		btTransform trans = e.entity.physicsBody.getWorldTransform();
 		trans.getOpenGLMatrix(&m[0][0]);
 
 		glm::mat4 MVP = perspective * cam * m;
