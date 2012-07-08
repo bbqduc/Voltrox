@@ -1,46 +1,21 @@
 #pragma once
 
-#include "../TROLUtil/sortedarray.h"
-#include "../TROLUtil/memorypool.h"
-#include "explosioninfo.h"
-#include "Data/entity.h"
-#include "../TROLGraphics/camera.h"
+#include "../system.h"
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
-#include <vector>
+const msg_t PHYS_TICK = LAST_BASE_MSG + 1;
+const msg_t PHYS_THRUSTERS = LAST_BASE_MSG + 2;
+const msg_t PHYS_SET_COLLISION_FLAGS= LAST_BASE_MSG + 3;
 
-class MeshRenderer;
-class MeshExplodeRenderer;
-
-static void myTickCallback(btDynamicsWorld* world, btScalar timeStep);
-
-class Engine 
+class PhysicsSystem : public System<btRigidBody>
 {
 public:
-	~Engine();
-
-	void destroy();
-	void tick();
-
-	void addEntity(Entity& e);
-	void physicsCallback(btScalar timeStep);
-
-	const Camera& getCamera() { return camera; }
+	virtual rsp_t handleMessage(Message msg);
+	PhysicsSystem();
 private:
-	friend class Root;
-	Engine();
-
-	void explodeEntity(Entity&);
-	void removeExplosion(ExplosionInfo&);
-	void updateGravity(const btVector3& g);
-	void fireCube();
-
-	/// VISUALS
-	Camera camera;
-	MeshRenderer& meshRenderer;
-	MeshExplodeRenderer& meshExplodeRenderer;
-	MemoryPool<ExplosionInfo> explosionsPool;
+	Engine(const );
+	void tick();
 
 	/// PHYSICS
 	btDbvtBroadphase broadphase;
@@ -49,9 +24,5 @@ private:
 	btCollisionDispatcher dispatcher;
 	btDiscreteDynamicsWorld dynamicsWorld;
 
-	SortedArray<Entity*> simulEntities;
-	SortedArray<ExplosionInfo*> explosions;
-
-	float fireCooldown;
 	btVector3 gravity;
 };

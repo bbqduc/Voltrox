@@ -31,14 +31,24 @@ int main()
 	Root& root = Root::getSingleton();
 
 	root.modelManager.addFromTROLLO("ship", "resources/ship.trollo", root.textureManager.getTexture("default"));
+	const Model& shipModel = root.modelManager.getModel("ship");
 	btVector3 pos(0,50,-100);
 
-	Entity* et = root.entityStorage.addEntity(root.modelManager.getModel("ship"), pos);
-	root.engine->addEntity(*et);
-
+	Message msg;
 	btQuaternion q;
+	struct {
+		btRigidBody::btRigidBodyConstructionInfo ci;
+		btTransform t;
+	} msgData;
+
+	msg.mType = Message::ADD;
+	msg.data = &msgData;
+
+	float mass = 1.0f;
+	msgData.ci = btRigidBody::btRigidBodyConstructionInfo(mass, 0, shipModel.collisionShape, shipModel.getInertia(mass));
 	for(int i = 0; i < 350; ++i)
 	{
+		msg.entity = GLOBALTHING::createEntity();
 		q.setX((rand()%50) - 100);
 		q.setY((rand()%50) - 100);
 		q.setZ((rand()%50) - 100);
@@ -47,8 +57,8 @@ int main()
 		pos.setX(-50.0f + (rand()%100));
 		pos.setZ(-100.0f + (rand()%100) - 50);
 		pos.setY(60.0f + (rand()%100) - 50);
-		et = root.entityStorage.addEntity(root.modelManager.getModel("ship"), pos, q);
-		root.engine->addEntity(*et);
+		msgData.t = btTransform(q, pos);
+		MESSAGETHING::broadcastMessage(msg, CTFlags::PHYSICS);
 	}
 
 	checkGLErrors("Preloop");
@@ -61,11 +71,20 @@ int main()
 	char title[128];
 	while(running)
 	{
-		++frame;
+//		++frame;
 	
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		double t = glfwGetTime();
+		MESSAGETHING::broadcastMessage(Message::PHYSICS_TICK, CTFlags::PHYSICS);
+		RENDER_ALL;
+//		MESSAGETHING::broadcastMessage(Message::RENDER_RENDER, CTFlags::RENDER);
+
+		checkGLErrors("loop");
+
+		glfwSwapBuffers();
+		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
+
+/*		double t = glfwGetTime();
 		if(1.0f + prevTime <= t)
 		{
 			float spf = (t - prevTime)*1000 / frame;
@@ -76,15 +95,9 @@ int main()
 		}
 
 		root.engine->tick();
-//		root.renderer.renderEntities(root.engine->getEntities());
 		root.renderManager.renderAll();
 		root.textRenderer.renderText(title, 0.0f, -0.85f);
-
-		checkGLErrors("loop");
-
-		glfwSwapBuffers();
-//		glfwSleep(0.01);
-		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
+*/
 
 	}
 	glUseProgram(0);
@@ -92,5 +105,4 @@ int main()
 	Root::destroySingleton();
 
 	return 0;
-
 }

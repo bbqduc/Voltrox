@@ -16,15 +16,17 @@
 // Responsible for initializing/destroying everything in the correct order
 struct Root
 {
-	Engine* engine; // Has to be pointer because it contains bullet objects without a default ctor
-	InputHandler inputHandler;
-	EntityStorage entityStorage;
+	PhysicsSystem physicsSystem;
+	RenderSystem renderSystem;
+	PositionSystem positionSystem;
 
-	RenderManager renderManager;
+	InputHandler inputHandler;
+
+	OpenGLManager openGLManager; // Remains of rendermanager, manages opengl context also perspective and stuff
 	ModelManager modelManager;
 	TextureManager textureManager;
 	ShaderManager shaderManager;
-	TextRenderer textRenderer;
+//	TextRenderer textRenderer;
 
 	static TROLLOERROR initSingleton(int resX, int resY) { assert(!initialized); initialized=true; return singleton.init(resX, resY); };
 	static void destroySingleton() { singleton.destroy(); }
