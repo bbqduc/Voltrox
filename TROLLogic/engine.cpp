@@ -124,6 +124,17 @@ void Engine::fireCube()
 	e->physicsBody.applyImpulse(view*100, btVector3(0,0,0));
 }
 
+void PhysicsSystem::updatePositions(ct_t selection)
+{
+	std::vector<entid_t> entities = getAllEntities(selection);
+	for(int i = 0; i < entities.size(); ++i)
+	{
+		Position *p = getComponent(entities[i], CT_POSITION);
+		PhysicsComponent *c = getComponent(entities[i], CT_PHYSICS);
+		p->transform = c->getWorldTransform(); // TODO : what if just point straight to it :ooo
+	}
+}
+
 response_t PhysicsSystem::handleMessage(Message msg)
 {
 	PhysicsComponent *c = getComponent(e, CT_PHYSICS); // TODO : what if add
