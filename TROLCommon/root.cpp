@@ -6,12 +6,12 @@ Root Root::singleton;
 // Initializes everything in the correct order
 TROLLOERROR Root::init(int resX, int resY)
 {
-	if(renderManager.init(resX, resY))
+	if(openGLWindow.init(resX, resY))
 	{
-		std::cerr << "Failed to init RenderManager\n";
+		std::cerr << "Failed to init OpenGL window!\n";
 		return TROLLO_INIT_FAILURE;
 	}
-	engine = new Engine();
+	physicsSystem.init();
 	inputHandler.init();
 
 	if(textureManager.init())
@@ -29,23 +29,23 @@ TROLLOERROR Root::init(int resX, int resY)
 		std::cerr << "Failed to init ShaderManager\n";
 		return TROLLO_INIT_FAILURE;
 	}
-	if(textRenderer.init())
+/*	if(textRenderer.init())
 	{
 		std::cerr << "Failed to init TextRenderer\n";
 		return TROLLO_INIT_FAILURE;
-	}
+	}*/
 
 	return TROLLO_OK;
 }
 
 void Root::destroy()
 {
-	textRenderer.destroy();
+//	textRenderer.destroy();
 	shaderManager.destroy();
 	modelManager.destroy();
 	textureManager.destroy();
-	renderManager.destroy();
 
 	inputHandler.destroy();
-	delete engine;
+	openGLWindow.destroy();
+	physicsSystem.destroy();
 }

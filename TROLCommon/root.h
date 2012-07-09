@@ -9,7 +9,6 @@
 #include "TROLLogic/entitystorage.h"
 #include "TROLGraphics/glutils.h"
 #include "TROLUtil/error.h"
-#include "TROLGraphics/rendermanager.h"
 
 
 // Contains all singleton managers/things
@@ -22,7 +21,7 @@ struct Root
 
 	InputHandler inputHandler;
 
-	OpenGLManager openGLManager; // Remains of rendermanager, manages opengl context also perspective and stuff
+	OpenGLWindow openGLWindow;
 	ModelManager modelManager;
 	TextureManager textureManager;
 	ShaderManager shaderManager;
