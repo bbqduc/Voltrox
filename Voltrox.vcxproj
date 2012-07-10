@@ -119,6 +119,7 @@
     <ClCompile Include="TROLGraphics\meshexplode.cpp" />
     <ClCompile Include="TROLGraphics\meshrender.cpp" />
     <ClCompile Include="TROLGraphics\rendermanager.cpp" />
+    <ClCompile Include="TROLGraphics\rendersystem.cpp" />
     <ClCompile Include="TROLGraphics\shader.cpp" />
     <ClCompile Include="TROLGraphics\skybox.cpp" />
     <ClCompile Include="TROLGraphics\textrenderer.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="TROLUtil\error.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="positionsystem.h" />
     <ClInclude Include="root.h" />
     <ClInclude Include="TROLConsole\console.h" />
     <ClInclude Include="TROLGraphics\camera.h" />
@@ -141,8 +143,10 @@
     <ClInclude Include="TROLGraphics\meshexplode.h" />
     <ClInclude Include="TROLGraphics\meshrender.h" />
     <ClInclude Include="TROLGraphics\rendermanager.h" />
+    <ClInclude Include="TROLGraphics\rendersystem.h" />
     <ClInclude Include="TROLGraphics\shader.h" />
     <ClInclude Include="TROLGraphics\skybox.h" />
+    <ClInclude Include="TROLGraphics\system.h" />
     <ClInclude Include="TROLGraphics\textrenderer.h" />
     <ClInclude Include="TROLGraphics\Voxel\shapes.h" />
     <ClInclude Include="TROLLogic\Data\entity.h" />

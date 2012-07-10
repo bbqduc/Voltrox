@@ -4,18 +4,17 @@
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
-const msg_t PHYS_TICK = LAST_BASE_MSG + 1;
-const msg_t PHYS_THRUSTERS = LAST_BASE_MSG + 2;
-const msg_t PHYS_SET_COLLISION_FLAGS= LAST_BASE_MSG + 3;
+const msg_t PHYS_THRUSTERS = LAST_BASE_MSG + 1;
+const msg_t PHYS_SET_COLLISION_FLAGS= LAST_BASE_MSG + 2;
 
 class PhysicsSystem : public System<btRigidBody>
 {
 public:
 	virtual rsp_t handleMessage(Message msg);
 	PhysicsSystem();
+	void tick();
 private:
 	Engine(const );
-	void tick();
 
 	/// PHYSICS
 	btDbvtBroadphase broadphase;

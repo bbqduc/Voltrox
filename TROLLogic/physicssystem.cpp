@@ -37,9 +37,6 @@ rsp_t PhysicsSystem::handleMessage(Message msg)
 	PhysicsComponent *c = getComponent(e, CT_PHYSICS); // TODO : what if add
 	switch(msg.type)
 	{
-		case PHYS_TICK:
-			tick();
-			return MSG_DONE;
 		case ADD:
 			c = addComponent(msg.entity);
 			c->physicsBody = new (addComponent(msg.entity)) btRigidBody(*static_cast<btRigidBody::btRigidBodyConstructionInfo*> msg.data);

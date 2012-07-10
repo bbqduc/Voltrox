@@ -2,11 +2,7 @@
 #include "../TROLUtil/memorypool.h"
 #include "../TROLUtil/sortedarray.h"
 #include <stdint.h>
-
-typedef uint64_t ct_t; // Component type
-typedef uint32_t eid_t; // Entity id type
-typedef uint8_t rsp_t; // Response type 
-typedef uint8_t msg_t; // Message type
+#include "types.h"
 
 const ct_t CT_POSITION = 0;
 const ct_t CT_PHYSICS = 1;
@@ -16,12 +12,6 @@ const ct_t CTF_POSITION = 1 << CT_POSITION;
 const ct_t CTF_PHYSICS = 1 << CT_PHYSICS;
 const ct_t CTF_RENDERABLE = 1 << CT_RENDERABLE;
 
-struct Message
-{
-	msg_t mType;
-	eid_t entity;
-	void* data;
-};
 
 template <typename T>
 class System

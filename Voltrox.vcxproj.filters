@@ -191,6 +191,9 @@
     <ClCompile Include="TROLGraphics\skybox.cpp">
       <Filter>Source Files\TROLGraphics</Filter>
     </ClCompile>
+    <ClCompile Include="TROLGraphics\rendersystem.cpp">
+      <Filter>Source Files\TROLGraphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TROLGraphics\textrenderer.h">
@@ -261,6 +264,15 @@
     </ClInclude>
     <ClInclude Include="TROLLogic\explosioninfo.h">
       <Filter>Source Files\TrolLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\rendersystem.h">
+      <Filter>Header Files\TROLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="TROLGraphics\system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="positionsystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -64,29 +64,27 @@ int main()
 	checkGLErrors("Preloop");
 	bool running = true;
 
-	float time = -100.0f;
 	double prevTime = glfwGetTime();
 	float frame = 0;
 
-	char title[128];
 	while(running)
 	{
 //		++frame;
 	
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		MESSAGETHING::broadcastMessage(Message::PHYSICS_TICK, CTFlags::PHYSICS);
-		RENDER_ALL;
-//		MESSAGETHING::broadcastMessage(Message::RENDER_RENDER, CTFlags::RENDER);
+		root.physicsSystem.tick();
+		root.renderSystem.render();
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
 
-/*		double t = glfwGetTime();
+		double t = glfwGetTime();
 		if(1.0f + prevTime <= t)
 		{
+			char title[128];
 			float spf = (t - prevTime)*1000 / frame;
 			sprintf(title, "ms per frame : %f", spf);
 			glfwSetWindowTitle(title);
@@ -94,10 +92,9 @@ int main()
 			frame = 0;
 		}
 
-		root.engine->tick();
-		root.renderManager.renderAll();
-		root.textRenderer.renderText(title, 0.0f, -0.85f);
-*/
+//		root.engine->tick();
+//		root.renderManager.renderAll();
+//		root.textRenderer.renderText(title, 0.0f, -0.85f);
 
 	}
 	glUseProgram(0);
