@@ -1,4 +1,10 @@
-#include "openglmanager.h"
+#include "openglwindow.h"
+#include <GL3/gl3w.h>
+#include <GL/glfw.h>
+#include <GL/gl.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
+#include "glutils.h"
 
 TROLLOERROR OpenGLWindow::init(int resX, int resY)
 {
@@ -21,7 +27,7 @@ TROLLOERROR OpenGLWindow::initGL()
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
 
-	if(!glfwOpenWindow(openglInfo.resX,openglInfo.resY,8,8,8,8,24,0, GLFW_WINDOW))
+	if(!glfwOpenWindow(resX,resY,8,8,8,8,24,0, GLFW_WINDOW))
 	{
 		glfwTerminate();
 		return TROLLO_INIT_FAILURE;
@@ -62,7 +68,7 @@ TROLLOERROR OpenGLWindow::initGL()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glfwSetMousePos(openglInfo.resX / 2, openglInfo.resY / 2);
+	glfwSetMousePos(resX / 2, resY / 2);
 	glfwDisable(GLFW_MOUSE_CURSOR);
 
 	checkGLErrors("post_init");

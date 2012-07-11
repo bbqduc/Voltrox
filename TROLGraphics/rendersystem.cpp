@@ -1,9 +1,12 @@
 #include "rendersystem.h"
+#include <TROLCommon/root.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void RenderSystem::render()
 {
-		Position* c = GLOBALTHING::getComponent(camera, CT_POSITION);
-		const Shader& s = shaderManager.getShader(ShaderManager::MVP_TEXTURED);
+//		btTransform& c = *Root::positionSystem.getComponent(camera);
+		const Shader& s = Root::shaderManager.getShader(ShaderManager::MVP_TEXTURED);
         const glm::mat4& perspective = Root::openGLWindow.getPerspective();
 
 		// GL init stuff
@@ -12,7 +15,8 @@ void RenderSystem::render()
 		glUniform1i(s.uniformLocs[1], 0);
 
 		// Camera setup
-		glm::mat4 cam(glm::lookAt(c.pos, c.pos + c.view, c.up)); // TODO : ditch glm::lookat
+//		glm::mat4 cam(glm::lookAt(c.pos, c.pos + c.view, c.up)); // TODO : ditch glm::lookat
+		glm::mat4 cam(glm::lookAt(glm::vec3(0.0f,0.0f,200.0f), glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f))); // TODO : ditch glm::lookat
 		glm::mat4 m;
 		btTransform trans;
 
@@ -24,21 +28,21 @@ void RenderSystem::render()
 		// One additional optimization would be to draw same->models sequentially to skip some binds
 		for(int i = 0; i < renderables.size(); ++i)
 		{
-			const Position* p = GLOBALTHING::getComponent(renderables[i].entity, CT_POSITION);
-			const Renderable* r = renderables[i].component;
+			const btTransform& p = *Root::positionSystem.getComponent(renderables[i].entity);
+			const Model* r = *renderables[i].component;
 
-			p->transform->getOpenGLMatrix(&m[0][0]);
+			p.getOpenGLMatrix(&m[0][0]);
 			
 			glm::mat4 MVP = cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));
 
-			glBindTexture(GL_TEXTURE_2D, r->model->texture);
-			glBindVertexArray(r->model->vao);
-			glBindBuffer(GL_ARRAY_BUFFER, r->model->vertexBuffer);
+			glBindTexture(GL_TEXTURE_2D, r->texture);
+			glBindVertexArray(r->vao);
+			glBindBuffer(GL_ARRAY_BUFFER, r->vertexBuffer);
 #ifdef TROL_USE_OLD_OPENGL // Old opengl doesn't include GL_ELEMENT_ARRAY_BUFFER in a VAO
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->model->indexBuffer);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->indexBuffer);
 #endif
-			glDrawElements(GL_TRIANGLES, r->model->numFaces*3, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, r->numFaces*3, GL_UNSIGNED_INT, 0);
 		}
 
 		glBindVertexArray(0);
@@ -48,10 +52,10 @@ void RenderSystem::render()
 		checkGLErrors("MeshRenderer::render()");
 }
 
-void RenderSystem::explodeRender()
+/*void RenderSystem::explodeRender()
 {
 	const Shader& s = Root::shaderManager.getShader(ShaderManager::MESH_EXPLODER);
-	Position* c = GLOBALTHING::getComponent(camera, CT_POSITION);
+	btTransform* c = Root::positionSystem.getComponent(camera);
     const glm::mat4& perspective = Root::openGLWindow.getPerspective();
 
 	glDisable(GL_CULL_FACE);
@@ -94,4 +98,4 @@ void RenderSystem::explodeRender()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glEnable(GL_CULL_FACE);
-}
+}*/

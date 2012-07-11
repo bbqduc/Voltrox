@@ -6,6 +6,11 @@ ModelManager Root::modelManager;
 TextureManager Root::textureManager;
 ShaderManager Root::shaderManager;
 
+PhysicsSystem Root::physicsSystem;
+PositionSystem Root::positionSystem;
+RenderSystem Root::renderSystem;
+EntitySystem Root::entitySystem;
+
 // Initializes everything in the correct order
 TROLLOERROR Root::init(int resX, int resY)
 {
@@ -49,16 +54,21 @@ TROLLOERROR Root::initManagers()
 
 TROLLOERROR Root::initSystems()
 {
-	systems.push_back(new PositionSystem());
-	systems.push_back(new PhysicsSystem());
-	systems.push_back(new RenderSystem());
+    return TROLLO_OK;
 }
 
-void Root::broadcastMessage(Message message, ct_t recipients)
+rsp_t Root::broadcastMessage(Message message, ct_t recipients)
 {
-	for(auto i = systems.begin(); i != systems.end(); ++i)
+    if(recipients & CTFlags::PHYSICS)
+        physicsSystem.handleMessage(message);
+    if(recipients & CTFlags::POSITION)
+        positionSystem.handleMessage(message);
+    if(recipients & CTFlags::RENDERABLE)
+        renderSystem.handleMessage(message);
+/*	for(auto i = systems.begin(); i != systems.end(); ++i)
 		if(i->id & recipients)
-			i->handleMessage(message);
+			i->handleMessage(message);*/
+    return MSG_DONE;
 }
 
 
@@ -70,6 +80,6 @@ void Root::destroy()
 	textureManager.destroy();
 
 	inputHandler.destroy();
-	openGLWindow.destroy();
-	physicsSystem.destroy();
+//	openGLWindow.destroy();
+//	physicsSystem.destroy();
 }

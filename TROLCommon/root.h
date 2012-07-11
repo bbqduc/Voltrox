@@ -5,11 +5,14 @@
 #include "TROLGraphics/Managers/texturemanager.h"
 #include "TROLGraphics/Managers/shadermanager.h"
 #include "TROLLogic/inputhandler.h"
-#include "TROLLogic/entitystorage.h"
 #include "TROLGraphics/glutils.h"
 #include "TROLUtil/error.h"
 #include "TROLLogic/physicssystem.h"
-#include "message.h"
+#include "TROLCommon/entitysystem.h"
+#include "TROLCommon/positionsystem.h"
+#include "TROLGraphics/rendersystem.h"
+#include "TROLGraphics/openglwindow.h"
+#include "TROLCommon/message.h"
 #include <vector>
 
 // Contains all singleton managers/things
@@ -17,6 +20,7 @@
 struct Root
 {
 	static InputHandler inputHandler;
+    static EntitySystem entitySystem;
 
 	static OpenGLWindow openGLWindow;
 	static ModelManager modelManager;
@@ -26,12 +30,16 @@ struct Root
 	static TROLLOERROR init(int resX, int resY);
 	static void destroy();
 
+    static PhysicsSystem physicsSystem;
+    static PositionSystem positionSystem;
+    static RenderSystem renderSystem;
+
+    static rsp_t broadcastMessage(Message, ct_t);
+
 	private:
 	Root() {}
 	static TROLLOERROR initManagers();
 	static TROLLOERROR initSystems();
-
-	static std::vector<System*> systems;
 
 	Root(const Root&);
 	Root& operator=(const Root&);

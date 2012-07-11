@@ -105,8 +105,8 @@ GLuint TextureManager::addFromPNG(const std::string& id, const std::string& text
 
 	png_read_image(png_ptr, row_pointers);
 
-	bool hasAlpha;
-	switch (info_ptr->color_type) {
+	bool hasAlpha = true;
+/*	switch (info_ptr->color_type) {
 		case PNG_COLOR_TYPE_RGBA:
 			hasAlpha = true;
 			break;
@@ -117,7 +117,7 @@ GLuint TextureManager::addFromPNG(const std::string& id, const std::string& text
 			png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 			fclose(fp);
 			return GL_INVALID_VALUE;
-	}
+	}*/
 
 	glGenTextures(1, &textures[id]);
 	glBindTexture(GL_TEXTURE_2D, textures[id]);

@@ -1,4 +1,5 @@
 #pragma once
+#include <TROLUtil/error.h>
 
 struct InputHandler
 {
@@ -9,6 +10,6 @@ struct InputHandler
 
 private:
 	friend class Root;
-	void init() {}
+	TROLLOERROR init() {return TROLLO_OK;}
 	void destroy() {}
 };

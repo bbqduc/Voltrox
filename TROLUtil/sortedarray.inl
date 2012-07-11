@@ -18,7 +18,7 @@ void SortedArray<T, arrSize>::insert(T value)
 }
 
 template<typename T, int size>
-int SortedArray<T, size>::search(T value)
+int SortedArray<T, size>::search(T value) const
 {
 	assert(items);
 	int base = 0, top = items-1;

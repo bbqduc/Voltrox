@@ -12,10 +12,10 @@ class OpenGLWindow
 		const glm::mat4& getPerspective() { return perspective; }
 	private:
 		friend class Root;
-		OpenGLManager() {}
-		OpenGLManager(const OpenGLManager&);
-		OpenGLManager& operator=(const OpenGLManager&);
-		TROLLOERROR initGL()
+		OpenGLWindow() {}
+		OpenGLWindow(const OpenGLWindow&);
+		OpenGLWindow& operator=(const OpenGLWindow&);
+		TROLLOERROR initGL();
 
 		int resX, resY;
 		glm::mat4 perspective;

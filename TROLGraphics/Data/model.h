@@ -33,7 +33,7 @@ public:
 	btTriangleIndexVertexArray btVertexData;
 	btConvexTriangleMeshShape collisionShape; 
 
-	btVector3 getInertia(btScalar mass) { btVector3 ret(0.0f,0.0f,0.0f); collisionShape.calculateLocalInertia(mass, ret); return ret; }
+	btVector3 getInertia(btScalar mass) const { btVector3 ret(0.0f,0.0f,0.0f); collisionShape.calculateLocalInertia(mass, ret); return ret; }
 	void printVertexData();
 
 private:

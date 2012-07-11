@@ -1,11 +1,17 @@
 #pragma once
 
-#include "../system.h"
+#include <TROLCommon/system.h>
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
 const msg_t PHYS_THRUSTERS = LAST_BASE_MSG + 1;
 const msg_t PHYS_SET_COLLISION_FLAGS= LAST_BASE_MSG + 2;
+
+struct PhysCreateMsgData{
+		btRigidBody::btRigidBodyConstructionInfo ci;
+		btTransform t;
+        PhysCreateMsgData():ci(0, NULL, NULL, btVector3(0,0,0)) {}
+};
 
 class PhysicsSystem : public System<btRigidBody>
 {
@@ -14,8 +20,6 @@ public:
 	PhysicsSystem();
 	void tick();
 private:
-	Engine(const );
-
 	/// PHYSICS
 	btDbvtBroadphase broadphase;
 	btDefaultCollisionConfiguration collisionConfiguration;
