@@ -1,7 +1,6 @@
 #pragma once
 
 #include <TROLCommon/system.h>
-#include <TROLCommon/componentstore.h>
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
@@ -20,8 +19,6 @@ public:
 	virtual rsp_t handleMessage(Message msg);
 	PhysicsSystem();
 	void tick();
-
-    ComponentStore<btRigidBody> store;
 
 private:
 	/// PHYSICS

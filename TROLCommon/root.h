@@ -8,11 +8,11 @@
 #include "TROLGraphics/glutils.h"
 #include "TROLUtil/error.h"
 #include "TROLLogic/physicssystem.h"
-#include "TROLCommon/entitysystem.h"
 #include "TROLCommon/positionsystem.h"
 #include "TROLGraphics/rendersystem.h"
 #include "TROLGraphics/openglwindow.h"
 #include "TROLCommon/message.h"
+#include "TROLCommon/storagesystem.h"
 #include <vector>
 
 // Contains all singleton managers/things
@@ -20,7 +20,7 @@
 struct Root
 {
 	static InputHandler inputHandler;
-    static EntitySystem entitySystem;
+    static StorageSystem storageSystem;
 
 	static OpenGLWindow openGLWindow;
 	static ModelManager modelManager;

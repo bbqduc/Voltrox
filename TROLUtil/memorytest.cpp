@@ -12,7 +12,7 @@ struct Test
 int main()
 {
 	Test* t[256];
-	MemoryPool<Test> mpool;
+	MemoryPool mpool(sizeof(Test), 256);
 	for(int i = 0; i < 256; ++i)
 	{
 		t[i] = new (mpool.alloc()) Test;

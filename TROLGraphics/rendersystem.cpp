@@ -6,7 +6,7 @@
 void RenderSystem::render()
 {
         camera = 10;
-		btTransform& c = *Root::positionSystem.store.getComponent(camera);
+		btTransform& c = *static_cast<btTransform*>(Root::storageSystem.getComponent(camera, CT_POSITION));
 		const Shader& s = Root::shaderManager.getShader(ShaderManager::MVP_TEXTURED);
         const glm::mat4& perspective = Root::openGLWindow.getPerspective();
 
@@ -31,14 +31,14 @@ void RenderSystem::render()
         t.inverse().getOpenGLMatrix(&cam[0][0]);
 		cam = perspective * cam;
 
-		const SortedArray<ComponentStore<Model*>::Index_t>& renderables = store.getComponents();
+		const SortedArray<ComponentStore::Index_t>& renderables = Root::storageSystem.getComponents(CT_RENDERABLE);
 		
 		// Draw entities
 		// One additional optimization would be to draw same->models sequentially to skip some binds
 		for(int i = 0; i < renderables.size(); ++i)
 		{
-			const btTransform& p = *Root::positionSystem.store.getComponent(renderables[i].entity);
-			const Model* r = *renderables[i].component;
+			const btTransform& p = *static_cast<btTransform*>(Root::storageSystem.getComponent(renderables[i].entity, CT_POSITION));
+			const Model* r = *static_cast<Model**>(renderables[i].component);
 
 			p.getOpenGLMatrix(&m[0][0]);
 			

@@ -10,7 +10,6 @@ class RenderSystem : public ISystem
 		void render();
         RenderSystem():ISystem(CTFlags::RENDERABLE) {}
         virtual rsp_t handleMessage(Message m) { return MSG_IGNORED; }
-        ComponentStore<Model*> store;
 	private:
 		eid_t camera;
 };

@@ -9,7 +9,7 @@ ShaderManager Root::shaderManager;
 PhysicsSystem Root::physicsSystem;
 PositionSystem Root::positionSystem;
 RenderSystem Root::renderSystem;
-EntitySystem Root::entitySystem;
+StorageSystem Root::storageSystem(MAX_ENTITIES);
 std::vector<ISystem*> Root::systems;
 
 // Initializes everything in the correct order
@@ -56,8 +56,11 @@ TROLLOERROR Root::initManagers()
 TROLLOERROR Root::initSystems()
 {
     systems.push_back(&positionSystem);
+    storageSystem.addSystem(sizeof(btTransform*));
     systems.push_back(&physicsSystem);
+    storageSystem.addSystem(sizeof(btRigidBody));
     systems.push_back(&renderSystem);
+    storageSystem.addSystem(sizeof(Model*));
     return TROLLO_OK;
 }
 

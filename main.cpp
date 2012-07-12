@@ -37,7 +37,7 @@ int main()
 	msgData.ci = btRigidBody::btRigidBodyConstructionInfo(mass, 0, &const_cast<btConvexTriangleMeshShape&>(shipModel.collisionShape), shipModel.getInertia(mass));
 	for(int i = 0; i < 350; ++i)
 	{
-		msg.entity = Root::entitySystem.createEntity();
+		msg.entity = Root::storageSystem.createEntity();
 		q.setX((rand()%50) - 100);
 		q.setY((rand()%50) - 100);
 		q.setZ((rand()%50) - 100);
@@ -48,7 +48,7 @@ int main()
 		pos.setY(60.0f + (rand()%100) - 50);
 		msgData.t = btTransform(q, pos);
 		Root::broadcastMessage(msg, CTFlags::PHYSICS);
-        *Root::renderSystem.store.addComponent(msg.entity) = &shipModel;
+        *static_cast<Model**>(Root::storageSystem.addComponent(msg.entity, CT_RENDERABLE)) = &shipModel;
 	}
 
 	checkGLErrors("Preloop");

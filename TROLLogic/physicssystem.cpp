@@ -37,13 +37,13 @@ rsp_t PhysicsSystem::handleMessage(Message msg)
 {
     btRigidBody *c;
     if(msg.mType != ADD)
-        *c = store.getComponent(msg.entity); // TODO : what if add
+        *c = *static_cast<btRigidBody*>(Root::storageSystem.getComponent(msg.entity, CT_PHYSICS)); // TODO : what if add
     switch(msg.mType)
     {
         case ADD:
             {
                 PhysCreateMsgData* create = static_cast<PhysCreateMsgData*>(msg.data);
-                c = new (store.addComponent(msg.entity)) btRigidBody(create->ci);
+                c = new (Root::storageSystem.addComponent(msg.entity, CT_PHYSICS)) btRigidBody(create->ci);
                 c->setWorldTransform(create->t);
                 Message posm = {PHYS_ADD_LINK, msg.entity, &c->getWorldTransform()};
                 Root::broadcastMessage(posm, CTFlags::POSITION);
@@ -52,7 +52,7 @@ rsp_t PhysicsSystem::handleMessage(Message msg)
             }
         case REMOVE:
             dynamicsWorld.removeRigidBody(c);
-            store.removeComponent(msg.entity);
+            Root::storageSystem.removeComponent(msg.entity, CT_PHYSICS);
             return MSG_DONE;
         case PHYS_THRUSTERS:
             {

@@ -4,12 +4,15 @@
 #include <stdint.h>
 #include <LinearMath/btScalar.h>
 
-template <typename T, int size=1024>
 class ATTRIBUTE_ALIGNED16(MemoryPool)
 {
 	public:
 		// Condition is necessary because the pointer to the next free position stored in a free position
-		MemoryPool() { assert(sizeof(T) >= sizeof(void*)); initFreePointers(); } 
+		MemoryPool(size_t entrySize_, size_t maxEntries_) 
+            :pool(new uint8_t[entrySize_*maxEntries_]),
+            entrySize(entrySize_),
+            maxEntries(maxEntries_)
+        { assert(entrySize >= sizeof(void*)); initFreePointers(); } 
 		
 		// Return address for a new slot
 		// Currently just fails an assert if out of space
@@ -21,7 +24,8 @@ class ATTRIBUTE_ALIGNED16(MemoryPool)
 		bool hasSpace() { return nextFreeSlot != 0; }
 
 	private:
-		uint8_t pool[size*sizeof(T)];
+		uint8_t* pool;
+        const size_t entrySize, maxEntries;
 		void* nextFreeSlot;
 
 		inline void initFreePointers();

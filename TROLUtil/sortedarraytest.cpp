@@ -3,7 +3,7 @@
 
 int main()
 {
-	SortedArray<int,256> arr;
+	SortedArray<int> arr(256);
 	for(int i = 256; i > 0; --i)
 		arr.insert(i);
 
