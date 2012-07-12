@@ -10,6 +10,7 @@ PhysicsSystem Root::physicsSystem;
 PositionSystem Root::positionSystem;
 RenderSystem Root::renderSystem;
 EntitySystem Root::entitySystem;
+std::vector<ISystem*> Root::systems;
 
 // Initializes everything in the correct order
 TROLLOERROR Root::init(int resX, int resY)
@@ -54,20 +55,17 @@ TROLLOERROR Root::initManagers()
 
 TROLLOERROR Root::initSystems()
 {
+    systems.push_back(&positionSystem);
+    systems.push_back(&physicsSystem);
+    systems.push_back(&renderSystem);
     return TROLLO_OK;
 }
 
 rsp_t Root::broadcastMessage(Message message, ct_t recipients)
 {
-    if(recipients & CTFlags::PHYSICS)
-        physicsSystem.handleMessage(message);
-    if(recipients & CTFlags::POSITION)
-        positionSystem.handleMessage(message);
-    if(recipients & CTFlags::RENDERABLE)
-        renderSystem.handleMessage(message);
-/*	for(auto i = systems.begin(); i != systems.end(); ++i)
-		if(i->id & recipients)
-			i->handleMessage(message);*/
+	for(auto i = systems.begin(); i != systems.end(); ++i)
+		if((*i)->id & recipients)
+			(*i)->handleMessage(message);
     return MSG_DONE;
 }
 

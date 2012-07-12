@@ -40,6 +40,7 @@ struct Root
 	Root() {}
 	static TROLLOERROR initManagers();
 	static TROLLOERROR initSystems();
+    static std::vector<ISystem*> systems;
 
 	Root(const Root&);
 	Root& operator=(const Root&);

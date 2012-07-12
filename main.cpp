@@ -48,7 +48,7 @@ int main()
 		pos.setY(60.0f + (rand()%100) - 50);
 		msgData.t = btTransform(q, pos);
 		Root::broadcastMessage(msg, CTFlags::PHYSICS);
-        *Root::renderSystem.addComponent(msg.entity) = &shipModel;
+        *Root::renderSystem.store.addComponent(msg.entity) = &shipModel;
 	}
 
 	checkGLErrors("Preloop");

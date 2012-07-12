@@ -22,13 +22,13 @@ void RenderSystem::render()
 
 		cam = perspective * cam;
 
-		const SortedArray<Index_t>& renderables = getComponents();
+		const SortedArray<ComponentStore<Model*>::Index_t>& renderables = store.getComponents();
 		
 		// Draw entities
 		// One additional optimization would be to draw same->models sequentially to skip some binds
 		for(int i = 0; i < renderables.size(); ++i)
 		{
-			const btTransform& p = *Root::positionSystem.getComponent(renderables[i].entity);
+			const btTransform& p = *Root::positionSystem.store.getComponent(renderables[i].entity);
 			const Model* r = *renderables[i].component;
 
 			p.getOpenGLMatrix(&m[0][0]);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <TROLCommon/system.h>
+#include <TROLCommon/componentstore.h>
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
@@ -13,12 +14,15 @@ struct PhysCreateMsgData{
         PhysCreateMsgData():ci(0, NULL, NULL, btVector3(0,0,0)) {}
 };
 
-class PhysicsSystem : public System<btRigidBody>
+class PhysicsSystem : public ISystem
 {
 public:
 	virtual rsp_t handleMessage(Message msg);
 	PhysicsSystem();
 	void tick();
+
+    ComponentStore<btRigidBody> store;
+
 private:
 	/// PHYSICS
 	btDbvtBroadphase broadphase;
@@ -28,4 +32,5 @@ private:
 	btDiscreteDynamicsWorld dynamicsWorld;
 
 	btVector3 gravity;
+
 };
