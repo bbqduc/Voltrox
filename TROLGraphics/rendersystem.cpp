@@ -5,7 +5,8 @@
 
 void RenderSystem::render()
 {
-//		btTransform& c = *Root::positionSystem.getComponent(camera);
+        camera = 10;
+		btTransform& c = *Root::positionSystem.store.getComponent(camera);
 		const Shader& s = Root::shaderManager.getShader(ShaderManager::MVP_TEXTURED);
         const glm::mat4& perspective = Root::openGLWindow.getPerspective();
 
@@ -16,10 +17,18 @@ void RenderSystem::render()
 
 		// Camera setup
 //		glm::mat4 cam(glm::lookAt(c.pos, c.pos + c.view, c.up)); // TODO : ditch glm::lookat
-		glm::mat4 cam(glm::lookAt(glm::vec3(0.0f,0.0f,200.0f), glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f))); // TODO : ditch glm::lookat
+//		glm::mat4 cam(glm::lookAt(glm::vec3(0.0f,0.0f,200.0f), glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f))); // TODO : ditch glm::lookat
 		glm::mat4 m;
 		btTransform trans;
 
+        btQuaternion q(btVector3(0.0f,1.0f,0.0f), 3.14f);
+        btTransform t2(q);
+        btVector3 vi(0.0f,3.0f, -8.0f);
+        btTransform t(btQuaternion::getIdentity(),vi);
+        t = c * t * t2;
+
+        glm::mat4 cam;
+        t.inverse().getOpenGLMatrix(&cam[0][0]);
 		cam = perspective * cam;
 
 		const SortedArray<ComponentStore<Model*>::Index_t>& renderables = store.getComponents();
