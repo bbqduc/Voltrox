@@ -3,10 +3,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <iostream>
+
 void RenderSystem::render()
 {
         camera = 10;
-		btTransform& c = *static_cast<btTransform*>(Root::storageSystem.getComponent(camera, CT_POSITION));
+		btTransform* c = *static_cast<btTransform**>(Root::storageSystem.getComponent(camera, CT_POSITION));
 		const Shader& s = Root::shaderManager.getShader(ShaderManager::MVP_TEXTURED);
         const glm::mat4& perspective = Root::openGLWindow.getPerspective();
 
@@ -16,16 +18,14 @@ void RenderSystem::render()
 		glUniform1i(s.uniformLocs[1], 0);
 
 		// Camera setup
-//		glm::mat4 cam(glm::lookAt(c.pos, c.pos + c.view, c.up)); // TODO : ditch glm::lookat
-//		glm::mat4 cam(glm::lookAt(glm::vec3(0.0f,0.0f,200.0f), glm::vec3(0.0f,0.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f))); // TODO : ditch glm::lookat
 		glm::mat4 m;
 		btTransform trans;
 
         btQuaternion q(btVector3(0.0f,1.0f,0.0f), 3.14f);
         btTransform t2(q);
-        btVector3 vi(0.0f,3.0f, -8.0f);
+        btVector3 vi(0.0f,5.0f, -16.0f);
         btTransform t(btQuaternion::getIdentity(),vi);
-        t = c * t * t2;
+        t = *c * t * t2;
 
         glm::mat4 cam;
         t.inverse().getOpenGLMatrix(&cam[0][0]);
@@ -37,10 +37,12 @@ void RenderSystem::render()
 		// One additional optimization would be to draw same->models sequentially to skip some binds
 		for(int i = 0; i < renderables.size(); ++i)
 		{
-			const btTransform& p = *static_cast<btTransform*>(Root::storageSystem.getComponent(renderables[i].entity, CT_POSITION));
+			const btTransform* p = *static_cast<btTransform**>(Root::storageSystem.getComponent(renderables[i].entity, CT_POSITION));
 			const Model* r = *static_cast<Model**>(renderables[i].component);
 
-			p.getOpenGLMatrix(&m[0][0]);
+//            std::cout << p.getOrigin()[0] << ' ' << p.getOrigin()[1] << ' ' << p.getOrigin()[2] << '\n';
+
+			p->getOpenGLMatrix(&m[0][0]);
 			
 			glm::mat4 MVP = cam * m;
 			glUniformMatrix4fv(s.uniformLocs[0], 1, GL_FALSE, glm::value_ptr(MVP));

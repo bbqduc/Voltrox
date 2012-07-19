@@ -1,6 +1,6 @@
 #include "root.h"
 
-InputHandler Root::inputHandler;
+InputSystem Root::inputSystem;
 OpenGLWindow Root::openGLWindow;
 ModelManager Root::modelManager;
 TextureManager Root::textureManager;
@@ -50,7 +50,7 @@ TROLLOERROR Root::initManagers()
 		std::cerr << "Failed to init TextRenderer\n";
 		return TROLLO_INIT_FAILURE;
 		}*/
-	return inputHandler.init();
+	return inputSystem.init();
 }
 
 TROLLOERROR Root::initSystems()
@@ -80,7 +80,7 @@ void Root::destroy()
 	modelManager.destroy();
 	textureManager.destroy();
 
-	inputHandler.destroy();
+	inputSystem.destroy();
 //	openGLWindow.destroy();
 //	physicsSystem.destroy();
 }

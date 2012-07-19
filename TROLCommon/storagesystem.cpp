@@ -1,5 +1,6 @@
 #include "storagesystem.h"
 #include <cassert>
+#include <iostream>
 
 StorageSystem::StorageSystem(size_t maxEntities_)
     :maxEntities(maxEntities_),
@@ -11,19 +12,19 @@ StorageSystem::StorageSystem(size_t maxEntities_)
 
 void* StorageSystem::addComponent(eid_t entity, ct_t component)
 {
-    assert(numSystems < component);
+    assert(numSystems >= component);
     return componentStores[component].addComponent(entity);
 }
 
 void* StorageSystem::getComponent(eid_t entity, ct_t component)
 {
-    assert(numSystems < component);
+    assert(numSystems >= component);
     return componentStores[component].getComponent(entity);
 }
 
 void StorageSystem::removeComponent(eid_t entity, ct_t component)
 {
-    assert(numSystems < component);
+    assert(numSystems >= component);
     componentStores[component].removeComponent(entity);
 }
 
@@ -36,7 +37,7 @@ void StorageSystem::removeEntity(eid_t entity)
 
 SortedArray<ComponentStore::Index_t>& StorageSystem::getComponents(ct_t component)
 {
-    assert(numSystems < component);
+    assert(numSystems >= component);
     return componentStores[component].getComponents();
 }
 

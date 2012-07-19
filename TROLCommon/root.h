@@ -4,7 +4,7 @@
 #include "TROLGraphics/Managers/modelmanager.h"
 #include "TROLGraphics/Managers/texturemanager.h"
 #include "TROLGraphics/Managers/shadermanager.h"
-#include "TROLLogic/inputhandler.h"
+#include "TROLLogic/inputsystem.h"
 #include "TROLGraphics/glutils.h"
 #include "TROLUtil/error.h"
 #include "TROLLogic/physicssystem.h"
@@ -19,7 +19,7 @@
 // Responsible for initializing/destroying everything in the correct order
 struct Root
 {
-	static InputHandler inputHandler;
+	static InputSystem inputSystem;
     static StorageSystem storageSystem;
 
 	static OpenGLWindow openGLWindow;

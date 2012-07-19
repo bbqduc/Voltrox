@@ -50,6 +50,7 @@ int main()
 		Root::broadcastMessage(msg, CTFlags::PHYSICS);
         *static_cast<Model**>(Root::storageSystem.addComponent(msg.entity, CT_RENDERABLE)) = &shipModel;
 	}
+    Root::renderSystem.attachCamera(msg.entity);
 
 	checkGLErrors("Preloop");
 	bool running = true;
