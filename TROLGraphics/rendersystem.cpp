@@ -7,7 +7,6 @@
 
 void RenderSystem::render()
 {
-        camera = 10;
 		btTransform* c = *static_cast<btTransform**>(Root::storageSystem.getComponent(camera, CT_POSITION));
 		const Shader& s = Root::shaderManager.getShader(ShaderManager::MVP_TEXTURED);
         const glm::mat4& perspective = Root::openGLWindow.getPerspective();
@@ -23,7 +22,7 @@ void RenderSystem::render()
 
         btQuaternion q(btVector3(0.0f,1.0f,0.0f), 3.14f);
         btTransform t2(q);
-        btVector3 vi(0.0f,5.0f, -16.0f);
+        btVector3 vi(0.0f,5.0f, -20.0f);
         btTransform t(btQuaternion::getIdentity(),vi);
         t = *c * t * t2;
 

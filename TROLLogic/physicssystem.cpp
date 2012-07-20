@@ -13,13 +13,6 @@ PhysicsSystem::PhysicsSystem()
 {
     dynamicsWorld.setGravity(gravity);
     //	dynamicsWorld.setInternalTickCallback(myTickCallback, static_cast<void*>(this));
-
-    btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
-    btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,-1,0)));
-    btRigidBody::btRigidBodyConstructionInfo
-        groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-    btRigidBody* groundRigidBody = new btRigidBody(groundRigidBodyCI);
-    dynamicsWorld.addRigidBody(groundRigidBody);
 }
 
 /*void PhysicsSystem::updatePositions(ct_t selection)
@@ -37,7 +30,7 @@ rsp_t PhysicsSystem::handleMessage(Message msg)
 {
     btRigidBody *c;
     if(msg.mType != ADD)
-        *c = *static_cast<btRigidBody*>(Root::storageSystem.getComponent(msg.entity, CT_PHYSICS)); // TODO : what if add
+        c = static_cast<btRigidBody*>(Root::storageSystem.getComponent(msg.entity, CT_PHYSICS)); // TODO : what if add
     switch(msg.mType)
     {
         case ADD:
@@ -56,8 +49,30 @@ rsp_t PhysicsSystem::handleMessage(Message msg)
             return MSG_DONE;
         case PHYS_THRUSTERS:
             {
-                btVector3 v(0,*static_cast<float*>(msg.data),0);
-                c->applyForce(v, btVector3(0,0,0));
+                btVector3 relF(0,0,*static_cast<float*>(msg.data));
+                btMatrix3x3& entityRot = c->getWorldTransform().getBasis();
+                btVector3 corF = entityRot * relF;
+                c->setActivationState(true);
+                c->applyCentralImpulse(corF);
+                return MSG_DONE;
+            }
+        case PHYS_BRAKES:
+            {
+                btVector3 a = c->getAngularVelocity();
+                btVector3 l = c->getLinearVelocity();
+                a *= 0.99f;
+                l *= 0.99f;
+                c->setAngularVelocity(a);
+                c->setLinearVelocity(l);
+                return MSG_DONE;
+            }
+        case PHYS_ROTATE:
+            {
+                btVector3* relF = static_cast<btVector3*>(msg.data);
+                btMatrix3x3& entityRot = c->getWorldTransform().getBasis();
+                btVector3 corF = entityRot * *relF;
+                c->setActivationState(true);
+                c->applyTorqueImpulse(corF);
                 return MSG_DONE;
             }
         case PHYS_SET_COLLISION_FLAGS:

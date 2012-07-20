@@ -10,6 +10,10 @@
 #endif
 #include <TROLCommon/root.h>
 
+#include <TROLLogic/keyinputmover.h>
+#include <TROLLogic/mouseinputlooker.h>
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/RendererModules/OpenGL/CEGUIOpenGLRenderer.h>
 
 int main()
 {
@@ -24,8 +28,15 @@ int main()
 	}
     Root::modelManager.addFromTROLLO("ship", "resources/ship.trollo", Root::textureManager.getTexture("default"));
 	Model& shipModel = Root::modelManager.getModel("ship");
-	btVector3 pos(0,50,-100);
 
+    KeyInputMover kHandler;
+    MouseInputLooker mHandler;
+    Root::inputSystem.registerKeyHandler(&kHandler);
+    Root::inputSystem.registerMouseHandler(&mHandler);
+    CEGUI::OpenGLRenderer& myRenderer = CEGUI::OpenGLRenderer::bootstrapSystem();
+    checkGLErrors("CEGUI");
+
+	btVector3 pos(0,50,-100);
 	Message msg;
 	btQuaternion q;
     PhysCreateMsgData msgData;
@@ -33,7 +44,7 @@ int main()
 	msg.mType = ADD;
 	msg.data = &msgData;
 
-	float mass = 1.0f;
+	float mass = 10.0f;
 	msgData.ci = btRigidBody::btRigidBodyConstructionInfo(mass, 0, &const_cast<btConvexTriangleMeshShape&>(shipModel.collisionShape), shipModel.getInertia(mass));
 	for(int i = 0; i < 350; ++i)
 	{
@@ -51,6 +62,8 @@ int main()
         *static_cast<Model**>(Root::storageSystem.addComponent(msg.entity, CT_RENDERABLE)) = &shipModel;
 	}
     Root::renderSystem.attachCamera(msg.entity);
+    kHandler.registerEntity(msg.entity);
+    mHandler.registerEntity(msg.entity);
 
 	checkGLErrors("Preloop");
 	bool running = true;
@@ -66,11 +79,13 @@ int main()
 
         Root::physicsSystem.tick();
         Root::renderSystem.render();
+        CEGUI::System::getSingleton().renderGUI();
 
 		checkGLErrors("loop");
 
 		glfwSwapBuffers();
 		running = running && (!glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED));
+        Root::inputSystem.update();
 
 		double t = glfwGetTime();
 		if(1.0f + prevTime <= t)

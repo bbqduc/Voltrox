@@ -4,8 +4,6 @@
 #include <btBulletDynamicsCommon.h>
 #include <btBulletCollisionCommon.h>
 
-const msg_t PHYS_THRUSTERS = LAST_BASE_MSG + 1;
-const msg_t PHYS_SET_COLLISION_FLAGS= LAST_BASE_MSG + 2;
 
 struct PhysCreateMsgData{
 		btRigidBody::btRigidBodyConstructionInfo ci;

@@ -1,8 +1,32 @@
 #include "inputsystem.h"
 #include <TROLCommon/root.h>
 
-#include <GL/glfw.h>
 #include <cassert>
+
+InputSystem* InputSystem::isystem = 0;
+
+TROLLOERROR InputSystem::init() 
+{ 
+    InputSystem::isystem = this; 
+    glfwSetKeyCallback(InputSystem::keyCallback); 
+    return TROLLO_OK;
+}
+
+void GLFWCALL InputSystem::keyCallback(int key, int action)
+{
+    for(auto i = isystem->keyHandlers.begin(); i != isystem->keyHandlers.end(); ++i)
+        (*i)->handleKeyEvent(key,action);
+}
+
+void InputSystem::update()
+{
+    float x, y;
+    getMousePos(&x,&y);
+    for(auto i = isystem->mouseHandlers.begin(); i != isystem->mouseHandlers.end(); ++i)
+        (*i)->handleMouseMove(x,y);
+    for(auto i = isystem->keyHandlers.begin(); i != isystem->keyHandlers.end(); ++i)
+        (*i)->update();
+}
 
 bool InputSystem::isKeyDown(int key) 
 { 
