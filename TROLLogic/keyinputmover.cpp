@@ -6,7 +6,7 @@ void KeyInputMover::update()
     float t = 0.0f;
     if(glfwGetKey('W') == GLFW_PRESS)
     {
-        float force = 5.0f;
+        float force = 20.0f;
         Message msg;
         msg.data = &force;
         msg.mType = PHYS_THRUSTERS;

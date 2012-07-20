@@ -26,6 +26,7 @@ int main()
 		Root::destroy();
 		return -1;
 	}
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     Root::modelManager.addFromTROLLO("ship", "resources/ship.trollo", Root::textureManager.getTexture("default"));
 	Model& shipModel = Root::modelManager.getModel("ship");
 

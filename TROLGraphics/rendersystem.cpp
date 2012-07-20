@@ -39,8 +39,6 @@ void RenderSystem::render()
 			const btTransform* p = *static_cast<btTransform**>(Root::storageSystem.getComponent(renderables[i].entity, CT_POSITION));
 			const Model* r = *static_cast<Model**>(renderables[i].component);
 
-//            std::cout << p.getOrigin()[0] << ' ' << p.getOrigin()[1] << ' ' << p.getOrigin()[2] << '\n';
-
 			p->getOpenGLMatrix(&m[0][0]);
 			
 			glm::mat4 MVP = cam * m;
@@ -60,6 +58,23 @@ void RenderSystem::render()
 		glUseProgram(0);
 
 		checkGLErrors("MeshRenderer::render()");
+}
+
+/*void RenderSystem::renderCrosshair()
+{
+    const Shader& s = Root::shaderManager.getShader(ShaderManager::PLAIN);
+    const Model* r = Root::storageSystem.getComponent(TODO::CROSSHAIRENTITY, CT_RENDERABLE);
+
+    glUseProgram(s.id);
+
+    glBindVertexArray(r->vao);
+    glBindBuffer(GL_ARRAY_BUFFER, r->vertexBuffer);
+
+    glDrawElements(GL_TRIANGLES, r->numFaces*3, GL_UNSIGNED_INT, 0);
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUseProgram(0);
 }
 
 /*void RenderSystem::explodeRender()
