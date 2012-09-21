@@ -20,7 +20,7 @@
 struct Root
 {
 	static InputSystem inputSystem;
-    static StorageSystem storageSystem;
+   static StorageSystem storageSystem;
 
 	static OpenGLWindow openGLWindow;
 	static ModelManager modelManager;

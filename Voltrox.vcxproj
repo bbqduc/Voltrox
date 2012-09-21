@@ -39,12 +39,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Voltrox;ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
     <LibraryPath>ext/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Voltrox;ext\bullet-2.80-rev2531\src;ext/include;$(IncludePath)</IncludePath>
     <LibraryPath>ext/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -108,32 +108,35 @@
   <ItemGroup>
     <ClCompile Include="ext\gl3w.c" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="root.cpp" />
+    <ClCompile Include="TROLCommon\componentstore.cpp" />
+    <ClCompile Include="TROLCommon\positionsystem.cpp" />
+    <ClCompile Include="TROLCommon\root.cpp" />
+    <ClCompile Include="TROLCommon\storagesystem.cpp" />
     <ClCompile Include="TROLConsole\console.cpp" />
-    <ClCompile Include="TROLGraphics\camera.cpp" />
     <ClCompile Include="TROLGraphics\Data\model.cpp" />
     <ClCompile Include="TROLGraphics\glutils.cpp" />
     <ClCompile Include="TROLGraphics\Managers\modelmanager.cpp" />
     <ClCompile Include="TROLGraphics\Managers\shadermanager.cpp" />
     <ClCompile Include="TROLGraphics\Managers\texturemanager.cpp" />
-    <ClCompile Include="TROLGraphics\meshexplode.cpp" />
-    <ClCompile Include="TROLGraphics\meshrender.cpp" />
+    <ClCompile Include="TROLGraphics\openglwindow.cpp" />
     <ClCompile Include="TROLGraphics\rendermanager.cpp" />
     <ClCompile Include="TROLGraphics\rendersystem.cpp" />
     <ClCompile Include="TROLGraphics\shader.cpp" />
-    <ClCompile Include="TROLGraphics\skybox.cpp" />
-    <ClCompile Include="TROLGraphics\textrenderer.cpp" />
-    <ClCompile Include="TROLGraphics\Voxel\shapes.cpp" />
-    <ClCompile Include="TROLLogic\engine.cpp" />
-    <ClCompile Include="TROLLogic\entity.cpp" />
-    <ClCompile Include="TROLLogic\inputhandler.cpp" />
+    <ClCompile Include="TROLLogic\inputsystem.cpp" />
+    <ClCompile Include="TROLLogic\keyinputmover.cpp" />
+    <ClCompile Include="TROLLogic\mouseinputlooker.cpp" />
+    <ClCompile Include="TROLLogic\physicssystem.cpp" />
     <ClCompile Include="TROLUtil\error.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="positionsystem.h" />
-    <ClInclude Include="root.h" />
+    <ClInclude Include="TROLCommon\componentstore.h" />
+    <ClInclude Include="TROLCommon\message.h" />
+    <ClInclude Include="TROLCommon\positionsystem.h" />
+    <ClInclude Include="TROLCommon\root.h" />
+    <ClInclude Include="TROLCommon\storagesystem.h" />
+    <ClInclude Include="TROLCommon\system.h" />
+    <ClInclude Include="TROLCommon\types.h" />
     <ClInclude Include="TROLConsole\console.h" />
-    <ClInclude Include="TROLGraphics\camera.h" />
     <ClInclude Include="TROLGraphics\Data\model.h" />
     <ClInclude Include="TROLGraphics\glutils.h" />
     <ClInclude Include="TROLGraphics\irender.h" />
@@ -142,17 +145,18 @@
     <ClInclude Include="TROLGraphics\Managers\texturemanager.h" />
     <ClInclude Include="TROLGraphics\meshexplode.h" />
     <ClInclude Include="TROLGraphics\meshrender.h" />
+    <ClInclude Include="TROLGraphics\openglwindow.h" />
     <ClInclude Include="TROLGraphics\rendermanager.h" />
     <ClInclude Include="TROLGraphics\rendersystem.h" />
     <ClInclude Include="TROLGraphics\shader.h" />
-    <ClInclude Include="TROLGraphics\skybox.h" />
-    <ClInclude Include="TROLGraphics\system.h" />
     <ClInclude Include="TROLGraphics\textrenderer.h" />
     <ClInclude Include="TROLGraphics\Voxel\shapes.h" />
-    <ClInclude Include="TROLLogic\Data\entity.h" />
-    <ClInclude Include="TROLLogic\engine.h" />
-    <ClInclude Include="TROLLogic\entitystorage.h" />
     <ClInclude Include="TROLLogic\explosioninfo.h" />
+    <ClInclude Include="TROLLogic\iinputhandler.h" />
+    <ClInclude Include="TROLLogic\inputsystem.h" />
+    <ClInclude Include="TROLLogic\keyinputmover.h" />
+    <ClInclude Include="TROLLogic\mouseinputlooker.h" />
+    <ClInclude Include="TROLLogic\physicssystem.h" />
     <ClInclude Include="TROLUtil\error.h" />
     <ClInclude Include="TROLUtil\memorypool.h" />
     <ClInclude Include="TROLUtil\sortedarray.h" />

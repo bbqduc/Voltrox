@@ -12,8 +12,8 @@
 
 #include <TROLLogic/keyinputmover.h>
 #include <TROLLogic/mouseinputlooker.h>
-#include <CEGUI/CEGUI.h>
-#include <CEGUI/RendererModules/OpenGL/CEGUIOpenGLRenderer.h>
+//#include <CEGUI/CEGUI.h>
+//#include <CEGUI/RendererModules/OpenGL/CEGUIOpenGLRenderer.h>
 
 int main()
 {
@@ -26,16 +26,15 @@ int main()
 		Root::destroy();
 		return -1;
 	}
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    Root::modelManager.addFromTROLLO("ship", "resources/ship.trollo", Root::textureManager.getTexture("default"));
+   Root::modelManager.addFromTROLLO("ship", "resources/ship.trollo", Root::textureManager.getTexture("default"));
 	Model& shipModel = Root::modelManager.getModel("ship");
 
     KeyInputMover kHandler;
     MouseInputLooker mHandler;
     Root::inputSystem.registerKeyHandler(&kHandler);
     Root::inputSystem.registerMouseHandler(&mHandler);
-    CEGUI::OpenGLRenderer& myRenderer = CEGUI::OpenGLRenderer::bootstrapSystem();
-    checkGLErrors("CEGUI");
+//    CEGUI::OpenGLRenderer& myRenderer = CEGUI::OpenGLRenderer::bootstrapSystem();
+//    checkGLErrors("CEGUI");
 
 	btVector3 pos(0,50,-100);
 	Message msg;
@@ -80,7 +79,7 @@ int main()
 
         Root::physicsSystem.tick();
         Root::renderSystem.render();
-        CEGUI::System::getSingleton().renderGUI();
+//        CEGUI::System::getSingleton().renderGUI();
 
 		checkGLErrors("loop");
 

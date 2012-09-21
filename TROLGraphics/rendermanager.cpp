@@ -16,7 +16,7 @@ TROLLOERROR RenderManager::init(int resX, int resY)
 	this->openglInfo.resY = resY;
 	this->openglInfo.perspective = glm::perspective(45.0f, (float)resX/(float)resY, 1.0f, 10000.0f);
 
-	getNewRenderManager<SkyboxRenderer>();
+//	getNewRenderManager<SkyboxRenderer>();
 
 	return initGL();
 }

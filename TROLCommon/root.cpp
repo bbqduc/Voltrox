@@ -1,4 +1,5 @@
 #include "root.h"
+#define MAX_ENTITIES 1024
 
 InputSystem Root::inputSystem;
 OpenGLWindow Root::openGLWindow;

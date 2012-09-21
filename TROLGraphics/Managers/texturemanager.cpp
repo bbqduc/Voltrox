@@ -4,8 +4,8 @@ TROLLOERROR TextureManager::init()
 {
 	if(addFromBMP("default", "resources/ship.bmp") == GL_INVALID_VALUE)
 		return TROLLO_INIT_FAILURE;
-	if(addFromPNG("skybox", "resources/space.png") == GL_INVALID_VALUE)
-		return TROLLO_INIT_FAILURE;
+/*	if(addFromPNG("skybox", "resources/space.png") == GL_INVALID_VALUE)
+		return TROLLO_INIT_FAILURE;*/
 	return TROLLO_OK;
 }
 
